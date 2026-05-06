@@ -1,6 +1,6 @@
 import L from "leaflet";
 import { useEffect } from "react";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import type { ItemType } from "@/shared/types";
 import "leaflet/dist/leaflet.css";
 
@@ -40,6 +40,9 @@ function createCustomIcon(type: ItemType): L.DivIcon {
 const lostIcon = createCustomIcon("Lost");
 const foundIcon = createCustomIcon("Found");
 
+/**
+ * Handles map movement when center changes
+ */
 function FlyToCenter({ center }: { center: [number, number] }) {
 	const map = useMap();
 	useEffect(() => {
@@ -48,18 +51,37 @@ function FlyToCenter({ center }: { center: [number, number] }) {
 	return null;
 }
 
-function MapClickHandler({ onClick }: { onClick?: (lat: number, lng: number) => void }) {
+/**
+ * Handles map click events
+ */
+function MapEvents({
+	onMapClick,
+	selectable,
+}: {
+	onMapClick?: (lat: number, lng: number) => void;
+	selectable?: boolean;
+}) {
+	useMapEvents({
+		click(e) {
+			if (selectable && onMapClick) {
+				onMapClick(e.latlng.lat, e.latlng.lng);
+			}
+		},
+	});
+	return null;
+}
+
+/**
+ * Ensures the map tiles are correctly rendered by calling invalidateSize.
+ */
+function InvalidateMapSize() {
 	const map = useMap();
 	useEffect(() => {
-		if (!onClick) return;
-		const handler = (e: L.LeafletMouseEvent) => {
-			onClick(e.latlng.lat, e.latlng.lng);
-		};
-		map.on("click", handler);
-		return () => {
-			map.off("click", handler);
-		};
-	}, [map, onClick]);
+		const timer = setTimeout(() => {
+			map.invalidateSize();
+		}, 150);
+		return () => clearTimeout(timer);
+	}, [map]);
 	return null;
 }
 
@@ -70,24 +92,25 @@ export function AppMap({
 	center = DEFAULT_CENTER,
 	zoom = DEFAULT_ZOOM,
 	markers = [],
-	className,
+	className = "h-64 w-full",
 	onMapClick,
 	selectable,
 }: AppMapProps) {
 	return (
-		<div className={className}>
+		<div className={`relative overflow-hidden rounded-lg border border-stone-200 ${className}`}>
 			<MapContainer
 				center={center}
 				zoom={zoom}
-				className="h-full w-full rounded-lg"
+				style={{ height: "100%", width: "100%" }}
 				zoomControl={false}
 			>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
+				<InvalidateMapSize />
 				<FlyToCenter center={center} />
-				{selectable && <MapClickHandler onClick={onMapClick} />}
+				<MapEvents onMapClick={onMapClick} selectable={selectable} />
 				{markers.map((marker) => (
 					<Marker
 						key={marker.id}

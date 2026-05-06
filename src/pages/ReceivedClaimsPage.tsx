@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useClaimsByItem, useRespondToClaim } from "@/features/claims/hooks";
 import { useMyItems } from "@/features/items/hooks";
 import type { Item } from "@/features/items/types";
-import { ClaimStatusBadge, EmptyState, ListSkeleton } from "@/shared/components";
+import { CategoryBadge, ClaimStatusBadge, EmptyState, ListSkeleton } from "@/shared/components";
 
 function formatDate(dateStr: string): string {
 	return new Date(dateStr).toLocaleDateString("tr-TR", {
@@ -90,7 +90,7 @@ function ItemClaimsGroup({ item }: { item: Item }) {
 						{item.title}
 					</h2>
 					<div className="mt-1 flex items-center gap-3 text-sm text-stone-500">
-						<span>{t(`categories.${item.category}`)}</span>
+						<CategoryBadge category={item.category} />
 						<span className="h-1 w-1 rounded-full bg-stone-300" />
 						<span>{formatDate(item.createdAt)}</span>
 					</div>

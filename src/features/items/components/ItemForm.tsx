@@ -23,12 +23,11 @@ const itemSchema = z.object({
 	description: z.string().min(10, "items.descriptionRequired"),
 	category: z.string().min(1, "auth.required"),
 	itemType: z.string().min(1, "auth.required"),
-	incidentDate: z.string().min(1, "auth.required"),
 	locationLabel: z.string().min(1, "auth.required"),
 	imageUrl: z.string().optional(),
 	contactInfo: z.string().optional(),
-	latitude: z.number().optional(),
-	longitude: z.number().optional(),
+	latitude: z.number({ required_error: "auth.required" }),
+	longitude: z.number({ required_error: "auth.required" }),
 });
 
 type ItemFormData = z.infer<typeof itemSchema>;
@@ -57,7 +56,6 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 					description: item.description,
 					category: item.category,
 					itemType: item.itemType,
-					incidentDate: item.incidentDate.split("T")[0],
 					imageUrl: item.imageUrl ?? "",
 					contactInfo: item.contactInfo ?? "",
 					locationLabel: item.locationLabel ?? "",
@@ -69,12 +67,11 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 					description: "",
 					category: "",
 					itemType: "",
-					incidentDate: new Date().toISOString().split("T")[0],
 					imageUrl: "",
 					contactInfo: "",
 					locationLabel: "",
-					latitude: 41.0082, // Default to Istanbul coordinates if none
-					longitude: 28.9784,
+					latitude: undefined,
+					longitude: undefined,
 				},
 	});
 
@@ -82,13 +79,10 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 	const lng = watch("longitude");
 
 	const handleFormSubmit = (data: ItemFormData) => {
-		// Convert "YYYY-MM-DD" to UTC ISO string to avoid PostgreSQL Kind=Unspecified error
-		const dateObj = new Date(data.incidentDate);
-		const incidentDateIso = dateObj.toISOString();
-
 		const payload: ItemCreateRequest = {
 			...data,
-			incidentDate: incidentDateIso,
+			// Automatically set incidentDate to now if creating, or keep original if editing
+			incidentDate: item?.incidentDate || new Date().toISOString(),
 			imageUrl: data.imageUrl || undefined,
 			contactInfo: data.contactInfo || undefined,
 			itemType: data.itemType as ItemType,
@@ -105,7 +99,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 			{/* Title */}
 			<div className="space-y-1.5">
 				<Label htmlFor="title" className="text-stone-700">
-					{t("items.itemTitle")}
+					{t("items.itemTitle")} <span className="text-red-500">*</span>
 				</Label>
 				<Input
 					id="title"
@@ -122,7 +116,9 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 			{/* Type + Category Row */}
 			<div className="grid grid-cols-2 gap-4">
 				<div className="space-y-1.5">
-					<Label className="text-stone-700">{t("items.type")}</Label>
+					<Label className="text-stone-700">
+						{t("items.type")} <span className="text-red-500">*</span>
+					</Label>
 					<Controller
 						name="itemType"
 						control={control}
@@ -144,7 +140,9 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 				</div>
 
 				<div className="space-y-1.5">
-					<Label className="text-stone-700">{t("items.category")}</Label>
+					<Label className="text-stone-700">
+						{t("items.category")} <span className="text-red-500">*</span>
+					</Label>
 					<Controller
 						name="category"
 						control={control}
@@ -169,49 +167,36 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 				</div>
 			</div>
 
-			{/* Incident Date */}
-			<div className="space-y-1.5">
-				<Label htmlFor="incidentDate" className="text-stone-700">
-					{t("items.incidentDate")}
-				</Label>
-				<Input
-					id="incidentDate"
-					type="date"
-					aria-invalid={!!errors.incidentDate}
-					className={inputClass}
-					{...register("incidentDate")}
-				/>
-				{errors.incidentDate?.message && (
-					<p className="text-[13px] text-red-600">{t(errors.incidentDate.message)}</p>
-				)}
-			</div>
-
 			{/* Map Selection */}
 			<div className="space-y-1.5">
-				<Label className="text-stone-700">{t("items.pickOnMap")}</Label>
-				<div className="h-64 w-full overflow-hidden rounded-lg border border-stone-200">
-					<AppMap
-						center={lat && lng ? [lat, lng] : undefined}
-						zoom={13}
-						onMapClick={(e: any) => {
-							setValue("latitude", e.latlng.lat);
-							setValue("longitude", e.latlng.lng);
-						}}
-						markers={
-							lat && lng
-								? [
-										{
-											id: "preview",
-											latitude: lat,
-											longitude: lng,
-											title: t("items.location"),
-											itemType: (watch("itemType") as ItemType) || "Lost",
-										},
-									]
-								: []
-						}
-					/>
-				</div>
+				<Label className="text-stone-700">
+					{t("items.pickOnMap")} <span className="text-red-500">*</span>
+				</Label>
+				<AppMap
+					center={lat && lng ? [lat, lng] : undefined}
+					zoom={13}
+					selectable
+					onMapClick={(lat, lng) => {
+						setValue("latitude", lat, { shouldValidate: true });
+						setValue("longitude", lng, { shouldValidate: true });
+					}}
+					markers={
+						lat && lng
+							? [
+									{
+										id: "preview",
+										latitude: lat,
+										longitude: lng,
+										title: t("items.location"),
+										itemType: (watch("itemType") as ItemType) || "Lost",
+									},
+								]
+							: []
+					}
+				/>
+				{errors.latitude?.message && (
+					<p className="text-[13px] text-red-600">{t(errors.latitude.message)}</p>
+				)}
 				<p className="text-[11px] text-stone-400">
 					{t("items.locationHelp") || "Haritaya tıklayarak konumu belirleyin."}
 				</p>
@@ -220,7 +205,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 			{/* Location Label */}
 			<div className="space-y-1.5">
 				<Label htmlFor="locationLabel" className="text-stone-700">
-					{t("items.location")}
+					{t("items.location")} <span className="text-red-500">*</span>
 				</Label>
 				<Input
 					id="locationLabel"
@@ -237,7 +222,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 			{/* Description */}
 			<div className="space-y-1.5">
 				<Label htmlFor="description" className="text-stone-700">
-					{t("items.description")}
+					{t("items.description")} <span className="text-red-500">*</span>
 				</Label>
 				<Textarea
 					id="description"

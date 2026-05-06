@@ -1,6 +1,7 @@
 export { AdminRoute } from "./AdminRoute";
 export type { MapMarkerData } from "./AppMap";
 export { AppMap } from "./AppMap";
+export { CategoryBadge } from "./CategoryBadge";
 export { ClaimStatusBadge } from "./ClaimStatusBadge";
 export { EmptyState } from "./EmptyState";
 export { FilterDrawer } from "./FilterDrawer";

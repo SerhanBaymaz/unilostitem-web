@@ -1,37 +1,38 @@
 import {
+	AlertCircle,
 	ArrowLeft,
-	Calendar,
-	CheckCircle2,
 	Clock,
+	History,
 	MessageSquare,
 	PackageSearch,
+	ShieldCheck,
+	User,
 	XCircle,
 } from "lucide-react";
-import { type FormEvent, useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { Button } from "@/components/ui/button";
-import {
-	Dialog,
-	DialogClose,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
 import { useAuthStore } from "@/features/auth/store/authStore";
-import {
-	useAdminReviewClaim,
-	useCancelClaim,
-	useClaim,
-	useRespondToClaim,
-} from "@/features/claims/hooks";
+import { useCancelClaim, useClaim, useExtendClaimDeadline } from "@/features/claims/hooks";
 import type { Claim } from "@/features/claims/types";
-import { ClaimStatusBadge, Timeline, type TimelineEntry } from "@/shared/components";
+import {
+	ClaimStatusBadge,
+	ItemDetailSkeleton,
+	Timeline,
+	type TimelineEntry,
+} from "@/shared/components";
+
+function formatDate(dateStr: string): string {
+	return new Date(dateStr).toLocaleDateString("tr-TR", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+		hour: "2-digit",
+		minute: "2-digit",
+	});
+}
 
 function deriveTimeline(claim: Claim): TimelineEntry[] {
 	const entries: TimelineEntry[] = [
@@ -56,7 +57,7 @@ function deriveTimeline(claim: Claim): TimelineEntry[] {
 		const isApproved = claim.status.startsWith("Approved");
 		entries.push({
 			date: claim.respondedAt,
-			actor: claim.ownerName || "Owner",
+			actor: claim.ownerName || "İlan Sahibi",
 			description:
 				claim.responseDescription || (isApproved ? "claims.ownerApproved" : "claims.ownerRejected"),
 			status: claim.status,
@@ -67,7 +68,7 @@ function deriveTimeline(claim: Claim): TimelineEntry[] {
 		const isApproved = claim.status === "ApprovedByAdmin";
 		entries.push({
 			date: claim.adminReviewedAt,
-			actor: "Admin",
+			actor: "Yönetici",
 			description:
 				claim.adminNote || (isApproved ? "claims.adminReviewed" : "claims.adminRejected"),
 			status: claim.status,
@@ -80,42 +81,27 @@ function deriveTimeline(claim: Claim): TimelineEntry[] {
 export default function ClaimDetailPage() {
 	const { t } = useTranslation();
 	const { id } = useParams<{ id: string }>();
+	const navigate = useNavigate();
 	const { user } = useAuthStore();
-	const [showCancelDialog, setShowCancelDialog] = useState(false);
-	const [showRespondDialog, setShowRespondDialog] = useState(false);
-	const [showReviewDialog, setShowReviewDialog] = useState(false);
-	const [responseText, setResponseText] = useState("");
-	const [isAdminApproved, setIsAdminApproved] = useState(false);
 
 	const { data: claim, isLoading, error } = useClaim(id ?? "");
 	const cancelMutation = useCancelClaim();
-	const respondMutation = useRespondToClaim(id ?? "");
-	const reviewMutation = useAdminReviewClaim(id ?? "");
+	const extendMutation = useExtendClaimDeadline(id ?? "");
 
-	const formatDate = (dateStr: string) =>
-		new Date(dateStr).toLocaleDateString("tr-TR", {
-			day: "numeric",
-			month: "long",
-			year: "numeric",
-			hour: "2-digit",
-			minute: "2-digit",
-		});
+	const timelineEntries = useMemo(() => (claim ? deriveTimeline(claim) : []), [claim]);
 
-	if (isLoading) {
-		return (
-			<div className="mx-auto max-w-2xl animate-pulse p-6 space-y-4">
-				<div className="h-6 w-48 rounded bg-stone-200" />
-				<div className="h-40 rounded-lg bg-stone-200" />
-			</div>
-		);
-	}
+	const isClaimant = user && claim && user.id === claim.claimantId;
+	const canCancel = isClaimant && claim?.status === "Pending";
+	const canExtend = isClaimant && claim?.status === "Pending" && claim.extensionCount < 2;
+
+	if (isLoading) return <ItemDetailSkeleton />;
 
 	if (error || !claim) {
 		return (
 			<div className="flex min-h-[60svh] flex-col items-center justify-center gap-4 px-4 text-center">
-				<PackageSearch className="h-16 w-16 text-stone-300" />
+				<AlertCircle className="h-16 w-16 text-stone-300" />
 				<p className="text-stone-500">{t("claims.claimNotFound")}</p>
-				<Button variant="outline" render={<Link to="/" />}>
+				<Button variant="outline" onClick={() => navigate(-1)}>
 					<ArrowLeft className="mr-2 h-4 w-4" />
 					{t("common.back")}
 				</Button>
@@ -123,314 +109,195 @@ export default function ClaimDetailPage() {
 		);
 	}
 
-	const timelineEntries = deriveTimeline(claim);
-	const isClaimant = user?.id === claim.claimantId;
-	const isOwner = user?.id === claim.ownerId;
-	const isAdmin = user?.role === "Admin";
-
-	const canCancel = isClaimant && claim.status === "Pending";
-	const canRespond = isOwner && claim.status === "Pending";
-	const canReview = isAdmin && claim.status === "Pending";
-
-	const handleCancel = () => {
-		cancelMutation.mutate(id ?? "");
-		setShowCancelDialog(false);
-	};
-
-	const handleRespond = (e: FormEvent) => {
-		e.preventDefault();
-		respondMutation.mutate({
-			isApproved: isAdminApproved,
-			responseDescription: responseText || undefined,
-		});
-		setShowRespondDialog(false);
-		setResponseText("");
-	};
-
-	const handleAdminReview = (e: FormEvent) => {
-		e.preventDefault();
-		reviewMutation.mutate({
-			isApproved: isAdminApproved,
-			adminNote: responseText || undefined,
-		});
-		setShowReviewDialog(false);
-		setResponseText("");
-	};
-
 	return (
-		<div className="mx-auto max-w-2xl p-4 md:p-6">
-			{/* Back Button */}
-			<Button
-				variant="ghost"
-				size="sm"
-				onClick={() => window.history.back()}
-				className="mb-4 -ml-2 text-stone-500"
-			>
-				<ArrowLeft className="mr-1 h-4 w-4" />
-				{t("common.back")}
-			</Button>
-
-			{/* Header */}
-			<div className="mb-6 flex items-start justify-between gap-3">
-				<div>
-					<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">
-						{t("claims.claimTitle")}
-					</h1>
+		<div className="mx-auto max-w-5xl p-4 md:p-6 lg:p-8">
+			{/* Header Navigation */}
+			<div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+				<Button
+					variant="ghost"
+					size="sm"
+					onClick={() => navigate(-1)}
+					className="-ml-2 w-fit text-stone-500 hover:text-stone-900"
+				>
+					<ArrowLeft className="mr-1.5 h-4 w-4" />
+					{t("common.back")}
+				</Button>
+				<div className="flex items-center gap-3">
+					<span className="text-[12px] font-bold uppercase tracking-widest text-stone-400">
+						TALEP DURUMU
+					</span>
 					<ClaimStatusBadge status={claim.status} />
 				</div>
 			</div>
 
-			{/* Item Preview */}
-			<div className="mb-6 rounded-lg border border-stone-100 bg-stone-50/50 p-4">
-				<p className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-400">
-					{t("claims.itemInfo")}
-				</p>
-				<Link to={`/items/${claim.lostItemId}`} className="group flex items-center gap-3">
-					<div className="h-14 w-14 shrink-0 overflow-hidden rounded-md bg-stone-200">
-						{claim.itemImageUrl ? (
-							<img
-								src={claim.itemImageUrl}
-								alt={claim.itemTitle}
-								className="h-full w-full object-cover"
-							/>
-						) : (
-							<div className="flex h-full w-full items-center justify-center">
-								<PackageSearch className="h-6 w-6 text-stone-400" />
+			<div className="grid gap-8 lg:grid-cols-12">
+				{/* Left Column: Claim Details */}
+				<div className="space-y-6 lg:col-span-7">
+					{/* Main Claim Card */}
+					<div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-warm-1 sm:p-8">
+						<div className="mb-6 flex items-center gap-4 border-b border-stone-100 pb-6">
+							<div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
+								<MessageSquare className="h-6 w-6" />
 							</div>
-						)}
-					</div>
-					<div className="min-w-0 flex-1">
-						<p className="truncate text-sm font-semibold text-stone-900 group-hover:text-amber-600">
-							{claim.itemTitle}
-						</p>
-					</div>
-					<span className="shrink-0 text-xs text-amber-600">{t("claims.goToItem")}</span>
-				</Link>
-			</div>
-
-			{/* Claim Info */}
-			<div className="mb-6 rounded-lg border border-stone-100 bg-stone-50/50 p-4">
-				<div className="grid gap-4">
-					<div className="grid grid-cols-2 gap-4">
-						<div>
-							<p className="text-xs font-medium text-stone-400">{t("claims.claimant")}</p>
-							<p className="text-sm font-semibold text-stone-900">{claim.claimantName}</p>
-						</div>
-						{claim.ownerName && (
 							<div>
-								<p className="text-xs font-medium text-stone-400">{t("claims.owner")}</p>
-								<p className="text-sm font-semibold text-stone-900">{claim.ownerName}</p>
-							</div>
-						)}
-					</div>
-					<div className="grid grid-cols-2 gap-4">
-						<div>
-							<p className="text-xs font-medium text-stone-400">{t("items.createdAt")}</p>
-							<div className="flex items-center gap-1.5 text-sm text-stone-600">
-								<Calendar className="h-3.5 w-3.5 text-stone-400" />
-								{formatDate(claim.createdAt)}
-							</div>
-						</div>
-						{claim.expiresAt && (
-							<div>
-								<p className="text-xs font-medium text-stone-400">
-									{t("common.expiresAt") || "Bitiş Tarihi"}
+								<h1 className="font-heading text-2xl font-bold text-stone-900">Talep Detayı</h1>
+								<p className="text-sm text-stone-400">
+									#{claim.id.slice(0, 8).toUpperCase()} • {formatDate(claim.createdAt)}
 								</p>
-								<div className="flex items-center gap-1.5 text-sm text-stone-600">
-									<Clock className="h-3.5 w-3.5 text-stone-400" />
-									{formatDate(claim.expiresAt)}
+							</div>
+						</div>
+
+						<div className="space-y-8">
+							{/* Claimant's Message */}
+							<div className="space-y-3">
+								<Label className="text-xs font-bold uppercase tracking-widest text-stone-400">
+									MESAJINIZ
+								</Label>
+								<div className="rounded-2xl bg-stone-50 p-5 border border-stone-100/50">
+									<p className="text-[15px] leading-relaxed text-stone-700 italic">
+										"{claim.description}"
+									</p>
 								</div>
 							</div>
-						)}
+
+							{/* Related Item Link */}
+							<div className="space-y-3">
+								<Label className="text-xs font-bold uppercase tracking-widest text-stone-400">
+									İLGİLİ İLAN
+								</Label>
+								<Link
+									to={`/items/${claim.lostItemId}`}
+									className="group flex items-center gap-4 rounded-2xl border border-stone-100 p-4 transition-all hover:bg-stone-50"
+								>
+									<div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-stone-100 text-stone-400 group-hover:bg-amber-100 group-hover:text-amber-600 transition-colors">
+										<PackageSearch className="h-6 w-6" />
+									</div>
+									<div className="min-w-0 flex-1">
+										<p className="truncate text-[15px] font-bold text-stone-900 group-hover:text-amber-600">
+											{claim.lostItemTitle}
+										</p>
+										<p className="text-xs text-stone-400">
+											İlan detaylarını görüntülemek için tıklayın
+										</p>
+									</div>
+								</Link>
+							</div>
+
+							{/* Response Section (if exists) */}
+							{(claim.ownerComment || claim.adminComment) && (
+								<div className="space-y-4 pt-4 border-t border-stone-100">
+									{claim.ownerComment && (
+										<div className="space-y-2">
+											<div className="flex items-center gap-2">
+												<User className="h-3.5 w-3.5 text-stone-400" />
+												<Label className="text-[11px] font-bold uppercase tracking-widest text-stone-400">
+													İLAN SAHİBİ YANITI
+												</Label>
+											</div>
+											<p className="text-[14px] text-stone-600 leading-relaxed pl-5 border-l-2 border-amber-200">
+												{claim.ownerComment}
+											</p>
+										</div>
+									)}
+									{claim.adminComment && (
+										<div className="space-y-2">
+											<div className="flex items-center gap-2">
+												<ShieldCheck className="h-3.5 w-3.5 text-stone-400" />
+												<Label className="text-[11px] font-bold uppercase tracking-widest text-stone-400">
+													YÖNETİCİ NOTU
+												</Label>
+											</div>
+											<p className="text-[14px] text-stone-600 leading-relaxed pl-5 border-l-2 border-blue-200">
+												{claim.adminComment}
+											</p>
+										</div>
+									)}
+								</div>
+							)}
+						</div>
 					</div>
-					<div>
-						<p className="text-xs font-medium text-stone-400">{t("claims.claimDescription")}</p>
-						<p className="mt-1 text-sm leading-relaxed text-stone-600">{claim.description}</p>
+
+					{/* Action Buttons */}
+					{isClaimant && (canCancel || canExtend) && (
+						<div className="flex flex-wrap gap-3">
+							{canExtend && (
+								<Button
+									variant="outline"
+									className="h-12 flex-1 rounded-xl font-semibold border-stone-200 hover:bg-stone-50"
+									onClick={() => extendMutation.mutate()}
+									disabled={extendMutation.isPending}
+								>
+									<Clock className="mr-2 h-4 w-4" />
+									Süreyi Uzat ({claim.extensionCount}/2)
+								</Button>
+							)}
+							{canCancel && (
+								<Button
+									variant="destructive"
+									className="h-12 flex-1 rounded-xl font-semibold shadow-lg shadow-red-500/10"
+									onClick={() => {
+										if (window.confirm(t("claims.cancelConfirm"))) {
+											cancelMutation.mutate(claim.id, {
+												onSuccess: () => navigate("/my-claims"),
+											});
+										}
+									}}
+									disabled={cancelMutation.isPending}
+								>
+									<XCircle className="mr-2 h-4 w-4" />
+									Talebi İptal Et
+								</Button>
+							)}
+						</div>
+					)}
+				</div>
+
+				{/* Right Column: Meta Info & Timeline */}
+				<div className="space-y-6 lg:col-span-5">
+					{/* Status Info Card */}
+					<div className="rounded-2xl border border-stone-200 bg-white shadow-warm-1 overflow-hidden">
+						<div className="border-b border-stone-100 px-6 py-4">
+							<h2 className="font-heading text-lg text-stone-900 flex items-center gap-2">
+								<History className="h-5 w-5 text-stone-400" />
+								{t("claims.timeline")}
+							</h2>
+						</div>
+						<div className="p-6">
+							<Timeline entries={timelineEntries} />
+						</div>
+						<div className="bg-stone-50/50 p-6 border-t border-stone-100 space-y-4">
+							<div className="flex justify-between items-center text-sm">
+								<span className="text-stone-400">Son Geçerlilik</span>
+								<span className="font-semibold text-stone-700">
+									{new Date(claim.expiresAt).toLocaleDateString("tr-TR", {
+										day: "numeric",
+										month: "long",
+										year: "numeric",
+									})}
+								</span>
+							</div>
+							<div className="flex justify-between items-center text-sm">
+								<span className="text-stone-400">Uzatma Hakkı</span>
+								<span className="font-semibold text-stone-700">{claim.extensionCount} / 2</span>
+							</div>
+						</div>
+					</div>
+
+					{/* Help Card */}
+					<div className="rounded-2xl bg-amber-50/50 border border-amber-100 p-6">
+						<div className="flex gap-3">
+							<AlertCircle className="h-5 w-5 text-amber-600 shrink-0" />
+							<div className="space-y-1">
+								<h4 className="text-sm font-bold text-amber-900">Bilgilendirme</h4>
+								<p className="text-[13px] text-amber-700 leading-relaxed">
+									Talebiniz ilan sahibi tarafından incelendikten sonra sistem üzerinden size
+									bildirim gönderilecektir. Bu süreçte ilan sahibi sizinle iletişime geçebilir.
+								</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-
-			<Separator className="my-6" />
-
-			{/* Timeline */}
-			<div className="mb-6">
-				<h2 className="mb-4 font-heading text-lg text-stone-900">{t("claims.timeline")}</h2>
-				<Timeline entries={timelineEntries} currentStatus={claim.status} />
-			</div>
-
-			{/* Actions */}
-			{(canCancel || canRespond || canReview) && (
-				<>
-					<Separator className="my-6" />
-					<div className="flex flex-wrap gap-2">
-						{canCancel && (
-							<Button
-								variant="outline"
-								className="text-red-600 hover:bg-red-50 hover:text-red-700"
-								onClick={() => setShowCancelDialog(true)}
-							>
-								<XCircle className="mr-2 h-4 w-4" />
-								{t("claims.cancel")}
-							</Button>
-						)}
-						{canRespond && (
-							<>
-								<Button
-									variant="outline"
-									className="text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
-									onClick={() => {
-										setIsAdminApproved(true);
-										setResponseText("");
-										setShowRespondDialog(true);
-									}}
-								>
-									<CheckCircle2 className="mr-2 h-4 w-4" />
-									{t("claims.approve")}
-								</Button>
-								<Button
-									variant="outline"
-									className="text-red-600 hover:bg-red-50 hover:text-red-700"
-									onClick={() => {
-										setIsAdminApproved(false);
-										setResponseText("");
-										setShowRespondDialog(true);
-									}}
-								>
-									<XCircle className="mr-2 h-4 w-4" />
-									{t("claims.reject")}
-								</Button>
-							</>
-						)}
-						{canReview && (
-							<Button
-								onClick={() => {
-									setIsAdminApproved(true);
-									setResponseText("");
-									setShowReviewDialog(true);
-								}}
-							>
-								<MessageSquare className="mr-2 h-4 w-4" />
-								{t("admin.reviewNote")}
-							</Button>
-						)}
-					</div>
-				</>
-			)}
-
-			{/* Cancel Dialog */}
-			<Dialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle>{t("claims.cancel")}</DialogTitle>
-						<DialogDescription>{t("claims.cancelConfirm")}</DialogDescription>
-					</DialogHeader>
-					<DialogFooter>
-						<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
-						<Button
-							variant="destructive"
-							onClick={handleCancel}
-							disabled={cancelMutation.isPending}
-						>
-							{t("claims.cancel")}
-						</Button>
-					</DialogFooter>
-				</DialogContent>
-			</Dialog>
-
-			{/* Respond Dialog */}
-			<Dialog open={showRespondDialog} onOpenChange={setShowRespondDialog}>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle>{isAdminApproved ? t("claims.approve") : t("claims.reject")}</DialogTitle>
-						<DialogDescription>{t("claims.responsePlaceholder")}</DialogDescription>
-					</DialogHeader>
-					<form
-						onSubmit={(e) => {
-							e.preventDefault();
-							handleRespond(e);
-						}}
-					>
-						<div className="space-y-1.5">
-							<Label htmlFor="respond-desc" className="text-stone-700">
-								{t("claims.responseDescription")}
-							</Label>
-							<Textarea
-								id="respond-desc"
-								value={responseText}
-								onChange={(e) => setResponseText(e.target.value)}
-								placeholder={t("claims.responsePlaceholder")}
-								rows={3}
-							/>
-						</div>
-						<DialogFooter className="mt-4">
-							<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
-							<Button
-								type="submit"
-								disabled={respondMutation.isPending}
-								variant={isAdminApproved ? "default" : "destructive"}
-							>
-								{isAdminApproved ? t("claims.approve") : t("claims.reject")}
-							</Button>
-						</DialogFooter>
-					</form>
-				</DialogContent>
-			</Dialog>
-
-			{/* Admin Review Dialog */}
-			<Dialog open={showReviewDialog} onOpenChange={setShowReviewDialog}>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle>{t("admin.reviewNote")}</DialogTitle>
-						<DialogDescription>{t("claims.responsePlaceholder")}</DialogDescription>
-					</DialogHeader>
-					<form onSubmit={handleAdminReview}>
-						<div className="space-y-4">
-							<div className="flex gap-2">
-								<Button
-									type="button"
-									variant={isAdminApproved ? "default" : "outline"}
-									size="sm"
-									onClick={() => setIsAdminApproved(true)}
-								>
-									<CheckCircle2 className="mr-1 h-4 w-4" />
-									{t("claims.approve")}
-								</Button>
-								<Button
-									type="button"
-									variant={!isAdminApproved ? "destructive" : "outline"}
-									size="sm"
-									onClick={() => setIsAdminApproved(false)}
-								>
-									<XCircle className="mr-1 h-4 w-4" />
-									{t("claims.reject")}
-								</Button>
-							</div>
-							<div className="space-y-1.5">
-								<Label htmlFor="admin-note" className="text-stone-700">
-									{t("claims.adminNote")}
-								</Label>
-								<Textarea
-									id="admin-note"
-									value={responseText}
-									onChange={(e) => setResponseText(e.target.value)}
-									placeholder={t("claims.adminNotePlaceholder")}
-									rows={3}
-								/>
-							</div>
-						</div>
-						<DialogFooter className="mt-4">
-							<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
-							<Button
-								type="submit"
-								disabled={reviewMutation.isPending}
-								variant={isAdminApproved ? "default" : "destructive"}
-							>
-								{isAdminApproved ? t("claims.approve") : t("claims.reject")}
-							</Button>
-						</DialogFooter>
-					</form>
-				</DialogContent>
-			</Dialog>
 		</div>
 	);
 }

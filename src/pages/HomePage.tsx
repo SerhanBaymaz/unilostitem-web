@@ -30,6 +30,7 @@ export default function HomePage() {
 		pageSize: PAGE_SIZE,
 		sortBy: "createdAt",
 		sortDescending: true,
+		status: "Active",
 	});
 
 	const [searchTerm, setSearchTerm] = useState("");
@@ -72,6 +73,7 @@ export default function HomePage() {
 			pageSize: PAGE_SIZE,
 			sortBy: "createdAt",
 			sortDescending: true,
+			status: "Active",
 		});
 		searchInputRef.current?.focus();
 	}, []);
@@ -94,7 +96,7 @@ export default function HomePage() {
 		[data?.items, navigate],
 	);
 
-	const hasFilters = params.itemType || params.category || params.status || searchTerm;
+	const hasFilters = params.itemType || params.category || params.status !== "Active" || searchTerm;
 
 	return (
 		<div className="flex flex-col md:h-[calc(100svh-60px)] md:flex-row">

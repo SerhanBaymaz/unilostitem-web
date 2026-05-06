@@ -1,4 +1,4 @@
-import { Globe, LayoutDashboard, LogIn, LogOut, Menu, Plus, User } from "lucide-react";
+import { LayoutDashboard, LogIn, LogOut, Menu, Plus, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -89,12 +89,44 @@ export function Header() {
 
 					{/* Locale Toggle */}
 					<DropdownMenu>
-						<DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" />}>
-							<Globe className="h-4 w-4" />
+						<DropdownMenuTrigger
+							render={
+								<Button
+									variant="ghost"
+									size="icon-sm"
+									className="flex items-center justify-center h-8 w-10"
+								/>
+							}
+						>
+							<img
+								src={`https://flagcdn.com/w40/${i18n.language === "tr" ? "tr" : "us"}.png`}
+								alt={i18n.language}
+								className="h-3 w-auto rounded-[1px] shadow-sm"
+							/>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
-							<DropdownMenuItem onClick={() => handleLocaleChange("tr")}>Türkçe</DropdownMenuItem>
-							<DropdownMenuItem onClick={() => handleLocaleChange("en")}>English</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => handleLocaleChange("tr")}
+								className="gap-2 cursor-pointer"
+							>
+								<img
+									src="https://flagcdn.com/w40/tr.png"
+									alt="TR"
+									className="h-3 w-auto rounded-[1px]"
+								/>
+								<span className="text-[13px]">Türkçe</span>
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => handleLocaleChange("en")}
+								className="gap-2 cursor-pointer"
+							>
+								<img
+									src="https://flagcdn.com/w40/us.png"
+									alt="US"
+									className="h-3 w-auto rounded-[1px]"
+								/>
+								<span className="text-[13px]">English</span>
+							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
 
@@ -148,12 +180,44 @@ export function Header() {
 				{/* Mobile Controls */}
 				<div className="flex items-center gap-1 md:hidden">
 					<DropdownMenu>
-						<DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" />}>
-							<Globe className="h-5 w-5" />
+						<DropdownMenuTrigger
+							render={
+								<Button
+									variant="ghost"
+									size="icon-sm"
+									className="flex items-center justify-center h-9 w-10"
+								/>
+							}
+						>
+							<img
+								src={`https://flagcdn.com/w40/${i18n.language === "tr" ? "tr" : "us"}.png`}
+								alt={i18n.language}
+								className="h-3.5 w-auto rounded-[1px] shadow-sm"
+							/>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
-							<DropdownMenuItem onClick={() => handleLocaleChange("tr")}>Türkçe</DropdownMenuItem>
-							<DropdownMenuItem onClick={() => handleLocaleChange("en")}>English</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => handleLocaleChange("tr")}
+								className="gap-2 cursor-pointer"
+							>
+								<img
+									src="https://flagcdn.com/w40/tr.png"
+									alt="TR"
+									className="h-3.5 w-auto rounded-[1px]"
+								/>
+								<span>Türkçe</span>
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => handleLocaleChange("en")}
+								className="gap-2 cursor-pointer"
+							>
+								<img
+									src="https://flagcdn.com/w40/us.png"
+									alt="US"
+									className="h-3.5 w-auto rounded-[1px]"
+								/>
+								<span>English</span>
+							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
 

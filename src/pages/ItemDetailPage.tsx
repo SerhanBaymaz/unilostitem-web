@@ -38,6 +38,7 @@ import { useDeleteItem, useItem } from "@/features/items/hooks";
 import type { MapMarkerData } from "@/shared/components";
 import {
 	AppMap,
+	CategoryBadge,
 	ClaimStatusBadge,
 	ItemDetailSkeleton,
 	ItemTypeBadge,
@@ -189,226 +190,305 @@ export default function ItemDetailPage() {
 	}
 
 	return (
-		<div className="mx-auto max-w-screen-xl p-4 md:p-6">
-			{/* Back Button */}
-			<Button
-				variant="ghost"
-				size="sm"
-				onClick={() => navigate(-1)}
-				className="mb-4 -ml-2 text-stone-500"
-			>
-				<ArrowLeft className="mr-1 h-4 w-4" />
-				{t("common.back")}
-			</Button>
-
-			{/* Main Content Grid */}
-			<div className="grid gap-6 md:grid-cols-2">
-				{/* Image */}
-				<div className="aspect-square w-full overflow-hidden rounded-lg bg-stone-100">
-					{item.imageUrl ? (
-						<img src={item.imageUrl} alt={item.title} className="h-full w-full object-cover" />
-					) : (
-						<div className="flex h-full w-full items-center justify-center">
-							<PackageSearch className="h-20 w-20 text-stone-300" />
-						</div>
-					)}
-				</div>
-
-				{/* Info Panel */}
-				<div className="flex flex-col">
-					{/* Title + Badge */}
-					<div className="mb-4 flex items-start justify-between gap-3">
-						<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">{item.title}</h1>
-						<ItemTypeBadge type={item.itemType} />
-					</div>
-
-					{/* Category Badge */}
-					<span className="mb-4 inline-block w-fit rounded-sm bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600">
-						{t(`categories.${item.category}`)}
-					</span>
-
-					{/* Description */}
-					{item.description && (
-						<p className="mb-6 text-[15px] leading-relaxed text-stone-600">{item.description}</p>
-					)}
-
-					{/* Meta Info */}
-					<div className="mb-6 space-y-3 rounded-lg border border-stone-100 bg-stone-50/50 p-4">
-						<div className="flex items-center gap-3 text-sm text-stone-600">
-							<Calendar className="h-4 w-4 shrink-0 text-stone-400" />
-							<span>
-								{t("items.incidentDate")}: {formatDate(item.incidentDate)}
-							</span>
-						</div>
-						{item.locationLabel && (
-							<div className="flex items-center gap-3 text-sm text-stone-600">
-								<MapPin className="h-4 w-4 shrink-0 text-stone-400" />
-								<span>{item.locationLabel}</span>
-							</div>
-						)}
-						<div className="flex items-center gap-3 text-sm text-stone-600">
-							<User className="h-4 w-4 shrink-0 text-stone-400" />
-							<span>
-								{t("items.reportedBy")} {item.ownerName}
-							</span>
-						</div>
-						{item.contactInfo && (
-							<div className="flex items-center gap-3 text-sm text-stone-600">
-								<MessageSquare className="h-4 w-4 shrink-0 text-stone-400" />
-								<span>{item.contactInfo}</span>
-							</div>
-						)}
-						{item.claimCount !== undefined && (
-							<div className="flex items-center gap-3 text-sm text-stone-600">
-								<Clock className="h-4 w-4 shrink-0 text-stone-400" />
-								<span>
-									{item.claimCount} {t("claims.title")}
-								</span>
-							</div>
-						)}
-					</div>
-
-					{/* Actions */}
-					<div className="mt-auto flex flex-col gap-2">
-						{isOwner || isAdmin ? (
-							<div className="flex gap-2">
-								{isOwner && (
-									<Button
-										variant="outline"
-										className="flex-1"
-										render={<Link to={`/items/${item.id}/edit`} />}
-									>
-										<Pencil className="mr-2 h-4 w-4" />
-										{t("common.edit")}
-									</Button>
-								)}
-								<Button
-									variant="destructive"
-									className="flex-1"
-									onClick={() => setShowDeleteDialog(true)}
-								>
-									<Trash2 className="mr-2 h-4 w-4" />
-									{t("common.delete")}
-								</Button>
-							</div>
-						) : !isAuthenticated ? (
-							<Button size="lg" onClick={() => navigate("/login")}>
-								{t("nav.login")} & {t("items.claimItem")}
-							</Button>
-						) : (
-							<Button
-								className="w-full"
-								size="lg"
-								onClick={() => setShowClaimDialog(true)}
-								disabled={item.status !== "Active"}
-							>
-								{item.status === "Active"
-									? t("items.claimItem")
-									: t(`items.${item.status.toLowerCase()}`)}
-							</Button>
-						)}
-					</div>
+		<div className="mx-auto max-w-screen-xl p-4 md:p-6 lg:p-8">
+			{/* Header Navigation */}
+			<div className="mb-6 flex items-center justify-between">
+				<Button
+					variant="ghost"
+					size="sm"
+					onClick={() => navigate(-1)}
+					className="-ml-2 text-stone-500 hover:text-stone-900"
+				>
+					<ArrowLeft className="mr-1.5 h-4 w-4" />
+					{t("common.back")}
+				</Button>
+				<div className="flex items-center gap-2">
+					<CategoryBadge category={item.category} className="px-4 py-1.5 text-[11px]" />
+					<ItemTypeBadge type={item.itemType} />
 				</div>
 			</div>
 
-			<div className="grid gap-6 lg:grid-cols-2 mt-8">
-				{/* Map Preview */}
-				<div>
-					<h2 className="mb-3 font-heading text-lg text-stone-900">{t("items.locationInfo")}</h2>
-					{mapMarker ? (
-						<AppMap
-							center={[mapMarker.latitude, mapMarker.longitude]}
-							zoom={15}
-							markers={[mapMarker]}
-							className="h-64 w-full rounded-lg md:h-80"
-						/>
-					) : (
-						<div className="flex h-48 items-center justify-center rounded-lg bg-stone-100 text-stone-400">
-							<MapPin className="mr-2 h-5 w-5" />
-							{t("items.noLocation")}
+			{/* Main Grid */}
+			<div className="grid gap-8 lg:grid-cols-12">
+				{/* Left Column: Image & Map */}
+				<div className="space-y-6 lg:col-span-7">
+					{/* Image Card */}
+					<div className="group relative aspect-video w-full overflow-hidden rounded-2xl bg-stone-100 border border-stone-200 shadow-warm-1 transition-all duration-500 hover:shadow-warm-2">
+						{item.imageUrl ? (
+							<img
+								src={item.imageUrl}
+								alt={item.title}
+								className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+							/>
+						) : (
+							<div className="flex h-full w-full items-center justify-center">
+								<PackageSearch className="h-24 w-24 text-stone-200" />
+							</div>
+						)}
+						<div className="absolute bottom-4 left-4">
+							<span className="rounded-lg bg-black/40 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md">
+								{t(`items.${item.status.toLowerCase()}`)}
+							</span>
 						</div>
-					)}
+					</div>
+
+					{/* Map Card */}
+					<div className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-warm-1">
+						<div className="border-b border-stone-100 px-6 py-4">
+							<h2 className="font-heading text-lg text-stone-900 flex items-center gap-2">
+								<MapPin className="h-5 w-5 text-amber-500" />
+								{t("items.locationInfo")}
+							</h2>
+						</div>
+						<div className="h-[300px] w-full">
+							{mapMarker ? (
+								<AppMap
+									center={[mapMarker.latitude, mapMarker.longitude]}
+									zoom={15}
+									markers={[mapMarker]}
+									className="h-full w-full"
+								/>
+							) : (
+								<div className="flex h-full w-full flex-col items-center justify-center bg-stone-50 text-stone-400">
+									<MapPin className="mb-2 h-8 w-8 text-stone-200" />
+									{t("items.noLocation")}
+								</div>
+							)}
+						</div>
+					</div>
 				</div>
 
-				{/* Timeline & Claims */}
-				<div className="space-y-6">
-					<div>
-						<h2 className="mb-3 font-heading text-lg text-stone-900">{t("claims.timeline")}</h2>
-						<div className="rounded-lg border border-stone-100 bg-stone-50/50 p-6">
+				{/* Right Column: Info & Actions */}
+				<div className="flex flex-col gap-6 lg:col-span-5">
+					<div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-warm-1 sm:p-8">
+						<h1 className="mb-4 font-heading text-3xl font-bold leading-tight tracking-tight text-stone-900 md:text-4xl">
+							{item.title}
+						</h1>
+
+						<div className="mb-8 space-y-6">
+							{/* Description Section */}
+							{item.description && (
+								<div className="space-y-2">
+									<Label className="text-xs font-bold uppercase tracking-widest text-stone-400">
+										{t("items.description")}
+									</Label>
+									<p className="text-[15px] leading-relaxed text-stone-600">{item.description}</p>
+								</div>
+							)}
+
+							{/* Vertical Detail List */}
+							<div className="flex flex-col gap-3">
+								<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50">
+									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm">
+										<User className="h-5 w-5 text-stone-400" />
+									</div>
+									<div className="min-w-0 flex-1">
+										<p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
+											{t("items.reportedBy")}
+										</p>
+										<p className="text-[15px] font-semibold text-stone-700">{item.ownerName}</p>
+									</div>
+								</div>
+
+								<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50">
+									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm">
+										<Calendar className="h-5 w-5 text-stone-400" />
+									</div>
+									<div className="min-w-0 flex-1">
+										<p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
+											{t("items.incidentDate")}
+										</p>
+										<p className="text-[15px] font-semibold text-stone-700">
+											{formatDate(item.incidentDate)}
+										</p>
+									</div>
+								</div>
+
+								<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50">
+									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm">
+										<MessageSquare className="h-5 w-5 text-stone-400" />
+									</div>
+									<div className="min-w-0 flex-1">
+										<p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
+											{t("claims.title")}
+										</p>
+										<p className="text-[15px] font-semibold text-stone-700">
+											{item.claimCount || 0} Talep
+										</p>
+									</div>
+								</div>
+
+								{item.locationLabel && (
+									<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50">
+										<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm">
+											<MapPin className="h-5 w-5 text-stone-400" />
+										</div>
+										<div className="min-w-0 flex-1">
+											<p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
+												{t("items.location")}
+											</p>
+											<p className="text-[15px] font-semibold text-stone-700 leading-snug">
+												{item.locationLabel}
+											</p>
+										</div>
+									</div>
+								)}
+
+								{item.contactInfo && (
+									<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50">
+										<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm">
+											<Clock className="h-5 w-5 text-stone-400" />
+										</div>
+										<div className="min-w-0 flex-1">
+											<p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
+												İletişim
+											</p>
+											<p className="text-[15px] font-semibold text-stone-700">{item.contactInfo}</p>
+										</div>
+									</div>
+								)}
+							</div>
+						</div>
+
+						{/* Primary Actions */}
+						<div className="space-y-3">
+							{isOwner || isAdmin ? (
+								<div className="flex gap-3">
+									{isOwner && (
+										<Button
+											variant="outline"
+											className="h-12 flex-1 rounded-xl font-semibold border-stone-200"
+											render={<Link to={`/items/${item.id}/edit`} />}
+										>
+											<Pencil className="mr-2 h-4 w-4" />
+											{t("common.edit")}
+										</Button>
+									)}
+									<Button
+										variant="destructive"
+										className="h-12 flex-1 rounded-xl font-semibold"
+										onClick={() => setShowDeleteDialog(true)}
+									>
+										<Trash2 className="mr-2 h-4 w-4" />
+										{t("common.delete")}
+									</Button>
+								</div>
+							) : !isAuthenticated ? (
+								<Button
+									size="lg"
+									className="h-14 w-full rounded-xl text-md font-bold shadow-lg shadow-amber-500/20"
+									onClick={() => navigate("/login")}
+								>
+									{t("nav.login")} & {t("items.claimItem")}
+								</Button>
+							) : (
+								<Button
+									className="h-14 w-full rounded-xl text-md font-bold shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.01] active:scale-[0.99]"
+									size="lg"
+									onClick={() => setShowClaimDialog(true)}
+									disabled={item.status !== "Active"}
+								>
+									{item.status === "Active"
+										? t("items.claimItem")
+										: t(`items.${item.status.toLowerCase()}`)}
+								</Button>
+							)}
+						</div>
+					</div>
+
+					{/* Timeline & Claims Card */}
+					<div className="rounded-2xl border border-stone-200 bg-white shadow-warm-1 overflow-hidden">
+						<div className="border-b border-stone-100 bg-stone-50/50 px-6 py-4 flex items-center justify-between">
+							<h2 className="font-heading text-lg text-stone-900 flex items-center gap-2">
+								<Clock className="h-5 w-5 text-stone-400" />
+								{t("claims.timeline")}
+							</h2>
+						</div>
+						<div className="p-6">
 							<Timeline entries={timelineEntries} />
 						</div>
-					</div>
 
-					{(isAdmin || isOwner) && claimsData?.claims && claimsData.claims.length > 0 && (
-						<div>
-							<h2 className="mb-3 font-heading text-lg text-stone-900">
-								{isAdmin ? t("admin.claims") : t("claims.title")}
-							</h2>
-							<div className="space-y-3">
-								{claimsData.claims.map((claim) => (
-									<div
-										key={claim.id}
-										className="flex flex-col gap-3 rounded-lg border border-stone-200 bg-white p-4 shadow-sm"
-									>
-										<div className="flex items-center justify-between">
-											<div>
-												<p className="text-sm font-semibold text-stone-900">{claim.claimantName}</p>
-												<p className="text-xs text-stone-400">{formatDate(claim.createdAt)}</p>
+						{(isAdmin || isOwner) && claimsData?.claims && claimsData.claims.length > 0 && (
+							<div className="border-t border-stone-100 p-6 space-y-4">
+								<h3 className="font-heading text-md text-stone-900 font-bold uppercase tracking-tight">
+									{isAdmin ? t("admin.claims") : "Gelen Talepler"}
+								</h3>
+								<div className="space-y-4">
+									{claimsData.claims.map((claim) => (
+										<div
+											key={claim.id}
+											className="flex flex-col gap-3 rounded-xl border border-stone-100 bg-stone-50/50 p-4 transition-colors hover:bg-stone-50"
+										>
+											<div className="flex items-start justify-between">
+												<div className="flex items-center gap-2">
+													<div className="h-8 w-8 rounded-full bg-white border border-stone-200 flex items-center justify-center shadow-sm">
+														<User className="h-4 w-4 text-stone-400" />
+													</div>
+													<div>
+														<p className="text-sm font-bold text-stone-900">{claim.claimantName}</p>
+														<p className="text-[11px] text-stone-400">
+															{formatDate(claim.createdAt)}
+														</p>
+													</div>
+												</div>
+												<ClaimStatusBadge status={claim.status} />
 											</div>
-											<ClaimStatusBadge status={claim.status} />
+											<p className="text-sm leading-relaxed text-stone-600">{claim.description}</p>
+											{claim.status === "Pending" && (
+												<div className="flex gap-2 pt-1">
+													<Button
+														variant="outline"
+														size="sm"
+														className="h-8 flex-1 rounded-lg text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
+														onClick={() => {
+															setSelectedClaimId(claim.id);
+															setIsApprovedAction(true);
+															if (isAdmin) setShowReviewDialog(true);
+															else setShowRespondDialog(true);
+														}}
+													>
+														<CheckCircle2 className="mr-1.5 h-3.5 w-3.5" />
+														{t("claims.approve")}
+													</Button>
+													<Button
+														variant="outline"
+														size="sm"
+														className="h-8 flex-1 rounded-lg text-red-600 hover:bg-red-50 hover:text-red-700"
+														onClick={() => {
+															setSelectedClaimId(claim.id);
+															setIsApprovedAction(false);
+															if (isAdmin) setShowReviewDialog(true);
+															else setShowRespondDialog(true);
+														}}
+													>
+														<XCircle className="mr-1.5 h-4 w-4" />
+														{t("claims.reject")}
+													</Button>
+												</div>
+											)}
 										</div>
-										<p className="text-sm text-stone-600">{claim.description}</p>
-										{claim.status === "Pending" && (
-											<div className="flex gap-2 pt-2">
-												<Button
-													variant="outline"
-													size="sm"
-													className="flex-1 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
-													onClick={() => {
-														setSelectedClaimId(claim.id);
-														setIsApprovedAction(true);
-														if (isAdmin) setShowReviewDialog(true);
-														else setShowRespondDialog(true);
-													}}
-												>
-													<CheckCircle2 className="mr-1.5 h-4 w-4" />
-													{t("claims.approve")}
-												</Button>
-												<Button
-													variant="outline"
-													size="sm"
-													className="flex-1 text-red-600 hover:bg-red-50 hover:text-red-700"
-													onClick={() => {
-														setSelectedClaimId(claim.id);
-														setIsApprovedAction(false);
-														if (isAdmin) setShowReviewDialog(true);
-														else setShowRespondDialog(true);
-													}}
-												>
-													<XCircle className="mr-1.5 h-4 w-4" />
-													{t("claims.reject")}
-												</Button>
-											</div>
-										)}
-									</div>
-								))}
+									))}
+								</div>
 							</div>
-						</div>
-					)}
+						)}
+					</div>
 				</div>
 			</div>
 
-			{/* Delete Confirmation Dialog */}
+			{/* Dialogs remain functional but styled consistently */}
 			<Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-				<DialogContent>
+				<DialogContent className="rounded-2xl">
 					<DialogHeader>
 						<DialogTitle>{t("items.deleteItem")}</DialogTitle>
 						<DialogDescription>{t("items.deleteConfirm")}</DialogDescription>
 					</DialogHeader>
-					<DialogFooter>
-						<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
+					<DialogFooter className="gap-2">
+						<DialogClose render={<Button variant="outline" className="rounded-xl" />}>
+							{t("common.cancel")}
+						</DialogClose>
 						<Button
 							variant="destructive"
+							className="rounded-xl"
 							onClick={handleDelete}
 							disabled={deleteMutation.isPending}
 						>
@@ -418,9 +498,8 @@ export default function ItemDetailPage() {
 				</DialogContent>
 			</Dialog>
 
-			{/* Claim Dialog (For Users) */}
 			<Dialog open={showClaimDialog} onOpenChange={setShowClaimDialog}>
-				<DialogContent className="max-w-md">
+				<DialogContent className="max-w-md rounded-2xl">
 					<DialogHeader>
 						<DialogTitle>{t("claims.createClaim")}</DialogTitle>
 						<DialogDescription>{t("claims.descriptionPlaceholder")}</DialogDescription>
@@ -429,16 +508,16 @@ export default function ItemDetailPage() {
 				</DialogContent>
 			</Dialog>
 
-			{/* Admin Review Dialog */}
+			{/* Review/Respond dialogs also benefit from consistency */}
 			<Dialog open={showReviewDialog} onOpenChange={setShowReviewDialog}>
-				<DialogContent>
+				<DialogContent className="rounded-2xl">
 					<DialogHeader>
 						<DialogTitle>{isApprovedAction ? t("claims.approve") : t("claims.reject")}</DialogTitle>
 						<DialogDescription>{t("admin.reviewDescription")}</DialogDescription>
 					</DialogHeader>
-					<form onSubmit={handleAdminReview}>
+					<form onSubmit={handleAdminReview} className="space-y-4">
 						<div className="space-y-1.5">
-							<Label htmlFor="admin-note" className="text-stone-700">
+							<Label htmlFor="admin-note" className="text-stone-700 font-semibold">
 								{t("claims.adminNote")}
 							</Label>
 							<Textarea
@@ -447,13 +526,17 @@ export default function ItemDetailPage() {
 								onChange={(e) => setComment(e.target.value)}
 								placeholder={t("claims.adminNotePlaceholder")}
 								rows={3}
+								className="rounded-xl border-stone-200 bg-stone-50"
 							/>
 						</div>
-						<DialogFooter className="mt-4">
-							<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
+						<DialogFooter className="gap-2">
+							<DialogClose render={<Button variant="outline" className="rounded-xl" />}>
+								{t("common.cancel")}
+							</DialogClose>
 							<Button
 								type="submit"
 								disabled={reviewMutation.isPending}
+								className="rounded-xl"
 								variant={isApprovedAction ? "default" : "destructive"}
 							>
 								{isApprovedAction ? t("claims.approve") : t("claims.reject")}
@@ -463,16 +546,15 @@ export default function ItemDetailPage() {
 				</DialogContent>
 			</Dialog>
 
-			{/* Owner Respond Dialog */}
 			<Dialog open={showRespondDialog} onOpenChange={setShowRespondDialog}>
-				<DialogContent>
+				<DialogContent className="rounded-2xl">
 					<DialogHeader>
 						<DialogTitle>{isApprovedAction ? t("claims.approve") : t("claims.reject")}</DialogTitle>
 						<DialogDescription>{t("claims.responsePlaceholder")}</DialogDescription>
 					</DialogHeader>
-					<form onSubmit={handleOwnerRespond}>
+					<form onSubmit={handleOwnerRespond} className="space-y-4">
 						<div className="space-y-1.5">
-							<Label htmlFor="owner-comment" className="text-stone-700">
+							<Label htmlFor="owner-comment" className="text-stone-700 font-semibold">
 								{t("claims.responseDescription")}
 							</Label>
 							<Textarea
@@ -481,13 +563,17 @@ export default function ItemDetailPage() {
 								onChange={(e) => setComment(e.target.value)}
 								placeholder={t("claims.responsePlaceholder")}
 								rows={3}
+								className="rounded-xl border-stone-200 bg-stone-50"
 							/>
 						</div>
-						<DialogFooter className="mt-4">
-							<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
+						<DialogFooter className="gap-2">
+							<DialogClose render={<Button variant="outline" className="rounded-xl" />}>
+								{t("common.cancel")}
+							</DialogClose>
 							<Button
 								type="submit"
 								disabled={respondMutation.isPending}
+								className="rounded-xl"
 								variant={isApprovedAction ? "default" : "destructive"}
 							>
 								{isApprovedAction ? t("claims.approve") : t("claims.reject")}
