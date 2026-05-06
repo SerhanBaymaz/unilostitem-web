@@ -101,20 +101,19 @@ export const itemsApi = {
 		return mapItem(res.data.data);
 	},
 
-	createItem: async (data: ItemCreateRequest): Promise<Item> => {
-		const res = await apiClient.post<StandardApiResponse<ApiItem>>(BASE, data);
+	createItem: async (data: ItemCreateRequest): Promise<string> => {
+		const res = await apiClient.post<StandardApiResponse<string>>(BASE, data);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to create item");
 		}
-		return mapItem(res.data.data);
+		return res.data.data;
 	},
 
-	updateItem: async (id: string, data: ItemUpdateRequest): Promise<Item> => {
-		const res = await apiClient.put<StandardApiResponse<ApiItem>>(`${BASE}/${id}`, data);
-		if (!res.data.success || !res.data.data) {
+	updateItem: async (id: string, data: ItemUpdateRequest): Promise<void> => {
+		const res = await apiClient.put<StandardApiResponse<any>>(`${BASE}/${id}`, data);
+		if (!res.data.success) {
 			throw new Error(res.data.message ?? "Failed to update item");
 		}
-		return mapItem(res.data.data);
 	},
 
 	getMyItems: async (params?: ItemListParams): Promise<ItemListResponse> => {

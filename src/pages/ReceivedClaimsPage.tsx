@@ -90,7 +90,7 @@ function ItemClaimsGroup({ item }: { item: Item }) {
 						{item.title}
 					</h2>
 					<div className="mt-1 flex items-center gap-3 text-sm text-stone-500">
-						<span>{item.category}</span>
+						<span>{t(`categories.${item.category}`)}</span>
 						<span className="h-1 w-1 rounded-full bg-stone-300" />
 						<span>{formatDate(item.createdAt)}</span>
 					</div>

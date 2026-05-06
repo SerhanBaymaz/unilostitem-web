@@ -224,7 +224,7 @@ export default function ItemDetailPage() {
 
 					{/* Category Badge */}
 					<span className="mb-4 inline-block w-fit rounded-sm bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600">
-						{item.category}
+						{t(`categories.${item.category}`)}
 					</span>
 
 					{/* Description */}

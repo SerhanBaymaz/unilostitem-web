@@ -1,4 +1,5 @@
 import { Calendar, MapPin, PackageSearch } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { ItemTypeBadge } from "@/shared/components";
 import type { Item } from "../types";
@@ -16,6 +17,8 @@ function formatDate(dateStr: string): string {
 }
 
 export function ItemCard({ item }: ItemCardProps) {
+	const { t } = useTranslation();
+
 	return (
 		<Link
 			to={`/items/${item.id}`}
@@ -62,7 +65,7 @@ export function ItemCard({ item }: ItemCardProps) {
 						{formatDate(item.incidentDate)}
 					</span>
 					<span className="rounded-sm bg-stone-100 px-1.5 py-0.5 text-[11px] font-medium text-stone-500">
-						{item.category}
+						{t(`categories.${item.category}`)}
 					</span>
 				</div>
 			</div>

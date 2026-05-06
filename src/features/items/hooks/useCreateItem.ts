@@ -11,10 +11,10 @@ export function useCreateItem() {
 
 	return useMutation({
 		mutationFn: itemsApi.createItem,
-		onSuccess: (data) => {
+		onSuccess: (id) => {
 			queryClient.invalidateQueries({ queryKey: ["items"] });
 			toast.success(`${t("items.addItem")} — ${t("common.save")}`);
-			navigate(`/items/${data.id}`);
+			navigate(`/items/${id}`);
 		},
 		onError: () => {
 			toast.error(t("common.error"));

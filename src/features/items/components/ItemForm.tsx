@@ -13,6 +13,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { AppMap } from "@/shared/components";
 import type { ItemType } from "@/shared/types";
 import { ITEM_CATEGORIES } from "@/shared/types";
 import type { Item, ItemCreateRequest } from "../types";
@@ -26,6 +27,8 @@ const itemSchema = z.object({
 	locationLabel: z.string().min(1, "auth.required"),
 	imageUrl: z.string().optional(),
 	contactInfo: z.string().optional(),
+	latitude: z.number().optional(),
+	longitude: z.number().optional(),
 });
 
 type ItemFormData = z.infer<typeof itemSchema>;
@@ -43,6 +46,8 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 		register,
 		handleSubmit,
 		control,
+		setValue,
+		watch,
 		formState: { errors },
 	} = useForm<ItemFormData>({
 		resolver: zodResolver(itemSchema),
@@ -56,6 +61,8 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 					imageUrl: item.imageUrl ?? "",
 					contactInfo: item.contactInfo ?? "",
 					locationLabel: item.locationLabel ?? "",
+					latitude: item.latitude,
+					longitude: item.longitude,
 				}
 			: {
 					title: "",
@@ -66,12 +73,22 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 					imageUrl: "",
 					contactInfo: "",
 					locationLabel: "",
+					latitude: 41.0082, // Default to Istanbul coordinates if none
+					longitude: 28.9784,
 				},
 	});
 
+	const lat = watch("latitude");
+	const lng = watch("longitude");
+
 	const handleFormSubmit = (data: ItemFormData) => {
+		// Convert "YYYY-MM-DD" to UTC ISO string to avoid PostgreSQL Kind=Unspecified error
+		const dateObj = new Date(data.incidentDate);
+		const incidentDateIso = dateObj.toISOString();
+
 		const payload: ItemCreateRequest = {
 			...data,
+			incidentDate: incidentDateIso,
 			imageUrl: data.imageUrl || undefined,
 			contactInfo: data.contactInfo || undefined,
 			itemType: data.itemType as ItemType,
@@ -167,6 +184,37 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 				{errors.incidentDate?.message && (
 					<p className="text-[13px] text-red-600">{t(errors.incidentDate.message)}</p>
 				)}
+			</div>
+
+			{/* Map Selection */}
+			<div className="space-y-1.5">
+				<Label className="text-stone-700">{t("items.pickOnMap")}</Label>
+				<div className="h-64 w-full overflow-hidden rounded-lg border border-stone-200">
+					<AppMap
+						center={lat && lng ? [lat, lng] : undefined}
+						zoom={13}
+						onMapClick={(e: any) => {
+							setValue("latitude", e.latlng.lat);
+							setValue("longitude", e.latlng.lng);
+						}}
+						markers={
+							lat && lng
+								? [
+										{
+											id: "preview",
+											latitude: lat,
+											longitude: lng,
+											title: t("items.location"),
+											itemType: (watch("itemType") as ItemType) || "Lost",
+										},
+									]
+								: []
+						}
+					/>
+				</div>
+				<p className="text-[11px] text-stone-400">
+					{t("items.locationHelp") || "Haritaya tıklayarak konumu belirleyin."}
+				</p>
 			</div>
 
 			{/* Location Label */}

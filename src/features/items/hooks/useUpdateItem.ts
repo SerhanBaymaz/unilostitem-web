@@ -11,11 +11,11 @@ export function useUpdateItem(id: string) {
 
 	return useMutation({
 		mutationFn: (data: Parameters<typeof itemsApi.updateItem>[1]) => itemsApi.updateItem(id, data),
-		onSuccess: (data) => {
+		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["items"] });
-			queryClient.setQueryData(["items", id], data);
+			queryClient.invalidateQueries({ queryKey: ["items", id] });
 			toast.success(t("common.save"));
-			navigate(`/items/${data.id}`);
+			navigate(`/items/${id}`);
 		},
 		onError: () => {
 			toast.error(t("common.error"));
