@@ -130,4 +130,12 @@ export const claimsApi = {
 		}
 		return mapClaim(res.data.data);
 	},
+
+	extendClaimDeadline: async (id: string): Promise<Claim> => {
+		const res = await apiClient.put<StandardApiResponse<any>>(`${BASE}/${id}/extend`);
+		if (!res.data.success || !res.data.data) {
+			throw new Error(res.data.message ?? "Failed to extend claim deadline");
+		}
+		return mapClaim(res.data.data);
+	},
 };

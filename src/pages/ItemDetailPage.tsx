@@ -7,7 +7,6 @@ import {
 	MessageSquare,
 	PackageSearch,
 	Pencil,
-	Plus,
 	Trash2,
 	User,
 	XCircle,
@@ -26,11 +25,15 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuthStore } from "@/features/auth/store/authStore";
 import { ClaimForm } from "@/features/claims/components";
-import { useAdminReviewClaim, useClaimsByItem, useCreateClaim, useRespondToClaim } from "@/features/claims/hooks";
+import {
+	useAdminReviewClaim,
+	useClaimsByItem,
+	useCreateClaim,
+	useRespondToClaim,
+} from "@/features/claims/hooks";
 import { useDeleteItem, useItem } from "@/features/items/hooks";
 import type { MapMarkerData } from "@/shared/components";
 import {
@@ -73,7 +76,7 @@ export default function ItemDetailPage() {
 				date: item.createdAt,
 				actor: item.ownerName,
 				description: t("items.createSuccess"),
-				status: "Approved",
+				status: "ApprovedByOwner",
 			},
 		];
 
@@ -106,7 +109,7 @@ export default function ItemDetailPage() {
 		deleteMutation.mutate(id ?? "", {
 			onSuccess: () => {
 				navigate(isAdmin ? "/admin/items" : "/");
-			}
+			},
 		});
 	};
 
@@ -139,7 +142,7 @@ export default function ItemDetailPage() {
 					setSelectedClaimId(null);
 					setComment("");
 				},
-			}
+			},
 		);
 	};
 
@@ -157,7 +160,7 @@ export default function ItemDetailPage() {
 					setSelectedClaimId(null);
 					setComment("");
 				},
-			}
+			},
 		);
 	};
 
@@ -349,12 +352,8 @@ export default function ItemDetailPage() {
 									>
 										<div className="flex items-center justify-between">
 											<div>
-												<p className="text-sm font-semibold text-stone-900">
-													{claim.claimantName}
-												</p>
-												<p className="text-xs text-stone-400">
-													{formatDate(claim.createdAt)}
-												</p>
+												<p className="text-sm font-semibold text-stone-900">{claim.claimantName}</p>
+												<p className="text-xs text-stone-400">{formatDate(claim.createdAt)}</p>
 											</div>
 											<ClaimStatusBadge status={claim.status} />
 										</div>
@@ -426,10 +425,7 @@ export default function ItemDetailPage() {
 						<DialogTitle>{t("claims.createClaim")}</DialogTitle>
 						<DialogDescription>{t("claims.descriptionPlaceholder")}</DialogDescription>
 					</DialogHeader>
-					<ClaimForm
-						onSubmit={handleClaimSubmit}
-						isPending={createClaimMutation.isPending}
-					/>
+					<ClaimForm onSubmit={handleClaimSubmit} isPending={createClaimMutation.isPending} />
 				</DialogContent>
 			</Dialog>
 

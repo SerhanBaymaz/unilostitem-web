@@ -24,7 +24,7 @@ interface FilterDrawerProps {
 	className?: string;
 }
 
-const ITEM_STATUSES = ["Active", "Resolved", "Expired"] as const;
+const ITEM_STATUSES = ["Active", "Resolved", "PendingApproval", "Rejected", "Flagged"] as const;
 
 export function FilterDrawer({
 	itemType,

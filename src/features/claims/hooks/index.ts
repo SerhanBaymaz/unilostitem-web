@@ -108,3 +108,20 @@ export function useAdminReviewClaim(id: string) {
 		},
 	});
 }
+
+export function useExtendClaimDeadline(id: string) {
+	const queryClient = useQueryClient();
+	const { t } = useTranslation();
+
+	return useMutation({
+		mutationFn: () => claimsApi.extendClaimDeadline(id),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["claims", id] });
+			queryClient.invalidateQueries({ queryKey: ["claims", "my-claims"] });
+			toast.success(t("claims.extendSuccess") || "Süre uzatıldı");
+		},
+		onError: () => {
+			toast.error(t("common.error"));
+		},
+	});
+}

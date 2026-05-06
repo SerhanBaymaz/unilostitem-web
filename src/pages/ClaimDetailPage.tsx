@@ -1,4 +1,12 @@
-import { ArrowLeft, Calendar, CheckCircle2, Clock, MessageSquare, PackageSearch, XCircle } from "lucide-react";
+import {
+	ArrowLeft,
+	Calendar,
+	CheckCircle2,
+	Clock,
+	MessageSquare,
+	PackageSearch,
+	XCircle,
+} from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router";
@@ -45,22 +53,23 @@ function deriveTimeline(claim: Claim): TimelineEntry[] {
 	}
 
 	if (claim.respondedAt) {
-		const isApproved =
-			claim.status === "Approved" || claim.responseDescription?.toLowerCase().includes("approve");
+		const isApproved = claim.status.startsWith("Approved");
 		entries.push({
 			date: claim.respondedAt,
 			actor: claim.ownerName || "Owner",
 			description:
 				claim.responseDescription || (isApproved ? "claims.ownerApproved" : "claims.ownerRejected"),
-			status: isApproved ? "Approved" : "Rejected",
+			status: claim.status,
 		});
 	}
 
 	if (claim.adminReviewedAt) {
+		const isApproved = claim.status === "ApprovedByAdmin";
 		entries.push({
 			date: claim.adminReviewedAt,
 			actor: "Admin",
-			description: claim.adminNote || "claims.adminReviewed",
+			description:
+				claim.adminNote || (isApproved ? "claims.adminReviewed" : "claims.adminRejected"),
 			status: claim.status,
 		});
 	}
@@ -224,7 +233,9 @@ export default function ClaimDetailPage() {
 						</div>
 						{claim.expiresAt && (
 							<div>
-								<p className="text-xs font-medium text-stone-400">{t("common.expiresAt") || "Bitiş Tarihi"}</p>
+								<p className="text-xs font-medium text-stone-400">
+									{t("common.expiresAt") || "Bitiş Tarihi"}
+								</p>
 								<div className="flex items-center gap-1.5 text-sm text-stone-600">
 									<Clock className="h-3.5 w-3.5 text-stone-400" />
 									{formatDate(claim.expiresAt)}

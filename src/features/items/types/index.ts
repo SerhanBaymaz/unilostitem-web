@@ -1,4 +1,4 @@
-import type { Category, ItemType } from "@/shared/types";
+import type { Category, ItemStatus, ItemType } from "@/shared/types";
 
 export interface Item {
 	id: string;
@@ -12,7 +12,7 @@ export interface Item {
 	locationLabel?: string;
 	latitude?: number;
 	longitude?: number;
-	status: "Active" | "Resolved" | "Expired";
+	status: ItemStatus;
 	ownerId: string;
 	ownerName: string;
 	claimCount?: number;

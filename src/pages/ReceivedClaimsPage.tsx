@@ -13,7 +13,6 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useClaimsByItem, useRespondToClaim } from "@/features/claims/hooks";
 import { useMyItems } from "@/features/items/hooks";

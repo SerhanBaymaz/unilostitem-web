@@ -1,4 +1,4 @@
-import { Globe, LayoutDashboard, LogIn, LogOut, Menu, MessageSquare, Plus, User } from "lucide-react";
+import { Globe, LayoutDashboard, LogIn, LogOut, Menu, Plus, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -12,14 +12,11 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useAuthStore } from "@/features/auth/store/authStore";
 import { useLocaleStore } from "@/shared/store/localeStore";
 
-const publicNavLinks = [
-	{ path: "/", labelKey: "nav.home" },
-] as const;
+const publicNavLinks = [{ path: "/", labelKey: "nav.home" }] as const;
 
 const authNavLinks = [
 	{ path: "/my-items", labelKey: "profile.myItems" },
@@ -27,9 +24,7 @@ const authNavLinks = [
 	{ path: "/received-claims", labelKey: "nav.receivedClaims" },
 ] as const;
 
-const adminNavLinks = [
-	{ path: "/admin", labelKey: "nav.admin" },
-] as const;
+const adminNavLinks = [{ path: "/admin", labelKey: "nav.admin" }] as const;
 
 export function Header() {
 	const { t, i18n } = useTranslation();
@@ -54,8 +49,10 @@ export function Header() {
 	};
 
 	const isAdmin = user?.role === "Admin";
-	const navLinks = isAuthenticated 
-		? (isAdmin ? adminNavLinks : [...publicNavLinks, ...authNavLinks]) 
+	const navLinks = isAuthenticated
+		? isAdmin
+			? adminNavLinks
+			: [...publicNavLinks, ...authNavLinks]
 		: publicNavLinks;
 
 	return (

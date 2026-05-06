@@ -20,6 +20,7 @@ interface ApiItem {
 	userFullName: string;
 	claimCount?: number;
 	createdDate: string;
+	updatedDate?: string;
 }
 
 function mapCategory(raw: string): Category {
