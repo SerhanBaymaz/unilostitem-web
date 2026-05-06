@@ -52,9 +52,14 @@ Config: `components.json` (base-nova style, CSS variables, lucide icons).
 
 ## Project Structure
 
-Feature-based folder structure under `src/features/` (auth, items, claims, admin, profile).
-Shared components, hooks, and utilities under `src/shared/`.
+Feature-based folder structure:
+```
+src/features/{auth,items,claims,admin,profile}/{api,components,hooks,types,store}
+src/shared/{components,hooks,lib,types,utils,store}
+src/i18n/locales/    src/layouts/    src/pages/    src/router/
+```
 UI primitives from shadcn/ui under `src/components/ui/`.
+Path alias: `@/` → `src/`.
 
 ## Backend API
 
