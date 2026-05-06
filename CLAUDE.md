@@ -34,6 +34,22 @@ See DESIGN.md for full token reference. Key rules:
 - No Inter, no indigo, no pill badges, no generic SaaS look
 - Mobile-first (375px base)
 
+### Tailwind CSS Variables
+
+shadcn/ui semantic tokens mapped to DESIGN.md hex values in `src/index.css`:
+
+- `--primary` → #D97706 (amber), `--background` → #FAF9F7 (warm paper)
+- `--card` → #FFFFFF, `--muted` → #F5F5F4, `--destructive` → #DC2626
+- Custom: `--lost` (#E11D48), `--found` (#059669), `--surface-warm` (#F5F3EF)
+- Warm shadows: `--shadow-warm-1` through `--shadow-warm-4`
+- Base radius: 6px (0.375rem) for buttons
+
+### shadcn/ui Components
+
+Installed: Button, Input, Card, Badge, Tabs, Dialog, Sheet, Select, Textarea,
+Separator, Avatar, DropdownMenu, Label, Form, Sonner, Skeleton.
+Config: `components.json` (base-nova style, CSS variables, lucide icons).
+
 ## Project Structure
 
 Feature-based folder structure under `src/features/` (auth, items, claims, admin, profile).

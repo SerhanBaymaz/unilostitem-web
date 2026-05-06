@@ -1,23 +1,169 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Font families */
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-heading: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* shadcn semantic color mappings → DESIGN.md tokens */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Radius — base 6px (buttons), scale from DESIGN.md */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Custom DESIGN.md semantic colors */
+  --color-lost: var(--lost);
+  --color-lost-light: var(--lost-light);
+  --color-lost-dark: var(--lost-dark);
+  --color-found: var(--found);
+  --color-found-light: var(--found-light);
+  --color-found-dark: var(--found-dark);
+  --color-amber-muted: var(--amber-muted);
+  --color-surface-warm: var(--surface-warm);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+
+  /* Shadows — warm rgba(28,25,23,...) from DESIGN.md */
+  --shadow-warm-1: 0 1px 3px rgba(28, 25, 23, 0.05);
+  --shadow-warm-2: 0 8px 24px rgba(28, 25, 23, 0.06);
+  --shadow-warm-3: 0 16px 48px rgba(28, 25, 23, 0.1);
+  --shadow-warm-4: 0 24px 64px rgba(28, 25, 23, 0.14);
 }
 
-html {
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  /* Radius — 0.375rem = 6px base (buttons from DESIGN.md) */
+  --radius: 0.375rem;
+
+  /* Background & Foreground */
+  --background: #FAF9F7;
+  --foreground: #1C1917;
+
+  /* Card & Popover */
+  --card: #FFFFFF;
+  --card-foreground: #1C1917;
+  --popover: #FFFFFF;
+  --popover-foreground: #1C1917;
+
+  /* Primary — Amber accent from DESIGN.md */
+  --primary: #D97706;
+  --primary-foreground: #FFFFFF;
+
+  /* Secondary — warm stone surface */
+  --secondary: #F5F3EF;
+  --secondary-foreground: #44403C;
+
+  /* Muted — subtle backgrounds */
+  --muted: #F5F5F4;
+  --muted-foreground: #78716C;
+
+  /* Accent — amber muted (selections, highlights) */
+  --accent: #FEF3C7;
+  --accent-foreground: #92400E;
+
+  /* Destructive — red */
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+
+  /* Border & Input */
+  --border: #E7E5E4;
+  --input: #D6D3D1;
+  --ring: #D97706;
+
+  /* Charts — warm palette */
+  --chart-1: #D97706;
+  --chart-2: #059669;
+  --chart-3: #E11D48;
+  --chart-4: #78716C;
+  --chart-5: #44403C;
+
+  /* Sidebar */
+  --sidebar: #FAF9F7;
+  --sidebar-foreground: #1C1917;
+  --sidebar-primary: #D97706;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #FEF3C7;
+  --sidebar-accent-foreground: #92400E;
+  --sidebar-border: #E7E5E4;
+  --sidebar-ring: #D97706;
+
+  /* Custom — Lost (Rose) */
+  --lost: #E11D48;
+  --lost-light: #FFF1F2;
+  --lost-dark: #BE123C;
+
+  /* Custom — Found (Emerald) */
+  --found: #059669;
+  --found-light: #ECFDF5;
+  --found-dark: #047857;
+
+  /* Custom — Amber muted */
+  --amber-muted: #FEF3C7;
+
+  /* Custom — Surfaces */
+  --surface-warm: #F5F3EF;
+
+  /* Custom — Text hierarchy */
+  --text-secondary: #78716C;
+  --text-tertiary: #A8A29E;
 }
 
-body {
-  background-color: #faf9f7;
-  color: #1c1917;
-  min-height: 100vh;
-}
-
-#root {
-  min-height: 100vh;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 {
+    @apply font-heading;
+    font-weight: 400;
+  }
 }
