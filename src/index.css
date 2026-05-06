@@ -167,3 +167,20 @@
     font-weight: 400;
   }
 }
+
+/* Leaflet custom marker fix — hide default broken icon */
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: #F5F5F4 !important;
+  color: #78716C !important;
+  border: none !important;
+  border-radius: 6px !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: #E7E5E4 !important;
+}

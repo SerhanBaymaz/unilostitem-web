@@ -93,6 +93,58 @@ Path alias: `@/` → `src/`.
 ### Provider Hierarchy (App.tsx)
 QueryClientProvider → Suspense → RouterProvider + Sonner Toaster
 
+## Shared Components (`src/shared/components/`)
+
+### Header
+- 60px sticky header with backdrop blur, stone-200 bottom border
+- Desktop: logo (Instrument Serif), nav links (13px/500 uppercase tracking), search input (240px), locale dropdown, auth avatar dropdown
+- Mobile: logo, search icon, locale icon, auth avatar, hamburger → Sheet (side="left")
+- Uses base-ui `render` prop pattern (NOT `asChild`) for Button/SheetTrigger/DropdownMenuTrigger + Link/Router
+
+### AppMap
+- react-leaflet MapContainer with custom SVG drop-pin markers (Lost=#E11D48 rose, Found=#059669 emerald)
+- Custom icon: 28x36px pin shape with white center dot, L.DivIcon
+- FlyToCenter inner component for programmatic centering
+- Optional selectable mode (click handler for map picker)
+- Leaflet CSS override in index.css: warm stone zoom controls (bg-stone-100, text-stone-500)
+
+### Timeline
+- Vertical timeline with 1px stone-200 connector line, 10px status dots
+- Dot colors: Pending=amber-500, Approved=emerald-500, Rejected/Cancelled=stone-300
+- Current status gets ring-4 ring-amber-100 highlight
+- Entry format: date (12px caption), actor (14px/600), description (14px/400)
+
+### Pagination
+- Desktop: page number buttons (36px square, 13px/500, rounded), active=bg-stone-900 inverted, hover=bg-stone-100, chevron prev/next
+- Mobile: "Load More" button with min-h-48px touch target
+- Ellipsis for large page ranges (delta=1)
+
+### EmptyState
+- Centered layout with LucideIcon (h-12 w-12, stone-300, strokeWidth=1.5), message (text-secondary), subMessage (text-tertiary), optional action Button
+
+### FilterDrawer
+- Sheet (side="bottom") with rounded top corners
+- Filters: itemType (Lost/Found), category (ITEM_CATEGORIES), status (Active/Resolved/Expired)
+- Controlled component pattern — parent manages state via onChange callbacks
+- Active filter indicator badge on trigger button
+
+### ClaimStatusBadge & ItemTypeBadge
+- Sharp corners (rounded-sm = 2px), 12px/600 font, tracking-wide
+- Lost: bg-rose-50 text-rose-700, Found: bg-emerald-50 text-emerald-700
+- Pending: bg-amber-50 text-amber-700, Approved: bg-emerald-50 text-emerald-700, Rejected: bg-red-50 text-red-700, Cancelled: bg-stone-100 text-stone-500
+
+### LoadingSkeleton
+- ItemCardSkeleton: thumbnail (24x24) + 3 text lines + 2 badge placeholders
+- ItemDetailSkeleton: aspect-square image + 4 text lines + badges + button
+- ListSkeleton: configurable count, each row has icon + 2 lines + badge
+
+## base-ui Pattern Note
+
+shadcn/ui uses `base-nova` style (powered by `@base-ui/react`, NOT Radix).
+- Use `render` prop instead of `asChild` for polymorphic rendering
+- Example: `<SheetTrigger render={<Button />}>content</SheetTrigger>`
+- DropdownMenuItem/SheetTrigger/Button etc. do NOT have `asChild`
+
 ## Backend API
 
 Base URL: `VITE_API_BASE_URL` env variable (default: <http://localhost:5000>)
