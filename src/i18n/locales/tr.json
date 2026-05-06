@@ -179,5 +179,16 @@
 		"claimsSubtitle": "Bekleyen talepleri inceleyin",
 		"reviewDescription": "Bu talebi onaylamak veya reddetmek istediğinize emin misiniz?",
 		"searchBy": "Sahip"
+	},
+	"categories": {
+		"Electronics": "Elektronik",
+		"IdentificationCard": "Kimlik Kartı",
+		"BagWallet": "Çanta & Cüzdan",
+		"ClothingAccessory": "Giyim & Aksesuar",
+		"BookStationery": "Kitap & Kırtasiye",
+		"Key": "Anahtar",
+		"Documents": "Belge",
+		"HealthMedical": "Sağlık & Tıbbi",
+		"Other": "Diğer"
 	}
 }

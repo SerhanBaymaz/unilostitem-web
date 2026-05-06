@@ -179,5 +179,16 @@
 		"claimsSubtitle": "Review pending claims",
 		"reviewDescription": "Are you sure you want to approve or reject this claim?",
 		"searchBy": "Owner"
+	},
+	"categories": {
+		"Electronics": "Electronics",
+		"IdentificationCard": "ID Card",
+		"BagWallet": "Bag & Wallet",
+		"ClothingAccessory": "Clothing & Accessory",
+		"BookStationery": "Book & Stationery",
+		"Key": "Keys",
+		"Documents": "Documents",
+		"HealthMedical": "Health & Medical",
+		"Other": "Other"
 	}
 }

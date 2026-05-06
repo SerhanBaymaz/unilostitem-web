@@ -1,4 +1,4 @@
-import { ArrowLeft, CheckCircle2, MessageSquare, PackageSearch, XCircle } from "lucide-react";
+import { ArrowLeft, Calendar, CheckCircle2, Clock, MessageSquare, PackageSearch, XCircle } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router";
@@ -37,7 +37,7 @@ function deriveTimeline(claim: Claim): TimelineEntry[] {
 
 	if (claim.status === "Cancelled") {
 		entries.push({
-			date: claim.updatedAt,
+			date: claim.updatedAt || claim.createdAt,
 			actor: claim.claimantName,
 			description: "claims.claimCancelled",
 			status: "Cancelled",
@@ -49,7 +49,7 @@ function deriveTimeline(claim: Claim): TimelineEntry[] {
 			claim.status === "Approved" || claim.responseDescription?.toLowerCase().includes("approve");
 		entries.push({
 			date: claim.respondedAt,
-			actor: claim.claimantName,
+			actor: claim.ownerName || "Owner",
 			description:
 				claim.responseDescription || (isApproved ? "claims.ownerApproved" : "claims.ownerRejected"),
 			status: isApproved ? "Approved" : "Rejected",
@@ -82,6 +82,15 @@ export default function ClaimDetailPage() {
 	const cancelMutation = useCancelClaim();
 	const respondMutation = useRespondToClaim(id ?? "");
 	const reviewMutation = useAdminReviewClaim(id ?? "");
+
+	const formatDate = (dateStr: string) =>
+		new Date(dateStr).toLocaleDateString("tr-TR", {
+			day: "numeric",
+			month: "long",
+			year: "numeric",
+			hour: "2-digit",
+			minute: "2-digit",
+		});
 
 	if (isLoading) {
 		return (
@@ -122,7 +131,7 @@ export default function ClaimDetailPage() {
 	const handleRespond = (e: FormEvent) => {
 		e.preventDefault();
 		respondMutation.mutate({
-			isApproved: responseText.length > 0,
+			isApproved: isAdminApproved,
 			responseDescription: responseText || undefined,
 		});
 		setShowRespondDialog(false);
@@ -145,11 +154,7 @@ export default function ClaimDetailPage() {
 			<Button
 				variant="ghost"
 				size="sm"
-				render={<Link to={-1 as unknown as string} />}
-				onClick={(e) => {
-					e.preventDefault();
-					window.history.back();
-				}}
+				onClick={() => window.history.back()}
 				className="mb-4 -ml-2 text-stone-500"
 			>
 				<ArrowLeft className="mr-1 h-4 w-4" />
@@ -196,18 +201,40 @@ export default function ClaimDetailPage() {
 
 			{/* Claim Info */}
 			<div className="mb-6 rounded-lg border border-stone-100 bg-stone-50/50 p-4">
-				<div className="grid gap-3">
-					<div>
-						<p className="text-xs font-medium text-stone-400">{t("claims.claimant")}</p>
-						<p className="text-sm font-semibold text-stone-900">{claim.claimantName}</p>
+				<div className="grid gap-4">
+					<div className="grid grid-cols-2 gap-4">
+						<div>
+							<p className="text-xs font-medium text-stone-400">{t("claims.claimant")}</p>
+							<p className="text-sm font-semibold text-stone-900">{claim.claimantName}</p>
+						</div>
+						{claim.ownerName && (
+							<div>
+								<p className="text-xs font-medium text-stone-400">{t("claims.owner")}</p>
+								<p className="text-sm font-semibold text-stone-900">{claim.ownerName}</p>
+							</div>
+						)}
+					</div>
+					<div className="grid grid-cols-2 gap-4">
+						<div>
+							<p className="text-xs font-medium text-stone-400">{t("items.createdAt")}</p>
+							<div className="flex items-center gap-1.5 text-sm text-stone-600">
+								<Calendar className="h-3.5 w-3.5 text-stone-400" />
+								{formatDate(claim.createdAt)}
+							</div>
+						</div>
+						{claim.expiresAt && (
+							<div>
+								<p className="text-xs font-medium text-stone-400">{t("common.expiresAt") || "Bitiş Tarihi"}</p>
+								<div className="flex items-center gap-1.5 text-sm text-stone-600">
+									<Clock className="h-3.5 w-3.5 text-stone-400" />
+									{formatDate(claim.expiresAt)}
+								</div>
+							</div>
+						)}
 					</div>
 					<div>
-						<p className="text-xs font-medium text-stone-400">{t("claims.owner")}</p>
-						<p className="text-sm font-semibold text-stone-900">{claim.ownerName}</p>
-					</div>
-					<div>
-						<p className="text-xs font-medium text-stone-400">{t("items.description")}</p>
-						<p className="text-sm leading-relaxed text-stone-600">{claim.description}</p>
+						<p className="text-xs font-medium text-stone-400">{t("claims.claimDescription")}</p>
+						<p className="mt-1 text-sm leading-relaxed text-stone-600">{claim.description}</p>
 					</div>
 				</div>
 			</div>
@@ -306,7 +333,12 @@ export default function ClaimDetailPage() {
 						<DialogTitle>{isAdminApproved ? t("claims.approve") : t("claims.reject")}</DialogTitle>
 						<DialogDescription>{t("claims.responsePlaceholder")}</DialogDescription>
 					</DialogHeader>
-					<form onSubmit={handleRespond}>
+					<form
+						onSubmit={(e) => {
+							e.preventDefault();
+							handleRespond(e);
+						}}
+					>
 						<div className="space-y-1.5">
 							<Label htmlFor="respond-desc" className="text-stone-700">
 								{t("claims.responseDescription")}
@@ -319,7 +351,7 @@ export default function ClaimDetailPage() {
 								rows={3}
 							/>
 						</div>
-						<DialogFooter>
+						<DialogFooter className="mt-4">
 							<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
 							<Button
 								type="submit"
@@ -375,7 +407,7 @@ export default function ClaimDetailPage() {
 								/>
 							</div>
 						</div>
-						<DialogFooter>
+						<DialogFooter className="mt-4">
 							<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
 							<Button
 								type="submit"

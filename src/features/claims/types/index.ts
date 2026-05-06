@@ -7,16 +7,17 @@ export interface Claim {
 	itemImageUrl?: string;
 	claimantId: string;
 	claimantName: string;
-	ownerId: string;
-	ownerName: string;
+	ownerId?: string;
+	ownerName?: string;
 	description: string;
 	status: ClaimStatus;
 	adminNote?: string;
 	responseDescription?: string;
 	createdAt: string;
-	updatedAt: string;
+	updatedAt?: string;
 	respondedAt?: string;
 	adminReviewedAt?: string;
+	expiresAt?: string;
 }
 
 export interface ClaimCreateRequest {

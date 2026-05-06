@@ -176,6 +176,15 @@
 	border: none;
 }
 
+/* Leaflet z-index fixes — ensure map is below UI portals (z-50) */
+.leaflet-container {
+	z-index: 0 !important;
+}
+
+.leaflet-control-container {
+	z-index: 1 !important;
+}
+
 .leaflet-control-zoom a {
 	background-color: #f5f5f4;
 	color: #78716c;

@@ -6,14 +6,13 @@ export type UserRole = "User" | "Admin";
 
 export const ITEM_CATEGORIES = [
 	"Electronics",
-	"Keys",
-	"Wallet",
-	"Clothing",
-	"Bag",
-	"Book",
-	"Stationery",
-	"Accessory",
-	"IDCard",
+	"IdentificationCard",
+	"BagWallet",
+	"ClothingAccessory",
+	"BookStationery",
+	"Key",
+	"Documents",
+	"HealthMedical",
 	"Other",
 ] as const;
 

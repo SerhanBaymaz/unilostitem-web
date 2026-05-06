@@ -15,8 +15,9 @@ export interface Item {
 	status: "Active" | "Resolved" | "Expired";
 	ownerId: string;
 	ownerName: string;
+	claimCount?: number;
 	createdAt: string;
-	updatedAt: string;
+	updatedAt?: string;
 }
 
 export interface ItemCreateRequest {

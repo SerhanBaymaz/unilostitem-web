@@ -5,6 +5,11 @@ export interface Pagination {
 	totalCount: number;
 }
 
+export interface ApiMetadata extends Pagination {
+	hasPrevious: boolean;
+	hasNext: boolean;
+}
+
 export interface StandardApiResponse<T> {
 	success: boolean;
 	data?: T;
@@ -12,6 +17,7 @@ export interface StandardApiResponse<T> {
 	timestamp: string;
 	traceId?: string;
 	pagination?: Pagination;
+	metadata?: ApiMetadata;
 }
 
 export interface PagedResponse<T> extends StandardApiResponse<T[]> {

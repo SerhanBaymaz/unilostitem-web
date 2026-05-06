@@ -15,7 +15,11 @@ export function useLogin() {
 		onSuccess: (data) => {
 			setAuth(data.user, data.accessToken, data.refreshToken);
 			toast.success(t("auth.loginSuccess"));
-			navigate("/");
+			if (data.user.role === "Admin") {
+				navigate("/admin");
+			} else {
+				navigate("/");
+			}
 		},
 		onError: () => {
 			toast.error(t("auth.invalidCredentials"));

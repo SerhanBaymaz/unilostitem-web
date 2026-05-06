@@ -23,9 +23,9 @@ const itemSchema = z.object({
 	category: z.string().min(1, "auth.required"),
 	itemType: z.string().min(1, "auth.required"),
 	incidentDate: z.string().min(1, "auth.required"),
+	locationLabel: z.string().min(1, "auth.required"),
 	imageUrl: z.string().optional(),
 	contactInfo: z.string().optional(),
-	locationLabel: z.string().optional(),
 });
 
 type ItemFormData = z.infer<typeof itemSchema>;
@@ -74,7 +74,6 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 			...data,
 			imageUrl: data.imageUrl || undefined,
 			contactInfo: data.contactInfo || undefined,
-			locationLabel: data.locationLabel || undefined,
 			itemType: data.itemType as ItemType,
 			category: data.category as ItemCreateRequest["category"],
 		};
@@ -140,7 +139,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 								<SelectContent>
 									{ITEM_CATEGORIES.map((cat) => (
 										<SelectItem key={cat} value={cat}>
-											{cat}
+											{t(`categories.${cat}`)}
 										</SelectItem>
 									))}
 								</SelectContent>
@@ -170,6 +169,23 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 				)}
 			</div>
 
+			{/* Location Label */}
+			<div className="space-y-1.5">
+				<Label htmlFor="locationLabel" className="text-stone-700">
+					{t("items.location")}
+				</Label>
+				<Input
+					id="locationLabel"
+					placeholder={t("items.locationPlaceholder")}
+					aria-invalid={!!errors.locationLabel}
+					className={inputClass}
+					{...register("locationLabel")}
+				/>
+				{errors.locationLabel?.message && (
+					<p className="text-[13px] text-red-600">{t(errors.locationLabel.message)}</p>
+				)}
+			</div>
+
 			{/* Description */}
 			<div className="space-y-1.5">
 				<Label htmlFor="description" className="text-stone-700">
@@ -186,19 +202,6 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 				{errors.description?.message && (
 					<p className="text-[13px] text-red-600">{t(errors.description.message)}</p>
 				)}
-			</div>
-
-			{/* Location Label */}
-			<div className="space-y-1.5">
-				<Label htmlFor="locationLabel" className="text-stone-700">
-					{t("items.location")}
-				</Label>
-				<Input
-					id="locationLabel"
-					placeholder={t("items.locationPlaceholder")}
-					className={inputClass}
-					{...register("locationLabel")}
-				/>
 			</div>
 
 			{/* Image URL */}

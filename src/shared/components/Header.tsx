@@ -1,4 +1,4 @@
-import { Globe, LayoutDashboard, LogIn, LogOut, Menu, Search, User } from "lucide-react";
+import { Globe, LayoutDashboard, LogIn, LogOut, Menu, Plus, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
+	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
@@ -16,9 +17,17 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { useAuthStore } from "@/features/auth/store/authStore";
 import { useLocaleStore } from "@/shared/store/localeStore";
 
-const navLinks = [
+const publicNavLinks = [
 	{ path: "/", labelKey: "nav.home" },
-	{ path: "/items", labelKey: "nav.items" },
+] as const;
+
+const authNavLinks = [
+	{ path: "/my-items", labelKey: "profile.myItems" },
+	{ path: "/my-claims", labelKey: "profile.myClaims" },
+] as const;
+
+const adminNavLinks = [
+	{ path: "/admin", labelKey: "nav.admin" },
 ] as const;
 
 export function Header() {
@@ -43,6 +52,11 @@ export function Header() {
 		return location.pathname.startsWith(path);
 	};
 
+	const isAdmin = user?.role === "Admin";
+	const navLinks = isAuthenticated 
+		? (isAdmin ? adminNavLinks : [...publicNavLinks, ...authNavLinks]) 
+		: publicNavLinks;
+
 	return (
 		<header className="sticky top-0 z-50 border-b border-stone-200 bg-background/95 backdrop-blur-sm">
 			<div className="mx-auto flex h-[60px] max-w-screen-xl items-center justify-between px-4 md:px-6">
@@ -66,15 +80,14 @@ export function Header() {
 					))}
 				</nav>
 
-				{/* Desktop Search + Controls */}
+				{/* Desktop Controls */}
 				<div className="hidden items-center gap-2 md:flex">
-					<div className="relative">
-						<Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
-						<Input
-							placeholder={t("common.search")}
-							className="h-8 w-[240px] bg-stone-100 pl-9 text-[15px] placeholder:text-stone-400 focus:bg-white"
-						/>
-					</div>
+					{isAuthenticated && !isAdmin && (
+						<Button size="sm" render={<Link to="/items/new" />} className="h-8 gap-1.5 px-3">
+							<Plus className="h-4 w-4" />
+							{t("items.addItem")}
+						</Button>
+					)}
 
 					{/* Locale Toggle */}
 					<DropdownMenu>
@@ -99,9 +112,11 @@ export function Header() {
 								</Avatar>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align="end" className="w-48">
-								<DropdownMenuLabel>
-									{user.firstName} {user.lastName}
-								</DropdownMenuLabel>
+								<DropdownMenuGroup>
+									<DropdownMenuLabel>
+										{user.firstName} {user.lastName}
+									</DropdownMenuLabel>
+								</DropdownMenuGroup>
 								<DropdownMenuSeparator />
 								<DropdownMenuItem onClick={() => navigate("/profile")}>
 									<User className="h-4 w-4" />
@@ -134,9 +149,6 @@ export function Header() {
 
 				{/* Mobile Controls */}
 				<div className="flex items-center gap-1 md:hidden">
-					<Button variant="ghost" size="icon-sm">
-						<Search className="h-5 w-5" />
-					</Button>
 					<DropdownMenu>
 						<DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" />}>
 							<Globe className="h-5 w-5" />
@@ -158,9 +170,11 @@ export function Header() {
 								</Avatar>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align="end" className="w-48">
-								<DropdownMenuLabel>
-									{user?.firstName} {user?.lastName}
-								</DropdownMenuLabel>
+								<DropdownMenuGroup>
+									<DropdownMenuLabel>
+										{user?.firstName} {user?.lastName}
+									</DropdownMenuLabel>
+								</DropdownMenuGroup>
 								<DropdownMenuSeparator />
 								<DropdownMenuItem onClick={() => navigate("/profile")}>
 									<User className="h-4 w-4" />
