@@ -1,6 +1,14 @@
 export type ItemType = "Lost" | "Found";
 
-export type ClaimStatus = "Pending" | "Approved" | "Rejected" | "Cancelled";
+export type ClaimStatus = 
+  | "Pending" 
+  | "ApprovedByOwner" 
+  | "RejectedByOwner" 
+  | "ApprovedByAdmin" 
+  | "RejectedByAdmin" 
+  | "Cancelled"
+  | "Approved"
+  | "Rejected";
 
 export type UserRole = "User" | "Admin";
 

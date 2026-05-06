@@ -30,7 +30,7 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuthStore } from "@/features/auth/store/authStore";
 import { ClaimForm } from "@/features/claims/components";
-import { useAdminReviewClaim, useClaimsByItem, useCreateClaim } from "@/features/claims/hooks";
+import { useAdminReviewClaim, useClaimsByItem, useCreateClaim, useRespondToClaim } from "@/features/claims/hooks";
 import { useDeleteItem, useItem } from "@/features/items/hooks";
 import type { MapMarkerData } from "@/shared/components";
 import {
@@ -50,15 +50,17 @@ export default function ItemDetailPage() {
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [showClaimDialog, setShowClaimDialog] = useState(false);
 	const [showReviewDialog, setShowReviewDialog] = useState(false);
-	const [selectedClaimId, setSelectedReviewClaimId] = useState<string | null>(null);
-	const [isAdminApproved, setIsAdminApproved] = useState(false);
-	const [adminNote, setAdminNote] = useState("");
+	const [showRespondDialog, setShowRespondDialog] = useState(false);
+	const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
+	const [isApprovedAction, setIsApprovedAction] = useState(false);
+	const [comment, setComment] = useState("");
 
 	const { data: item, isLoading, error } = useItem(id ?? "");
 	const { data: claimsData } = useClaimsByItem(id ?? "");
 	const deleteMutation = useDeleteItem();
 	const createClaimMutation = useCreateClaim();
 	const reviewMutation = useAdminReviewClaim(selectedClaimId ?? "");
+	const respondMutation = useRespondToClaim(selectedClaimId ?? "");
 
 	const isOwner = user && item && user.id === item.ownerId;
 	const isAdmin = user?.role === "Admin";
@@ -128,14 +130,32 @@ export default function ItemDetailPage() {
 		if (!selectedClaimId) return;
 		reviewMutation.mutate(
 			{
-				isApproved: isAdminApproved,
-				adminNote: adminNote || undefined,
+				isApproved: isApprovedAction,
+				adminNote: comment || undefined,
 			},
 			{
 				onSuccess: () => {
 					setShowReviewDialog(false);
-					setSelectedReviewClaimId(null);
-					setAdminNote("");
+					setSelectedClaimId(null);
+					setComment("");
+				},
+			}
+		);
+	};
+
+	const handleOwnerRespond = (e: FormEvent) => {
+		e.preventDefault();
+		if (!selectedClaimId) return;
+		respondMutation.mutate(
+			{
+				isApproved: isApprovedAction,
+				responseDescription: comment || undefined,
+			},
+			{
+				onSuccess: () => {
+					setShowRespondDialog(false);
+					setSelectedClaimId(null);
+					setComment("");
 				},
 			}
 		);
@@ -307,7 +327,7 @@ export default function ItemDetailPage() {
 					)}
 				</div>
 
-				{/* Timeline & Claims (Detailed for Admin) */}
+				{/* Timeline & Claims */}
 				<div className="space-y-6">
 					<div>
 						<h2 className="mb-3 font-heading text-lg text-stone-900">{t("claims.timeline")}</h2>
@@ -316,10 +336,10 @@ export default function ItemDetailPage() {
 						</div>
 					</div>
 
-					{isAdmin && claimsData?.claims && claimsData.claims.length > 0 && (
+					{(isAdmin || isOwner) && claimsData?.claims && claimsData.claims.length > 0 && (
 						<div>
 							<h2 className="mb-3 font-heading text-lg text-stone-900">
-								{t("admin.claims")}
+								{isAdmin ? t("admin.claims") : t("claims.title")}
 							</h2>
 							<div className="space-y-3">
 								{claimsData.claims.map((claim) => (
@@ -346,9 +366,10 @@ export default function ItemDetailPage() {
 													size="sm"
 													className="flex-1 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
 													onClick={() => {
-														setSelectedReviewClaimId(claim.id);
-														setIsAdminApproved(true);
-														setShowReviewDialog(true);
+														setSelectedClaimId(claim.id);
+														setIsApprovedAction(true);
+														if (isAdmin) setShowReviewDialog(true);
+														else setShowRespondDialog(true);
 													}}
 												>
 													<CheckCircle2 className="mr-1.5 h-4 w-4" />
@@ -359,9 +380,10 @@ export default function ItemDetailPage() {
 													size="sm"
 													className="flex-1 text-red-600 hover:bg-red-50 hover:text-red-700"
 													onClick={() => {
-														setSelectedReviewClaimId(claim.id);
-														setIsAdminApproved(false);
-														setShowReviewDialog(true);
+														setSelectedClaimId(claim.id);
+														setIsApprovedAction(false);
+														if (isAdmin) setShowReviewDialog(true);
+														else setShowRespondDialog(true);
 													}}
 												>
 													<XCircle className="mr-1.5 h-4 w-4" />
@@ -415,7 +437,7 @@ export default function ItemDetailPage() {
 			<Dialog open={showReviewDialog} onOpenChange={setShowReviewDialog}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>{isAdminApproved ? t("claims.approve") : t("claims.reject")}</DialogTitle>
+						<DialogTitle>{isApprovedAction ? t("claims.approve") : t("claims.reject")}</DialogTitle>
 						<DialogDescription>{t("admin.reviewDescription")}</DialogDescription>
 					</DialogHeader>
 					<form onSubmit={handleAdminReview}>
@@ -425,8 +447,8 @@ export default function ItemDetailPage() {
 							</Label>
 							<Textarea
 								id="admin-note"
-								value={adminNote}
-								onChange={(e) => setAdminNote(e.target.value)}
+								value={comment}
+								onChange={(e) => setComment(e.target.value)}
 								placeholder={t("claims.adminNotePlaceholder")}
 								rows={3}
 							/>
@@ -436,9 +458,43 @@ export default function ItemDetailPage() {
 							<Button
 								type="submit"
 								disabled={reviewMutation.isPending}
-								variant={isAdminApproved ? "default" : "destructive"}
+								variant={isApprovedAction ? "default" : "destructive"}
 							>
-								{isAdminApproved ? t("claims.approve") : t("claims.reject")}
+								{isApprovedAction ? t("claims.approve") : t("claims.reject")}
+							</Button>
+						</DialogFooter>
+					</form>
+				</DialogContent>
+			</Dialog>
+
+			{/* Owner Respond Dialog */}
+			<Dialog open={showRespondDialog} onOpenChange={setShowRespondDialog}>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>{isApprovedAction ? t("claims.approve") : t("claims.reject")}</DialogTitle>
+						<DialogDescription>{t("claims.responsePlaceholder")}</DialogDescription>
+					</DialogHeader>
+					<form onSubmit={handleOwnerRespond}>
+						<div className="space-y-1.5">
+							<Label htmlFor="owner-comment" className="text-stone-700">
+								{t("claims.responseDescription")}
+							</Label>
+							<Textarea
+								id="owner-comment"
+								value={comment}
+								onChange={(e) => setComment(e.target.value)}
+								placeholder={t("claims.responsePlaceholder")}
+								rows={3}
+							/>
+						</div>
+						<DialogFooter className="mt-4">
+							<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
+							<Button
+								type="submit"
+								disabled={respondMutation.isPending}
+								variant={isApprovedAction ? "default" : "destructive"}
+							>
+								{isApprovedAction ? t("claims.approve") : t("claims.reject")}
 							</Button>
 						</DialogFooter>
 					</form>

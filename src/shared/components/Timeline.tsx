@@ -15,7 +15,11 @@ interface TimelineProps {
 const dotColors: Record<ClaimStatus, string> = {
 	Pending: "bg-amber-500",
 	Approved: "bg-emerald-500",
+	ApprovedByOwner: "bg-emerald-500",
+	ApprovedByAdmin: "bg-emerald-500",
 	Rejected: "bg-stone-300",
+	RejectedByOwner: "bg-stone-300",
+	RejectedByAdmin: "bg-stone-300",
 	Cancelled: "bg-stone-300",
 };
 

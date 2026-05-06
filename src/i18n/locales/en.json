@@ -27,7 +27,8 @@
 		"admin": "Admin",
 		"login": "Login",
 		"register": "Register",
-		"logout": "Logout"
+		"logout": "Logout",
+		"receivedClaims": "Received Claims"
 	},
 	"auth": {
 		"login": "Login",
@@ -99,12 +100,18 @@
 	"claims": {
 		"title": "Claims",
 		"myClaims": "My Claims",
+		"receivedClaims": "Received Claims",
+		"noReceivedClaims": "No claims received yet",
 		"createClaim": "Create Claim",
 		"claimDescription": "Claim Description",
 		"status": "Status",
 		"pending": "Pending",
 		"approved": "Approved",
+		"approvedbyowner": "Approved by Owner",
+		"approvedbyadmin": "Approved by Admin",
 		"rejected": "Rejected",
+		"rejectedbyowner": "Rejected by Owner",
+		"rejectedbyadmin": "Rejected by Admin",
 		"cancelled": "Cancelled",
 		"respond": "Respond",
 		"cancel": "Cancel",

@@ -15,6 +15,7 @@ const ItemEditPage = React.lazy(() => import("@/pages/ItemEditPage"));
 const ProfilePage = React.lazy(() => import("@/pages/ProfilePage"));
 const MyItemsPage = React.lazy(() => import("@/pages/MyItemsPage"));
 const MyClaimsPage = React.lazy(() => import("@/pages/MyClaimsPage"));
+const ReceivedClaimsPage = React.lazy(() => import("@/pages/ReceivedClaimsPage"));
 const ClaimDetailPage = React.lazy(() => import("@/pages/ClaimDetailPage"));
 const NotFoundPage = React.lazy(() => import("@/pages/NotFoundPage"));
 
@@ -64,6 +65,10 @@ export const routes: RouteObject[] = [
 					{
 						path: "/my-claims",
 						element: <MyClaimsPage />,
+					},
+					{
+						path: "/received-claims",
+						element: <ReceivedClaimsPage />,
 					},
 				],
 			},

@@ -27,7 +27,8 @@
 		"admin": "Yönetim",
 		"login": "Giriş Yap",
 		"register": "Kayıt Ol",
-		"logout": "Çıkış Yap"
+		"logout": "Çıkış Yap",
+		"receivedClaims": "Gelen Talepler"
 	},
 	"auth": {
 		"login": "Giriş Yap",
@@ -99,12 +100,18 @@
 	"claims": {
 		"title": "Talepler",
 		"myClaims": "Taleplerim",
+		"receivedClaims": "Gelen Talepler",
+		"noReceivedClaims": "Henüz bir talep gelmedi",
 		"createClaim": "Talep Oluştur",
 		"claimDescription": "Talep Açıklaması",
 		"status": "Durum",
 		"pending": "Beklemede",
 		"approved": "Onaylandı",
+		"approvedbyowner": "Sahip Onayladı",
+		"approvedbyadmin": "Yönetici Onayladı",
 		"rejected": "Reddedildi",
+		"rejectedbyowner": "Sahip Reddetti",
+		"rejectedbyadmin": "Yönetici Reddetti",
 		"cancelled": "İptal Edildi",
 		"respond": "Yanıtla",
 		"cancel": "İptal Et",

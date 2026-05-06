@@ -1,4 +1,4 @@
-import { Globe, LayoutDashboard, LogIn, LogOut, Menu, Plus, User } from "lucide-react";
+import { Globe, LayoutDashboard, LogIn, LogOut, Menu, MessageSquare, Plus, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -24,6 +24,7 @@ const publicNavLinks = [
 const authNavLinks = [
 	{ path: "/my-items", labelKey: "profile.myItems" },
 	{ path: "/my-claims", labelKey: "profile.myClaims" },
+	{ path: "/received-claims", labelKey: "nav.receivedClaims" },
 ] as const;
 
 const adminNavLinks = [
