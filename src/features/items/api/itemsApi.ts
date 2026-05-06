@@ -59,6 +59,21 @@ export const itemsApi = {
 		return res.data.data;
 	},
 
+	getMyItems: async (params?: ItemListParams): Promise<ItemListResponse> => {
+		const res = await apiClient.get<StandardApiResponse<Item[]>>(
+			`${BASE}/my-items`,
+			{ params },
+		);
+		if (!res.data.success || !res.data.data) {
+			throw new Error(res.data.message ?? "Failed to fetch my items");
+		}
+		const pagination = res.data.pagination;
+		if (!pagination) {
+			throw new Error("Pagination data missing from response");
+		}
+		return { items: res.data.data, pagination };
+	},
+
 	deleteItem: async (id: string): Promise<void> => {
 		const res = await apiClient.delete<StandardApiResponse<null>>(
 			`${BASE}/${id}`,
