@@ -53,7 +53,7 @@ shadcn/ui uses `base-nova` style (powered by `@base-ui/react`, NOT Radix).
 
 ## Backend API
 
-Base URL: `VITE_API_BASE_URL` (default: `http://localhost:5000`). All endpoints return `StandardApiResponse<T>`. See REACT_BRIEF.md for full reference.
+Base URL: `VITE_API_BASE_URL` (default: `https://localhost:5001`). All endpoints return `StandardApiResponse<T>`. See REACT_BRIEF.md for full reference.
 
 ## Workflow
 

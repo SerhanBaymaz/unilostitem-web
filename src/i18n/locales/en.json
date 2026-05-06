@@ -164,6 +164,20 @@
     "resolvedItems": "Resolved Items",
     "approve": "Approve",
     "reject": "Reject",
-    "reviewNote": "Add Note"
+    "reviewNote": "Add Note",
+    "title": "Admin Panel",
+    "dashboardSubtitle": "Platform overview",
+    "awaitingReview": "Awaiting review",
+    "recentItems": "Recent Items",
+    "pendingClaimsList": "Pending Claims",
+    "viewAll": "View All",
+    "noData": "No data",
+    "noPendingClaims": "No pending claims",
+    "noItems": "No items found",
+    "thisMonth": "This Month",
+    "itemsSubtitle": "Manage all items",
+    "claimsSubtitle": "Review pending claims",
+    "reviewDescription": "Are you sure you want to approve or reject this claim?",
+    "searchBy": "Owner"
   }
 }

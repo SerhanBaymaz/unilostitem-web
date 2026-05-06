@@ -1,8 +1,8 @@
-import axios from 'axios';
-import type { StandardApiResponse } from '@/shared/types';
+import axios from "axios";
+import type { StandardApiResponse } from "@/shared/types";
 
-const TOKEN_KEY = 'auth_tokens';
-const REFRESH_ENDPOINT = '/api/v1/auth/refresh-token';
+const TOKEN_KEY = "auth_tokens";
+const REFRESH_ENDPOINT = "/api/v1/auth/refresh-token";
 
 interface StoredTokens {
   accessToken: string;
@@ -31,8 +31,8 @@ export function getAccessToken(): string | null {
 }
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000',
-  headers: { 'Content-Type': 'application/json' },
+  baseURL: import.meta.env.VITE_API_BASE_URL || "https://localhost:5001",
+  headers: { "Content-Type": "application/json" },
   timeout: 15_000,
 });
 
@@ -63,7 +63,7 @@ apiClient.interceptors.response.use(
 
     if (originalRequest.url === REFRESH_ENDPOINT) {
       clearStoredTokens();
-      window.location.href = '/login';
+      window.location.href = "/login";
       return Promise.reject(error);
     }
 
@@ -83,14 +83,14 @@ apiClient.interceptors.response.use(
       const tokens = getStoredTokens();
       if (!tokens?.refreshToken) {
         clearStoredTokens();
-        window.location.href = '/login';
+        window.location.href = "/login";
         return Promise.reject(error);
       }
 
       const { data } = await axios.post<StandardApiResponse<StoredTokens>>(
         `${apiClient.defaults.baseURL}${REFRESH_ENDPOINT}`,
         { refreshToken: tokens.refreshToken },
-        { headers: { 'Content-Type': 'application/json' } },
+        { headers: { "Content-Type": "application/json" } },
       );
 
       if (data.success && data.data) {
@@ -101,7 +101,7 @@ apiClient.interceptors.response.use(
       }
     } catch {
       clearStoredTokens();
-      window.location.href = '/login';
+      window.location.href = "/login";
     } finally {
       isRefreshing = false;
     }

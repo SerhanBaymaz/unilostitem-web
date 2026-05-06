@@ -31,7 +31,7 @@ A university campus lost-and-found platform built with React. Students can post 
 
 - Node.js 20+
 - pnpm 9+
-- Backend API running at `http://localhost:5000`
+- Backend API running at `https://localhost:5001`
 
 ## Getting Started
 
@@ -50,7 +50,7 @@ pnpm dev
 Create a `.env` file in the project root:
 
 ```env
-VITE_API_BASE_URL=http://localhost:5000
+VITE_API_BASE_URL=https://localhost:5001
 VITE_DEFAULT_LOCALE=tr
 ```
 

@@ -164,6 +164,20 @@
     "resolvedItems": "Çözülen İlan",
     "approve": "Onayla",
     "reject": "Reddet",
-    "reviewNote": "Not Ekle"
+    "reviewNote": "Not Ekle",
+    "title": "Yönetim Paneli",
+    "dashboardSubtitle": "Platform genel bakış",
+    "awaitingReview": "İnceleme bekliyor",
+    "recentItems": "Son İlanlar",
+    "pendingClaimsList": "Bekleyen Talepler",
+    "viewAll": "Tümünü Gör",
+    "noData": "Veri yok",
+    "noPendingClaims": "Bekleyen talep yok",
+    "noItems": "İlan bulunamadı",
+    "thisMonth": "Bu Ay",
+    "itemsSubtitle": "Tüm ilanları yönetin",
+    "claimsSubtitle": "Bekleyen talepleri inceleyin",
+    "reviewDescription": "Bu talebi onaylamak veya reddetmek istediğinize emin misiniz?",
+    "searchBy": "Sahip"
   }
 }
