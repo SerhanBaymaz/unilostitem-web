@@ -40,9 +40,7 @@ export default function LoginPage() {
 				<h1 className="font-heading text-2xl text-stone-900 sm:text-[28px]">
 					{t("auth.loginTitle")}
 				</h1>
-				<p className="mt-1.5 text-[14px] text-stone-500">
-					{t("auth.loginSubtitle")}
-				</p>
+				<p className="mt-1.5 text-[14px] text-stone-500">{t("auth.loginSubtitle")}</p>
 			</div>
 
 			{/* Form */}
@@ -62,9 +60,7 @@ export default function LoginPage() {
 						{...register("email")}
 					/>
 					{errors.email?.message && (
-						<p className="text-[13px] text-red-600">
-							{t(errors.email.message)}
-						</p>
+						<p className="text-[13px] text-red-600">{t(errors.email.message)}</p>
 					)}
 				</div>
 
@@ -82,9 +78,7 @@ export default function LoginPage() {
 						{...register("password")}
 					/>
 					{errors.password?.message && (
-						<p className="text-[13px] text-red-600">
-							{t(errors.password.message)}
-						</p>
+						<p className="text-[13px] text-red-600">{t(errors.password.message)}</p>
 					)}
 				</div>
 
@@ -94,9 +88,7 @@ export default function LoginPage() {
 					disabled={loginMutation.isPending}
 					className="h-10 w-full rounded-md text-[15px] font-medium"
 				>
-					{loginMutation.isPending && (
-						<Loader2 className="h-4 w-4 animate-spin" />
-					)}
+					{loginMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
 					{t("auth.login")}
 				</Button>
 			</form>

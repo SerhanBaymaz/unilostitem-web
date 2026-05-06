@@ -65,12 +65,8 @@ export default function AdminItems() {
 	return (
 		<div className="mx-auto max-w-5xl space-y-6">
 			<div>
-				<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">
-					{t("admin.items")}
-				</h1>
-				<p className="mt-1 text-sm text-stone-400">
-					{t("admin.itemsSubtitle")}
-				</p>
+				<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">{t("admin.items")}</h1>
+				<p className="mt-1 text-sm text-stone-400">{t("admin.itemsSubtitle")}</p>
 			</div>
 
 			{/* Search */}
@@ -106,10 +102,7 @@ export default function AdminItems() {
 				<ListSkeleton count={6} />
 			) : items.length === 0 ? (
 				<div className="flex flex-col items-center justify-center py-16 text-center">
-					<PackageSearch
-						className="mb-4 h-12 w-12 text-stone-300"
-						strokeWidth={1.5}
-					/>
+					<PackageSearch className="mb-4 h-12 w-12 text-stone-300" strokeWidth={1.5} />
 					<p className="text-base text-stone-500">{t("admin.noItems")}</p>
 				</div>
 			) : (
@@ -118,9 +111,7 @@ export default function AdminItems() {
 						<table className="w-full text-left text-sm">
 							<thead>
 								<tr className="border-b border-stone-200 bg-stone-50/50">
-									<th className="px-4 py-3 font-medium text-stone-500">
-										{t("items.itemTitle")}
-									</th>
+									<th className="px-4 py-3 font-medium text-stone-500">{t("items.itemTitle")}</th>
 									<th className="hidden px-4 py-3 font-medium text-stone-500 md:table-cell">
 										{t("items.type")}
 									</th>
@@ -133,9 +124,7 @@ export default function AdminItems() {
 									<th className="hidden px-4 py-3 font-medium text-stone-500 lg:table-cell">
 										{t("items.createdAt")}
 									</th>
-									<th className="px-4 py-3 text-right font-medium text-stone-500">
-										{" "}
-									</th>
+									<th className="px-4 py-3 text-right font-medium text-stone-500"> </th>
 								</tr>
 							</thead>
 							<tbody>
@@ -176,10 +165,7 @@ function AdminItemRow({ item }: { item: Item }) {
 		<>
 			<tr className="border-b border-stone-100 transition-colors hover:bg-stone-50/50">
 				<td className="px-4 py-3">
-					<Link
-						to={`/items/${item.id}`}
-						className="flex items-center gap-3 group"
-					>
+					<Link to={`/items/${item.id}`} className="flex items-center gap-3 group">
 						<div className="h-9 w-9 shrink-0 overflow-hidden rounded-md bg-stone-100">
 							{item.imageUrl ? (
 								<img
@@ -198,18 +184,14 @@ function AdminItemRow({ item }: { item: Item }) {
 							<p className="truncate text-sm font-medium text-stone-900 group-hover:text-amber-600">
 								{item.title}
 							</p>
-							<p className="truncate text-[12px] text-stone-400 md:hidden">
-								{item.category}
-							</p>
+							<p className="truncate text-[12px] text-stone-400 md:hidden">{item.category}</p>
 						</div>
 					</Link>
 				</td>
 				<td className="hidden px-4 py-3 md:table-cell">
 					<ItemTypeBadge type={item.itemType} />
 				</td>
-				<td className="hidden px-4 py-3 text-stone-500 sm:table-cell">
-					{item.category}
-				</td>
+				<td className="hidden px-4 py-3 text-stone-500 sm:table-cell">{item.category}</td>
 				<td className="hidden px-4 py-3 text-stone-500 lg:table-cell">
 					{item.locationLabel ?? "—"}
 				</td>
@@ -235,9 +217,7 @@ function AdminItemRow({ item }: { item: Item }) {
 						<DialogDescription>{t("items.deleteConfirm")}</DialogDescription>
 					</DialogHeader>
 					<DialogFooter>
-						<DialogClose render={<Button variant="outline" />}>
-							{t("common.cancel")}
-						</DialogClose>
+						<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
 						<Button
 							variant="destructive"
 							onClick={handleDelete}

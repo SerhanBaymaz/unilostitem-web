@@ -12,15 +12,10 @@ export default function ItemCreatePage() {
 				<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">
 					{t("items.createTitle")}
 				</h1>
-				<p className="mt-1.5 text-[14px] text-stone-500">
-					{t("items.createSubtitle")}
-				</p>
+				<p className="mt-1.5 text-[14px] text-stone-500">{t("items.createSubtitle")}</p>
 			</div>
 
-			<ItemForm
-				onSubmit={createMutation.mutate}
-				isPending={createMutation.isPending}
-			/>
+			<ItemForm onSubmit={createMutation.mutate} isPending={createMutation.isPending} />
 		</div>
 	);
 }

@@ -36,11 +36,7 @@ export default function ItemEditPage() {
 				<p className="mt-1.5 text-[14px] text-stone-500">{item.title}</p>
 			</div>
 
-			<ItemForm
-				item={item}
-				onSubmit={updateMutation.mutate}
-				isPending={updateMutation.isPending}
-			/>
+			<ItemForm item={item} onSubmit={updateMutation.mutate} isPending={updateMutation.isPending} />
 		</div>
 	);
 }

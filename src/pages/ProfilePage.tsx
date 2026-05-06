@@ -1,12 +1,4 @@
-import {
-	Calendar,
-	Mail,
-	PackageSearch,
-	Phone,
-	Shield,
-	User,
-	UserCircle,
-} from "lucide-react";
+import { Calendar, Mail, PackageSearch, Phone, Shield, User, UserCircle } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
@@ -19,12 +11,7 @@ import { useProfile, useUpdateProfile } from "@/features/auth/hooks";
 import { useMyClaims } from "@/features/claims/hooks";
 import { ItemCard } from "@/features/items/components";
 import { useMyItems } from "@/features/items/hooks";
-import {
-	ClaimStatusBadge,
-	EmptyState,
-	ItemCardSkeleton,
-	ListSkeleton,
-} from "@/shared/components";
+import { ClaimStatusBadge, EmptyState, ItemCardSkeleton, ListSkeleton } from "@/shared/components";
 
 function formatDate(dateStr: string): string {
 	return new Date(dateStr).toLocaleDateString("tr-TR", {
@@ -81,13 +68,7 @@ function ProfileInfoTab() {
 	}
 
 	if (!profile) {
-		return (
-			<EmptyState
-				icon={UserCircle}
-				message={t("common.error")}
-				className="py-12"
-			/>
-		);
+		return <EmptyState icon={UserCircle} message={t("common.error")} className="py-12" />;
 	}
 
 	const startEdit = () => {
@@ -115,8 +96,7 @@ function ProfileInfoTab() {
 		setIsEditing(false);
 	};
 
-	const initials =
-		`${profile.firstName[0] ?? ""}${profile.lastName[0] ?? ""}`.toUpperCase();
+	const initials = `${profile.firstName[0] ?? ""}${profile.lastName[0] ?? ""}`.toUpperCase();
 
 	return (
 		<div className="space-y-6">
@@ -155,12 +135,7 @@ function ProfileInfoTab() {
 						</div>
 
 						{!isEditing && (
-							<Button
-								variant="outline"
-								size="sm"
-								onClick={startEdit}
-								className="mt-2"
-							>
+							<Button variant="outline" size="sm" onClick={startEdit} className="mt-2">
 								{t("profile.edit")}
 							</Button>
 						)}
@@ -173,9 +148,7 @@ function ProfileInfoTab() {
 				<>
 					<Separator />
 					<form onSubmit={handleSubmit} className="space-y-4">
-						<h3 className="font-heading text-lg text-stone-900">
-							{t("profile.edit")}
-						</h3>
+						<h3 className="font-heading text-lg text-stone-900">{t("profile.edit")}</h3>
 
 						<div className="grid gap-4 sm:grid-cols-2">
 							<div className="space-y-1.5">
@@ -317,17 +290,11 @@ function MyClaimsTab() {
 
 					<div className="flex min-w-0 flex-1 flex-col gap-1">
 						<div className="flex items-center gap-2">
-							<h3 className="truncate text-sm font-semibold text-stone-900">
-								{claim.itemTitle}
-							</h3>
+							<h3 className="truncate text-sm font-semibold text-stone-900">{claim.itemTitle}</h3>
 							<ClaimStatusBadge status={claim.status} />
 						</div>
-						<p className="truncate text-[13px] text-stone-500">
-							{claim.description}
-						</p>
-						<p className="text-[12px] text-stone-400">
-							{formatDate(claim.createdAt)}
-						</p>
+						<p className="truncate text-[13px] text-stone-500">{claim.description}</p>
+						<p className="text-[12px] text-stone-400">{formatDate(claim.createdAt)}</p>
 					</div>
 
 					<span className="shrink-0 text-xs text-amber-600 opacity-0 transition-opacity group-hover:opacity-100">

@@ -93,11 +93,7 @@ export default function ItemDetailPage() {
 				{/* Image */}
 				<div className="aspect-square w-full overflow-hidden rounded-lg bg-stone-100">
 					{item.imageUrl ? (
-						<img
-							src={item.imageUrl}
-							alt={item.title}
-							className="h-full w-full object-cover"
-						/>
+						<img src={item.imageUrl} alt={item.title} className="h-full w-full object-cover" />
 					) : (
 						<div className="flex h-full w-full items-center justify-center">
 							<PackageSearch className="h-20 w-20 text-stone-300" />
@@ -109,9 +105,7 @@ export default function ItemDetailPage() {
 				<div className="flex flex-col">
 					{/* Title + Badge */}
 					<div className="mb-4 flex items-start justify-between gap-3">
-						<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">
-							{item.title}
-						</h1>
+						<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">{item.title}</h1>
 						<ItemTypeBadge type={item.itemType} />
 					</div>
 
@@ -122,9 +116,7 @@ export default function ItemDetailPage() {
 
 					{/* Description */}
 					{item.description && (
-						<p className="mb-6 text-[15px] leading-relaxed text-stone-600">
-							{item.description}
-						</p>
+						<p className="mb-6 text-[15px] leading-relaxed text-stone-600">{item.description}</p>
 					)}
 
 					{/* Meta Info */}
@@ -187,9 +179,7 @@ export default function ItemDetailPage() {
 
 			{/* Map Preview */}
 			<div className="mt-6">
-				<h2 className="mb-3 font-heading text-lg text-stone-900">
-					{t("items.locationInfo")}
-				</h2>
+				<h2 className="mb-3 font-heading text-lg text-stone-900">{t("items.locationInfo")}</h2>
 				{mapMarker ? (
 					<AppMap
 						center={[mapMarker.latitude, mapMarker.longitude]}
@@ -213,17 +203,13 @@ export default function ItemDetailPage() {
 						<DialogDescription>{t("items.deleteConfirm")}</DialogDescription>
 					</DialogHeader>
 					<DialogFooter>
-						<DialogClose render={<Button variant="outline" />}>
-							{t("common.cancel")}
-						</DialogClose>
+						<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
 						<Button
 							variant="destructive"
 							onClick={handleDelete}
 							disabled={deleteMutation.isPending}
 						>
-							{deleteMutation.isPending
-								? t("common.loading")
-								: t("common.delete")}
+							{deleteMutation.isPending ? t("common.loading") : t("common.delete")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>

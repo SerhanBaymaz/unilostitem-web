@@ -40,9 +40,7 @@ export function ItemCard({ item }: ItemCardProps) {
 			{/* Content */}
 			<div className="flex min-w-0 flex-1 flex-col gap-1.5">
 				<div className="flex items-start justify-between gap-2">
-					<h3 className="truncate text-sm font-semibold text-stone-900">
-						{item.title}
-					</h3>
+					<h3 className="truncate text-sm font-semibold text-stone-900">{item.title}</h3>
 					<ItemTypeBadge type={item.itemType} />
 				</div>
 

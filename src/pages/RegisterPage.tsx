@@ -58,9 +58,7 @@ export default function RegisterPage() {
 				<h1 className="font-heading text-2xl text-stone-900 sm:text-[28px]">
 					{t("auth.registerTitle")}
 				</h1>
-				<p className="mt-1.5 text-[14px] text-stone-500">
-					{t("auth.registerSubtitle")}
-				</p>
+				<p className="mt-1.5 text-[14px] text-stone-500">{t("auth.registerSubtitle")}</p>
 			</div>
 
 			{/* Form */}
@@ -79,9 +77,7 @@ export default function RegisterPage() {
 							{...register("firstName")}
 						/>
 						{errors.firstName?.message && (
-							<p className="text-[13px] text-red-600">
-								{t(errors.firstName.message)}
-							</p>
+							<p className="text-[13px] text-red-600">{t(errors.firstName.message)}</p>
 						)}
 					</div>
 					<div className="space-y-1.5">
@@ -96,9 +92,7 @@ export default function RegisterPage() {
 							{...register("lastName")}
 						/>
 						{errors.lastName?.message && (
-							<p className="text-[13px] text-red-600">
-								{t(errors.lastName.message)}
-							</p>
+							<p className="text-[13px] text-red-600">{t(errors.lastName.message)}</p>
 						)}
 					</div>
 				</div>
@@ -120,9 +114,7 @@ export default function RegisterPage() {
 						{...register("email")}
 					/>
 					{errors.email?.message && (
-						<p className="text-[13px] text-red-600">
-							{t(errors.email.message)}
-						</p>
+						<p className="text-[13px] text-red-600">{t(errors.email.message)}</p>
 					)}
 				</div>
 
@@ -141,9 +133,7 @@ export default function RegisterPage() {
 							{...register("password")}
 						/>
 						{errors.password?.message && (
-							<p className="text-[13px] text-red-600">
-								{t(errors.password.message)}
-							</p>
+							<p className="text-[13px] text-red-600">{t(errors.password.message)}</p>
 						)}
 					</div>
 					<div className="space-y-1.5">
@@ -159,9 +149,7 @@ export default function RegisterPage() {
 							{...register("confirmPassword")}
 						/>
 						{errors.confirmPassword?.message && (
-							<p className="text-[13px] text-red-600">
-								{t(errors.confirmPassword.message)}
-							</p>
+							<p className="text-[13px] text-red-600">{t(errors.confirmPassword.message)}</p>
 						)}
 					</div>
 				</div>
@@ -170,9 +158,7 @@ export default function RegisterPage() {
 				<div className="space-y-1.5">
 					<Label htmlFor="phoneNumber" className="text-stone-700">
 						{t("auth.phoneNumber")}{" "}
-						<span className="font-normal text-stone-400">
-							({t("common.close").toLowerCase()})
-						</span>
+						<span className="font-normal text-stone-400">({t("common.close").toLowerCase()})</span>
 					</Label>
 					<Input
 						id="phoneNumber"
@@ -190,9 +176,7 @@ export default function RegisterPage() {
 					disabled={registerMutation.isPending}
 					className="h-10 w-full rounded-md text-[15px] font-medium"
 				>
-					{registerMutation.isPending && (
-						<Loader2 className="h-4 w-4 animate-spin" />
-					)}
+					{registerMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
 					{t("auth.register")}
 				</Button>
 			</form>

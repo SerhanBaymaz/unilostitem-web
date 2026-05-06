@@ -12,10 +12,7 @@ const BASE = "/api/v1/auth";
 
 export const authApi = {
 	login: async (data: LoginRequest): Promise<AuthResponse> => {
-		const res = await apiClient.post<StandardApiResponse<AuthResponse>>(
-			`${BASE}/login`,
-			data,
-		);
+		const res = await apiClient.post<StandardApiResponse<AuthResponse>>(`${BASE}/login`, data);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Login failed");
 		}
@@ -23,10 +20,7 @@ export const authApi = {
 	},
 
 	register: async (data: RegisterRequest): Promise<AuthResponse> => {
-		const res = await apiClient.post<StandardApiResponse<AuthResponse>>(
-			`${BASE}/register`,
-			data,
-		);
+		const res = await apiClient.post<StandardApiResponse<AuthResponse>>(`${BASE}/register`, data);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Registration failed");
 		}
@@ -34,9 +28,7 @@ export const authApi = {
 	},
 
 	getProfile: async (): Promise<User> => {
-		const res = await apiClient.get<StandardApiResponse<User>>(
-			`${BASE}/profile`,
-		);
+		const res = await apiClient.get<StandardApiResponse<User>>(`${BASE}/profile`);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to fetch profile");
 		}
@@ -44,10 +36,7 @@ export const authApi = {
 	},
 
 	updateProfile: async (data: UpdateProfileRequest): Promise<User> => {
-		const res = await apiClient.put<StandardApiResponse<User>>(
-			`${BASE}/profile`,
-			data,
-		);
+		const res = await apiClient.put<StandardApiResponse<User>>(`${BASE}/profile`, data);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to update profile");
 		}

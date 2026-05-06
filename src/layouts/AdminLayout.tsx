@@ -4,13 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Link, Outlet, useLocation } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-	Sheet,
-	SheetContent,
-	SheetHeader,
-	SheetTitle,
-	SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 const navItems = [
 	{ path: "/admin", key: "dashboard", icon: LayoutDashboard },
@@ -26,9 +20,7 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
 		<nav className="flex flex-col gap-1 p-2">
 			{navItems.map(({ path, key, icon: Icon }) => {
 				const isActive =
-					key === "dashboard"
-						? location.pathname === "/admin"
-						: location.pathname.startsWith(path);
+					key === "dashboard" ? location.pathname === "/admin" : location.pathname.startsWith(path);
 
 				return (
 					<Link

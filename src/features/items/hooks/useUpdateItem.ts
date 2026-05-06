@@ -10,8 +10,7 @@ export function useUpdateItem(id: string) {
 	const { t } = useTranslation();
 
 	return useMutation({
-		mutationFn: (data: Parameters<typeof itemsApi.updateItem>[1]) =>
-			itemsApi.updateItem(id, data),
+		mutationFn: (data: Parameters<typeof itemsApi.updateItem>[1]) => itemsApi.updateItem(id, data),
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({ queryKey: ["items"] });
 			queryClient.setQueryData(["items", id], data);

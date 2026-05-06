@@ -123,9 +123,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 						)}
 					/>
 					{errors.itemType?.message && (
-						<p className="text-[13px] text-red-600">
-							{t(errors.itemType.message)}
-						</p>
+						<p className="text-[13px] text-red-600">{t(errors.itemType.message)}</p>
 					)}
 				</div>
 
@@ -150,9 +148,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 						)}
 					/>
 					{errors.category?.message && (
-						<p className="text-[13px] text-red-600">
-							{t(errors.category.message)}
-						</p>
+						<p className="text-[13px] text-red-600">{t(errors.category.message)}</p>
 					)}
 				</div>
 			</div>
@@ -170,9 +166,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 					{...register("incidentDate")}
 				/>
 				{errors.incidentDate?.message && (
-					<p className="text-[13px] text-red-600">
-						{t(errors.incidentDate.message)}
-					</p>
+					<p className="text-[13px] text-red-600">{t(errors.incidentDate.message)}</p>
 				)}
 			</div>
 
@@ -190,9 +184,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 					{...register("description")}
 				/>
 				{errors.description?.message && (
-					<p className="text-[13px] text-red-600">
-						{t(errors.description.message)}
-					</p>
+					<p className="text-[13px] text-red-600">{t(errors.description.message)}</p>
 				)}
 			</div>
 

@@ -1,11 +1,4 @@
-import {
-	ChevronDown,
-	ChevronUp,
-	PackageSearch,
-	Plus,
-	Search,
-	X,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, PackageSearch, Plus, Search, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
@@ -64,16 +57,13 @@ export default function HomePage() {
 		window.scrollTo({ top: 0, behavior: "smooth" });
 	}, []);
 
-	const handleFilterChange = useCallback(
-		(key: keyof ItemListParams, value: string | undefined) => {
-			setParams((prev) => ({
-				...prev,
-				pageNumber: 1,
-				[key]: value || undefined,
-			}));
-		},
-		[],
-	);
+	const handleFilterChange = useCallback((key: keyof ItemListParams, value: string | undefined) => {
+		setParams((prev) => ({
+			...prev,
+			pageNumber: 1,
+			[key]: value || undefined,
+		}));
+	}, []);
 
 	const handleResetFilters = useCallback(() => {
 		setSearchTerm("");
@@ -104,8 +94,7 @@ export default function HomePage() {
 		[data?.items, navigate],
 	);
 
-	const hasFilters =
-		params.itemType || params.category || params.status || searchTerm;
+	const hasFilters = params.itemType || params.category || params.status || searchTerm;
 
 	return (
 		<div className="flex flex-col md:h-[calc(100svh-60px)] md:flex-row">
@@ -183,9 +172,7 @@ export default function HomePage() {
 				{/* Panel Header */}
 				<div className="flex items-center justify-between border-b border-stone-100 px-4 py-3">
 					<div>
-						<h2 className="font-heading text-lg text-stone-900">
-							{t("items.title")}
-						</h2>
+						<h2 className="font-heading text-lg text-stone-900">{t("items.title")}</h2>
 						{data?.pagination && (
 							<p className="text-[12px] text-stone-400">
 								{data.pagination.totalCount} {t("nav.items")}

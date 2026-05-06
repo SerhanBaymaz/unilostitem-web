@@ -1,10 +1,4 @@
-import {
-	ArrowLeft,
-	CheckCircle2,
-	MessageSquare,
-	PackageSearch,
-	XCircle,
-} from "lucide-react";
+import { ArrowLeft, CheckCircle2, MessageSquare, PackageSearch, XCircle } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router";
@@ -29,11 +23,7 @@ import {
 	useRespondToClaim,
 } from "@/features/claims/hooks";
 import type { Claim } from "@/features/claims/types";
-import {
-	ClaimStatusBadge,
-	Timeline,
-	type TimelineEntry,
-} from "@/shared/components";
+import { ClaimStatusBadge, Timeline, type TimelineEntry } from "@/shared/components";
 
 function deriveTimeline(claim: Claim): TimelineEntry[] {
 	const entries: TimelineEntry[] = [
@@ -56,14 +46,12 @@ function deriveTimeline(claim: Claim): TimelineEntry[] {
 
 	if (claim.respondedAt) {
 		const isApproved =
-			claim.status === "Approved" ||
-			claim.responseDescription?.toLowerCase().includes("approve");
+			claim.status === "Approved" || claim.responseDescription?.toLowerCase().includes("approve");
 		entries.push({
 			date: claim.respondedAt,
 			actor: claim.claimantName,
 			description:
-				claim.responseDescription ||
-				(isApproved ? "claims.ownerApproved" : "claims.ownerRejected"),
+				claim.responseDescription || (isApproved ? "claims.ownerApproved" : "claims.ownerRejected"),
 			status: isApproved ? "Approved" : "Rejected",
 		});
 	}
@@ -183,10 +171,7 @@ export default function ClaimDetailPage() {
 				<p className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-400">
 					{t("claims.itemInfo")}
 				</p>
-				<Link
-					to={`/items/${claim.lostItemId}`}
-					className="group flex items-center gap-3"
-				>
+				<Link to={`/items/${claim.lostItemId}`} className="group flex items-center gap-3">
 					<div className="h-14 w-14 shrink-0 overflow-hidden rounded-md bg-stone-200">
 						{claim.itemImageUrl ? (
 							<img
@@ -205,9 +190,7 @@ export default function ClaimDetailPage() {
 							{claim.itemTitle}
 						</p>
 					</div>
-					<span className="shrink-0 text-xs text-amber-600">
-						{t("claims.goToItem")}
-					</span>
+					<span className="shrink-0 text-xs text-amber-600">{t("claims.goToItem")}</span>
 				</Link>
 			</div>
 
@@ -215,28 +198,16 @@ export default function ClaimDetailPage() {
 			<div className="mb-6 rounded-lg border border-stone-100 bg-stone-50/50 p-4">
 				<div className="grid gap-3">
 					<div>
-						<p className="text-xs font-medium text-stone-400">
-							{t("claims.claimant")}
-						</p>
-						<p className="text-sm font-semibold text-stone-900">
-							{claim.claimantName}
-						</p>
+						<p className="text-xs font-medium text-stone-400">{t("claims.claimant")}</p>
+						<p className="text-sm font-semibold text-stone-900">{claim.claimantName}</p>
 					</div>
 					<div>
-						<p className="text-xs font-medium text-stone-400">
-							{t("claims.owner")}
-						</p>
-						<p className="text-sm font-semibold text-stone-900">
-							{claim.ownerName}
-						</p>
+						<p className="text-xs font-medium text-stone-400">{t("claims.owner")}</p>
+						<p className="text-sm font-semibold text-stone-900">{claim.ownerName}</p>
 					</div>
 					<div>
-						<p className="text-xs font-medium text-stone-400">
-							{t("items.description")}
-						</p>
-						<p className="text-sm leading-relaxed text-stone-600">
-							{claim.description}
-						</p>
+						<p className="text-xs font-medium text-stone-400">{t("items.description")}</p>
+						<p className="text-sm leading-relaxed text-stone-600">{claim.description}</p>
 					</div>
 				</div>
 			</div>
@@ -245,9 +216,7 @@ export default function ClaimDetailPage() {
 
 			{/* Timeline */}
 			<div className="mb-6">
-				<h2 className="mb-4 font-heading text-lg text-stone-900">
-					{t("claims.timeline")}
-				</h2>
+				<h2 className="mb-4 font-heading text-lg text-stone-900">{t("claims.timeline")}</h2>
 				<Timeline entries={timelineEntries} currentStatus={claim.status} />
 			</div>
 
@@ -318,9 +287,7 @@ export default function ClaimDetailPage() {
 						<DialogDescription>{t("claims.cancelConfirm")}</DialogDescription>
 					</DialogHeader>
 					<DialogFooter>
-						<DialogClose render={<Button variant="outline" />}>
-							{t("common.cancel")}
-						</DialogClose>
+						<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
 						<Button
 							variant="destructive"
 							onClick={handleCancel}
@@ -336,12 +303,8 @@ export default function ClaimDetailPage() {
 			<Dialog open={showRespondDialog} onOpenChange={setShowRespondDialog}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>
-							{isAdminApproved ? t("claims.approve") : t("claims.reject")}
-						</DialogTitle>
-						<DialogDescription>
-							{t("claims.responsePlaceholder")}
-						</DialogDescription>
+						<DialogTitle>{isAdminApproved ? t("claims.approve") : t("claims.reject")}</DialogTitle>
+						<DialogDescription>{t("claims.responsePlaceholder")}</DialogDescription>
 					</DialogHeader>
 					<form onSubmit={handleRespond}>
 						<div className="space-y-1.5">
@@ -357,9 +320,7 @@ export default function ClaimDetailPage() {
 							/>
 						</div>
 						<DialogFooter>
-							<DialogClose render={<Button variant="outline" />}>
-								{t("common.cancel")}
-							</DialogClose>
+							<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
 							<Button
 								type="submit"
 								disabled={respondMutation.isPending}
@@ -377,9 +338,7 @@ export default function ClaimDetailPage() {
 				<DialogContent>
 					<DialogHeader>
 						<DialogTitle>{t("admin.reviewNote")}</DialogTitle>
-						<DialogDescription>
-							{t("claims.responsePlaceholder")}
-						</DialogDescription>
+						<DialogDescription>{t("claims.responsePlaceholder")}</DialogDescription>
 					</DialogHeader>
 					<form onSubmit={handleAdminReview}>
 						<div className="space-y-4">
@@ -417,9 +376,7 @@ export default function ClaimDetailPage() {
 							</div>
 						</div>
 						<DialogFooter>
-							<DialogClose render={<Button variant="outline" />}>
-								{t("common.cancel")}
-							</DialogClose>
+							<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
 							<Button
 								type="submit"
 								disabled={reviewMutation.isPending}

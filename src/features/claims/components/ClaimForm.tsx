@@ -44,9 +44,7 @@ export function ClaimForm({ onSubmit, isPending }: ClaimFormProps) {
 					{...register("description")}
 				/>
 				{errors.description?.message && (
-					<p className="text-[13px] text-red-600">
-						{t(errors.description.message)}
-					</p>
+					<p className="text-[13px] text-red-600">{t(errors.description.message)}</p>
 				)}
 			</div>
 

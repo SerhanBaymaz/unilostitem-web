@@ -26,13 +26,9 @@ function StatCard({
 				<div>
 					<p className="text-[13px] font-medium text-stone-400">{label}</p>
 					<p className="mt-1 text-2xl font-semibold text-stone-900">{value}</p>
-					{subValue && (
-						<p className="mt-1 text-[12px] text-stone-400">{subValue}</p>
-					)}
+					{subValue && <p className="mt-1 text-[12px] text-stone-400">{subValue}</p>}
 				</div>
-				<div
-					className={`flex h-10 w-10 items-center justify-center rounded-lg ${color}`}
-				>
+				<div className={`flex h-10 w-10 items-center justify-center rounded-lg ${color}`}>
 					<Icon className="h-5 w-5" />
 				</div>
 			</div>
@@ -83,9 +79,7 @@ export default function AdminDashboard() {
 				<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">
 					{t("admin.dashboard")}
 				</h1>
-				<p className="mt-1 text-sm text-stone-400">
-					{t("admin.dashboardSubtitle")}
-				</p>
+				<p className="mt-1 text-sm text-stone-400">{t("admin.dashboardSubtitle")}</p>
 			</div>
 
 			{/* Stat Cards */}
@@ -158,17 +152,13 @@ export default function AdminDashboard() {
 										<p className="truncate text-sm font-medium text-stone-700 group-hover:text-amber-600">
 											{item.title}
 										</p>
-										<p className="text-[12px] text-stone-400">
-											{formatDate(item.createdAt)}
-										</p>
+										<p className="text-[12px] text-stone-400">{formatDate(item.createdAt)}</p>
 									</div>
 								</Link>
 							))}
 						</div>
 					) : (
-						<p className="py-4 text-center text-sm text-stone-400">
-							{t("admin.noData")}
-						</p>
+						<p className="py-4 text-center text-sm text-stone-400">{t("admin.noData")}</p>
 					)}
 				</div>
 
@@ -202,9 +192,7 @@ export default function AdminDashboard() {
 											{claim.itemTitle}
 										</p>
 										<div className="flex items-center gap-2">
-											<p className="text-[12px] text-stone-400">
-												{claim.claimantName}
-											</p>
+											<p className="text-[12px] text-stone-400">{claim.claimantName}</p>
 											<ClaimStatusBadge status={claim.status} />
 										</div>
 									</div>
@@ -212,9 +200,7 @@ export default function AdminDashboard() {
 							))}
 						</div>
 					) : (
-						<p className="py-4 text-center text-sm text-stone-400">
-							{t("admin.noPendingClaims")}
-						</p>
+						<p className="py-4 text-center text-sm text-stone-400">{t("admin.noPendingClaims")}</p>
 					)}
 				</div>
 			</div>

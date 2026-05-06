@@ -20,10 +20,9 @@ export const claimsApi = {
 		lostItemId: string,
 		params?: Omit<ClaimListParams, "pageNumber" | "pageSize">,
 	): Promise<ClaimListResponse> => {
-		const res = await apiClient.get<StandardApiResponse<Claim[]>>(
-			`${BASE}/by-item/${lostItemId}`,
-			{ params },
-		);
+		const res = await apiClient.get<StandardApiResponse<Claim[]>>(`${BASE}/by-item/${lostItemId}`, {
+			params,
+		});
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to fetch claims");
 		}
@@ -35,10 +34,7 @@ export const claimsApi = {
 	},
 
 	getMyClaims: async (params?: ClaimListParams): Promise<ClaimListResponse> => {
-		const res = await apiClient.get<StandardApiResponse<Claim[]>>(
-			`${BASE}/my-claims`,
-			{ params },
-		);
+		const res = await apiClient.get<StandardApiResponse<Claim[]>>(`${BASE}/my-claims`, { params });
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to fetch my claims");
 		}
@@ -50,22 +46,15 @@ export const claimsApi = {
 	},
 
 	getClaimById: async (id: string): Promise<Claim> => {
-		const res = await apiClient.get<StandardApiResponse<Claim>>(
-			`${BASE}/${id}`,
-		);
+		const res = await apiClient.get<StandardApiResponse<Claim>>(`${BASE}/${id}`);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to fetch claim");
 		}
 		return res.data.data;
 	},
 
-	getPendingClaims: async (
-		params?: ClaimListParams,
-	): Promise<ClaimListResponse> => {
-		const res = await apiClient.get<StandardApiResponse<Claim[]>>(
-			`${BASE}/pending`,
-			{ params },
-		);
+	getPendingClaims: async (params?: ClaimListParams): Promise<ClaimListResponse> => {
+		const res = await apiClient.get<StandardApiResponse<Claim[]>>(`${BASE}/pending`, { params });
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to fetch pending claims");
 		}
@@ -85,37 +74,23 @@ export const claimsApi = {
 	},
 
 	cancelClaim: async (id: string): Promise<Claim> => {
-		const res = await apiClient.put<StandardApiResponse<Claim>>(
-			`${BASE}/${id}/cancel`,
-		);
+		const res = await apiClient.put<StandardApiResponse<Claim>>(`${BASE}/${id}/cancel`);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to cancel claim");
 		}
 		return res.data.data;
 	},
 
-	respondToClaim: async (
-		id: string,
-		data: ClaimResponseRequest,
-	): Promise<Claim> => {
-		const res = await apiClient.put<StandardApiResponse<Claim>>(
-			`${BASE}/${id}/respond`,
-			data,
-		);
+	respondToClaim: async (id: string, data: ClaimResponseRequest): Promise<Claim> => {
+		const res = await apiClient.put<StandardApiResponse<Claim>>(`${BASE}/${id}/respond`, data);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to respond to claim");
 		}
 		return res.data.data;
 	},
 
-	adminReviewClaim: async (
-		id: string,
-		data: ClaimAdminReviewRequest,
-	): Promise<Claim> => {
-		const res = await apiClient.put<StandardApiResponse<Claim>>(
-			`${BASE}/${id}/admin-review`,
-			data,
-		);
+	adminReviewClaim: async (id: string, data: ClaimAdminReviewRequest): Promise<Claim> => {
+		const res = await apiClient.put<StandardApiResponse<Claim>>(`${BASE}/${id}/admin-review`, data);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to review claim");
 		}

@@ -39,12 +39,8 @@ export default function AdminClaims() {
 	return (
 		<div className="mx-auto max-w-5xl space-y-6">
 			<div>
-				<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">
-					{t("admin.claims")}
-				</h1>
-				<p className="mt-1 text-sm text-stone-400">
-					{t("admin.claimsSubtitle")}
-				</p>
+				<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">{t("admin.claims")}</h1>
+				<p className="mt-1 text-sm text-stone-400">{t("admin.claimsSubtitle")}</p>
 			</div>
 
 			{isLoading ? (
@@ -52,9 +48,7 @@ export default function AdminClaims() {
 			) : claims.length === 0 ? (
 				<div className="flex flex-col items-center justify-center py-16 text-center">
 					<Clock className="mb-4 h-12 w-12 text-stone-300" strokeWidth={1.5} />
-					<p className="text-base text-stone-500">
-						{t("admin.noPendingClaims")}
-					</p>
+					<p className="text-base text-stone-500">{t("admin.noPendingClaims")}</p>
 				</div>
 			) : (
 				<div className="space-y-3">
@@ -70,9 +64,7 @@ export default function AdminClaims() {
 function ClaimRow({
 	claim,
 }: {
-	claim: ReturnType<typeof usePendingClaims>["data"] extends
-		| { claims: (infer T)[] }
-		| undefined
+	claim: ReturnType<typeof usePendingClaims>["data"] extends { claims: (infer T)[] } | undefined
 		? T
 		: never;
 }) {
@@ -114,9 +106,7 @@ function ClaimRow({
 						<span>{claim.claimantName}</span>
 						<span>{formatDate(claim.createdAt)}</span>
 						{claim.description && (
-							<span className="hidden truncate sm:inline">
-								{claim.description}
-							</span>
+							<span className="hidden truncate sm:inline">{claim.description}</span>
 						)}
 					</div>
 				</div>
@@ -148,12 +138,8 @@ function ClaimRow({
 			<Dialog open={showDialog} onOpenChange={setShowDialog}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>
-							{isApproved ? t("claims.approve") : t("claims.reject")}
-						</DialogTitle>
-						<DialogDescription>
-							{t("admin.reviewDescription")}
-						</DialogDescription>
+						<DialogTitle>{isApproved ? t("claims.approve") : t("claims.reject")}</DialogTitle>
+						<DialogDescription>{t("admin.reviewDescription")}</DialogDescription>
 					</DialogHeader>
 					<form onSubmit={handleSubmit}>
 						<div className="space-y-1.5">
@@ -169,9 +155,7 @@ function ClaimRow({
 							/>
 						</div>
 						<DialogFooter>
-							<DialogClose render={<Button variant="outline" />}>
-								{t("common.cancel")}
-							</DialogClose>
+							<DialogClose render={<Button variant="outline" />}>{t("common.cancel")}</DialogClose>
 							<Button
 								type="submit"
 								disabled={reviewMutation.isPending}

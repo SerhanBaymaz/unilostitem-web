@@ -1,17 +1,8 @@
-import {
-	keepPreviousData,
-	useMutation,
-	useQuery,
-	useQueryClient,
-} from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { claimsApi } from "../api/claimsApi";
-import type {
-	ClaimAdminReviewRequest,
-	ClaimListParams,
-	ClaimResponseRequest,
-} from "../types";
+import type { ClaimAdminReviewRequest, ClaimListParams, ClaimResponseRequest } from "../types";
 
 export function useClaimsByItem(
 	lostItemId: string,
@@ -90,8 +81,7 @@ export function useRespondToClaim(id: string) {
 	const { t } = useTranslation();
 
 	return useMutation({
-		mutationFn: (data: ClaimResponseRequest) =>
-			claimsApi.respondToClaim(id, data),
+		mutationFn: (data: ClaimResponseRequest) => claimsApi.respondToClaim(id, data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["claims"] });
 			queryClient.invalidateQueries({ queryKey: ["items"] });
@@ -108,8 +98,7 @@ export function useAdminReviewClaim(id: string) {
 	const { t } = useTranslation();
 
 	return useMutation({
-		mutationFn: (data: ClaimAdminReviewRequest) =>
-			claimsApi.adminReviewClaim(id, data),
+		mutationFn: (data: ClaimAdminReviewRequest) => claimsApi.adminReviewClaim(id, data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["claims"] });
 			toast.success(t("claims.respondSuccess"));
