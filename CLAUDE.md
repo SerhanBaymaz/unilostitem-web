@@ -61,6 +61,38 @@ src/i18n/locales/    src/layouts/    src/pages/    src/router/
 UI primitives from shadcn/ui under `src/components/ui/`.
 Path alias: `@/` → `src/`.
 
+## Core Infrastructure
+
+### Axios Client (`src/shared/lib/axios.ts`)
+- Base URL from `VITE_API_BASE_URL` (default: localhost:5000)
+- Request interceptor: injects Bearer token from localStorage (`auth_tokens` key)
+- Response interceptor: 401 → silent refresh via `/api/v1/auth/refresh-token`, queuing concurrent requests
+- Helpers: `getStoredTokens()`, `setStoredTokens()`, `clearStoredTokens()`, `getAccessToken()`
+
+### React Query (`src/shared/lib/queryClient.ts`)
+- `staleTime: 2min`, `retry: 1`, `refetchOnWindowFocus: false`
+- Mutations: `retry: 0`
+
+### Zustand Stores
+- `useAuthStore` (`features/auth/store/authStore.ts`): user, isAuthenticated, setAuth, setUser, logout, setLoading. Persisted to `auth-storage`.
+- `useLocaleStore` (`shared/store/localeStore.ts`): locale (tr/en), setLocale. Persisted to `locale-storage`.
+
+### Routing (`src/router/index.tsx`)
+- React Router v7 (library mode) with `createBrowserRouter`
+- All pages lazy-loaded via `React.lazy()`
+- Layouts: `MainLayout` (public + protected), `AuthLayout` (login/register), `AdminLayout` (admin pages)
+- Route guards: `ProtectedRoute` (auth check), `AdminRoute` (auth + Admin role check)
+- 404 catch-all → `/404` → NotFoundPage
+
+### i18n (`src/i18n/`)
+- react-i18next with tr/en namespaces
+- Default locale: `tr` (from `VITE_DEFAULT_LOCALE` env or fallback)
+- Translation keys: common, nav, auth, items, claims, profile, admin
+- Locale synced with `useLocaleStore` via localStorage
+
+### Provider Hierarchy (App.tsx)
+QueryClientProvider → Suspense → RouterProvider + Sonner Toaster
+
 ## Backend API
 
 Base URL: `VITE_API_BASE_URL` env variable (default: <http://localhost:5000>)
