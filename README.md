@@ -14,18 +14,18 @@ A university campus lost-and-found platform built with React. Students can post 
 
 ## Tech Stack
 
-| Category | Technology |
-|----------|-----------|
-| Framework | React 19 + Vite 8 + TypeScript 6 |
-| Styling | Tailwind CSS 4 + shadcn/ui (base-nova) |
-| State | TanStack Query v5 + Zustand v5 |
-| Forms | React Hook Form v7 + Zod v3 |
-| Routing | React Router v7 (library mode) |
-| HTTP | Axios v1 with interceptors |
-| Maps | react-leaflet + Leaflet |
-| i18n | react-i18next (tr/en) |
-| Linting | Biome.js |
-| Testing | Vitest + React Testing Library |
+| Category  | Technology                             |
+| --------- | -------------------------------------- |
+| Framework | React 19 + Vite 8 + TypeScript 6       |
+| Styling   | Tailwind CSS 4 + shadcn/ui (base-nova) |
+| State     | TanStack Query v5 + Zustand v5         |
+| Forms     | React Hook Form v7 + Zod v3            |
+| Routing   | React Router v7 (library mode)         |
+| HTTP      | Axios v1 with interceptors             |
+| Maps      | react-leaflet + Leaflet                |
+| i18n      | react-i18next (tr/en)                  |
+| Linting   | ESLint + Prettier + Husky              |
+| Testing   | Vitest + React Testing Library         |
 
 ## Prerequisites
 
@@ -56,14 +56,14 @@ VITE_DEFAULT_LOCALE=tr
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start development server |
-| `pnpm build` | Production build |
-| `pnpm preview` | Preview production build |
-| `pnpm check` | Biome lint + format check |
-| `pnpm test` | Run tests |
-| `pnpm test:watch` | Tests in watch mode |
+| Command           | Description              |
+| ----------------- | ------------------------ |
+| `pnpm dev`        | Start development server |
+| `pnpm build`      | Production build         |
+| `pnpm preview`    | Preview production build |
+| `pnpm check`      | ESLint + Prettier check  |
+| `pnpm test`       | Run tests                |
+| `pnpm test:watch` | Tests in watch mode      |
 
 ## Project Structure
 

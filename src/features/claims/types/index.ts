@@ -19,6 +19,7 @@ export interface Claim {
 	adminReviewedAt?: string;
 	expiresAt?: string;
 	itemStatus?: ItemStatus;
+	extensionCount?: number;
 }
 
 export interface ClaimCreateRequest {

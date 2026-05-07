@@ -93,7 +93,7 @@ export default function ClaimDetailPage() {
 
 	const isClaimant = user && claim && user.id === claim.claimantId;
 	const canCancel = isClaimant && claim?.status === "Pending";
-	const canExtend = isClaimant && claim?.status === "Pending" && claim.extensionCount < 2;
+	const canExtend = isClaimant && claim?.status === "Pending" && (claim.extensionCount ?? 0) < 2;
 
 	if (isLoading) return <ItemDetailSkeleton />;
 
@@ -157,7 +157,7 @@ export default function ClaimDetailPage() {
 								</Label>
 								<div className="rounded-2xl bg-stone-50 p-5 border border-stone-100/50">
 									<p className="text-[15px] leading-relaxed text-stone-700 italic">
-										"{claim.description}"
+										&ldquo;{claim.description}&rdquo;
 									</p>
 								</div>
 							</div>
@@ -176,7 +176,7 @@ export default function ClaimDetailPage() {
 									</div>
 									<div className="min-w-0 flex-1">
 										<p className="truncate text-[15px] font-bold text-stone-900 group-hover:text-amber-600">
-											{claim.lostItemTitle}
+											{claim.itemTitle}
 										</p>
 										<p className="text-xs text-stone-400">
 											İlan detaylarını görüntülemek için tıklayın
@@ -187,9 +187,9 @@ export default function ClaimDetailPage() {
 							</div>
 
 							{/* Response Section (if exists) */}
-							{(claim.ownerComment || claim.adminComment) && (
+							{(claim.responseDescription || claim.adminNote) && (
 								<div className="space-y-4 pt-4 border-t border-stone-100">
-									{claim.ownerComment && (
+									{claim.responseDescription && (
 										<div className="space-y-2">
 											<div className="flex items-center gap-2">
 												<User className="h-3.5 w-3.5 text-stone-400" />
@@ -198,11 +198,11 @@ export default function ClaimDetailPage() {
 												</Label>
 											</div>
 											<p className="text-[14px] text-stone-600 leading-relaxed pl-5 border-l-2 border-amber-200">
-												{claim.ownerComment}
+												{claim.responseDescription}
 											</p>
 										</div>
 									)}
-									{claim.adminComment && (
+									{claim.adminNote && (
 										<div className="space-y-2">
 											<div className="flex items-center gap-2">
 												<ShieldCheck className="h-3.5 w-3.5 text-stone-400" />
@@ -211,7 +211,7 @@ export default function ClaimDetailPage() {
 												</Label>
 											</div>
 											<p className="text-[14px] text-stone-600 leading-relaxed pl-5 border-l-2 border-blue-200">
-												{claim.adminComment}
+												{claim.adminNote}
 											</p>
 										</div>
 									)}
@@ -231,7 +231,7 @@ export default function ClaimDetailPage() {
 									disabled={extendMutation.isPending}
 								>
 									<Clock className="mr-2 h-4 w-4" />
-									Süreyi Uzat ({claim.extensionCount}/2)
+									Süreyi Uzat ({claim.extensionCount ?? 0}/2)
 								</Button>
 							)}
 							{canCancel && (
@@ -282,7 +282,9 @@ export default function ClaimDetailPage() {
 								</div>
 								<div className="flex justify-between items-center text-sm">
 									<span className="text-stone-400">Uzatma Hakkı</span>
-									<span className="font-semibold text-stone-700">{claim.extensionCount} / 2</span>
+									<span className="font-semibold text-stone-700">
+										{claim.extensionCount ?? 0} / 2
+									</span>
 								</div>
 							</div>
 						)}

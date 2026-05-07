@@ -33,7 +33,7 @@ export interface ItemCreateRequest {
 	longitude?: number;
 }
 
-export interface ItemUpdateRequest extends Partial<ItemCreateRequest> {}
+export type ItemUpdateRequest = Partial<ItemCreateRequest>;
 
 export interface ItemListParams {
 	pageNumber?: number;

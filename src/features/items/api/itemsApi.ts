@@ -110,7 +110,7 @@ export const itemsApi = {
 	},
 
 	updateItem: async (id: string, data: ItemUpdateRequest): Promise<void> => {
-		const res = await apiClient.put<StandardApiResponse<any>>(`${BASE}/${id}`, data);
+		const res = await apiClient.put<StandardApiResponse<unknown>>(`${BASE}/${id}`, data);
 		if (!res.data.success) {
 			throw new Error(res.data.message ?? "Failed to update item");
 		}

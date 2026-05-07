@@ -46,6 +46,7 @@ export function ListSkeleton({ count = 4 }: { count?: number }) {
 	return (
 		<div className="space-y-3">
 			{Array.from({ length: count }).map((_, i) => (
+				// eslint-disable-next-line react/no-array-index-key
 				<div key={i} className="flex items-center gap-4 rounded-lg bg-card p-4 shadow-warm-1">
 					<Skeleton className="h-10 w-10 rounded-md" />
 					<div className="flex-1 space-y-2">

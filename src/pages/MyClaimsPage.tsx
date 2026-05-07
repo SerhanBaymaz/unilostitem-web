@@ -66,7 +66,7 @@ export default function MyClaimsPage() {
 
 							<div className="flex flex-col gap-3 rounded-xl bg-stone-50/50 p-3 border border-stone-100/50">
 								<p className="line-clamp-2 text-[13.5px] leading-relaxed text-stone-600 italic">
-									"{claim.description}"
+									&ldquo;{claim.description}&rdquo;
 								</p>
 							</div>
 

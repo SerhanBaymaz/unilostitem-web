@@ -45,7 +45,10 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
 
 				{getPageNumbers().map((page, index) =>
 					page === "ellipsis" ? (
-						<span key={`ellipsis-${index}`} className="px-1 text-sm text-text-tertiary">
+						<span
+							key={`ellipsis-${index}`} // eslint-disable-line react/no-array-index-key
+							className="px-1 text-sm text-text-tertiary"
+						>
 							...
 						</span>
 					) : (

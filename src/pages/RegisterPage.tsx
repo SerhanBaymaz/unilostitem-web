@@ -47,7 +47,8 @@ export default function RegisterPage() {
 	});
 
 	const onSubmit = (data: RegisterFormData) => {
-		const { confirmPassword, ...payload } = data;
+		// eslint-disable-next-line sonarjs/no-unused-vars
+		const { confirmPassword: _, ...payload } = data;
 		registerMutation.mutate(payload);
 	};
 

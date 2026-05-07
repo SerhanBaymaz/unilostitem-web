@@ -10,25 +10,55 @@ import type {
 
 const BASE = "/api/v1/claims";
 
-function mapClaim(data: any): Claim {
+interface ApiClaim {
+	id: string;
+	lostItemId: string;
+	lostItemTitle?: string;
+	itemTitle?: string;
+	itemImageUrl?: string;
+	claimantId: string;
+	claimantFullName?: string;
+	claimantName?: string;
+	ownerId: string;
+	ownerName: string;
+	description: string;
+	status: string;
+	adminComment?: string;
+	adminNote?: string;
+	ownerComment?: string;
+	responseDescription?: string;
+	createdDate?: string;
+	createdAt?: string;
+	updatedDate?: string;
+	updatedAt?: string;
+	ownerResponseDate?: string;
+	respondedAt?: string;
+	reviewedDate?: string;
+	adminReviewedAt?: string;
+	expiresAt?: string;
+	extensionCount?: number;
+}
+
+function mapClaim(data: ApiClaim): Claim {
 	return {
 		id: data.id,
 		lostItemId: data.lostItemId,
-		itemTitle: data.lostItemTitle || data.itemTitle,
+		itemTitle: data.lostItemTitle || data.itemTitle || "",
 		itemImageUrl: data.itemImageUrl,
 		claimantId: data.claimantId,
-		claimantName: data.claimantFullName || data.claimantName,
+		claimantName: data.claimantFullName || data.claimantName || "",
 		ownerId: data.ownerId,
 		ownerName: data.ownerName,
 		description: data.description,
-		status: data.status,
+		status: data.status as Claim["status"],
 		adminNote: data.adminComment || data.adminNote,
 		responseDescription: data.ownerComment || data.responseDescription,
-		createdAt: data.createdDate || data.createdAt,
+		createdAt: data.createdDate || data.createdAt || "",
 		updatedAt: data.updatedDate || data.updatedAt,
 		respondedAt: data.ownerResponseDate || data.respondedAt,
 		adminReviewedAt: data.reviewedDate || data.adminReviewedAt,
 		expiresAt: data.expiresAt,
+		extensionCount: data.extensionCount,
 	};
 }
 
@@ -57,9 +87,12 @@ export const claimsApi = {
 		lostItemId: string,
 		params?: Omit<ClaimListParams, "pageNumber" | "pageSize">,
 	): Promise<ClaimListResponse> => {
-		const res = await apiClient.get<StandardApiResponse<any[]>>(`${BASE}/by-item/${lostItemId}`, {
-			params,
-		});
+		const res = await apiClient.get<StandardApiResponse<ApiClaim[]>>(
+			`${BASE}/by-item/${lostItemId}`,
+			{
+				params,
+			},
+		);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to fetch claims");
 		}
@@ -70,7 +103,9 @@ export const claimsApi = {
 	},
 
 	getMyClaims: async (params?: ClaimListParams): Promise<ClaimListResponse> => {
-		const res = await apiClient.get<StandardApiResponse<any[]>>(`${BASE}/my-claims`, { params });
+		const res = await apiClient.get<StandardApiResponse<ApiClaim[]>>(`${BASE}/my-claims`, {
+			params,
+		});
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to fetch my claims");
 		}
@@ -81,7 +116,7 @@ export const claimsApi = {
 	},
 
 	getClaimById: async (id: string): Promise<Claim> => {
-		const res = await apiClient.get<StandardApiResponse<any>>(`${BASE}/${id}`);
+		const res = await apiClient.get<StandardApiResponse<ApiClaim>>(`${BASE}/${id}`);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to fetch claim");
 		}
@@ -89,7 +124,7 @@ export const claimsApi = {
 	},
 
 	getPendingClaims: async (params?: ClaimListParams): Promise<ClaimListResponse> => {
-		const res = await apiClient.get<StandardApiResponse<any[]>>(`${BASE}/pending`, { params });
+		const res = await apiClient.get<StandardApiResponse<ApiClaim[]>>(`${BASE}/pending`, { params });
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to fetch pending claims");
 		}
@@ -100,7 +135,7 @@ export const claimsApi = {
 	},
 
 	createClaim: async (data: ClaimCreateRequest): Promise<Claim> => {
-		const res = await apiClient.post<StandardApiResponse<any>>(BASE, data);
+		const res = await apiClient.post<StandardApiResponse<ApiClaim>>(BASE, data);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to create claim");
 		}
@@ -108,7 +143,7 @@ export const claimsApi = {
 	},
 
 	cancelClaim: async (id: string): Promise<Claim> => {
-		const res = await apiClient.put<StandardApiResponse<any>>(`${BASE}/${id}/cancel`);
+		const res = await apiClient.put<StandardApiResponse<ApiClaim>>(`${BASE}/${id}/cancel`);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to cancel claim");
 		}
@@ -116,7 +151,7 @@ export const claimsApi = {
 	},
 
 	respondToClaim: async (id: string, data: ClaimResponseRequest): Promise<Claim> => {
-		const res = await apiClient.put<StandardApiResponse<any>>(`${BASE}/${id}/respond`, data);
+		const res = await apiClient.put<StandardApiResponse<ApiClaim>>(`${BASE}/${id}/respond`, data);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to respond to claim");
 		}
@@ -124,7 +159,10 @@ export const claimsApi = {
 	},
 
 	adminReviewClaim: async (id: string, data: ClaimAdminReviewRequest): Promise<Claim> => {
-		const res = await apiClient.put<StandardApiResponse<any>>(`${BASE}/${id}/admin-review`, data);
+		const res = await apiClient.put<StandardApiResponse<ApiClaim>>(
+			`${BASE}/${id}/admin-review`,
+			data,
+		);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to review claim");
 		}
@@ -132,7 +170,7 @@ export const claimsApi = {
 	},
 
 	extendClaimDeadline: async (id: string): Promise<Claim> => {
-		const res = await apiClient.put<StandardApiResponse<any>>(`${BASE}/${id}/extend`);
+		const res = await apiClient.put<StandardApiResponse<ApiClaim>>(`${BASE}/${id}/extend`);
 		if (!res.data.success || !res.data.data) {
 			throw new Error(res.data.message ?? "Failed to extend claim deadline");
 		}

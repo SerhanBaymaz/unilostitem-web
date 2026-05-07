@@ -42,6 +42,7 @@ export function Timeline({ entries, currentStatus }: TimelineProps) {
 						currentStatus && entry.status === currentStatus && index === entries.length - 1;
 
 					return (
+						// eslint-disable-next-line react/no-array-index-key
 						<div key={`${entry.date}-${index}`} className="relative">
 							<div
 								className={`absolute -left-6 top-1 h-[10px] w-[10px] rounded-full ${
