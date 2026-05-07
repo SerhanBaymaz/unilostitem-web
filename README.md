@@ -1,5 +1,12 @@
 # UniLostItem Web
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=SerhanBaymaz_unilostitem-web&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=SerhanBaymaz_unilostitem-web)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=SerhanBaymaz_unilostitem-web&metric=bugs)](https://sonarcloud.io/summary/new_code?id=SerhanBaymaz_unilostitem-web)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=SerhanBaymaz_unilostitem-web&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=SerhanBaymaz_unilostitem-web)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=SerhanBaymaz_unilostitem-web&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=SerhanBaymaz_unilostitem-web)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=SerhanBaymaz_unilostitem-web&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=SerhanBaymaz_unilostitem-web)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=SerhanBaymaz_unilostitem-web&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=SerhanBaymaz_unilostitem-web)
+
 A university campus lost-and-found platform built with React. Students can post and search for lost or found items on an interactive map, submit claims, and manage their listings.
 
 ## Features
@@ -29,8 +36,8 @@ A university campus lost-and-found platform built with React. Students can post 
 
 ## Prerequisites
 
-- Node.js 20+
-- pnpm 9+
+- Node.js 22+
+- pnpm 10+
 - Backend API running at `https://localhost:5001`
 
 ## Getting Started

@@ -1,0 +1,14 @@
+node_modules
+dist
+.git
+.github
+.husky
+*.md
+.env
+.env.*
+!.env.example
+.vscode
+.idea
+CLAUDE.md
+.claude
+coverage
