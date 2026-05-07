@@ -198,7 +198,7 @@ export default function HomePage() {
 					{isLoading ? (
 						<div className="space-y-3">
 							{Array.from({ length: 4 }).map((_, i) => (
-								// biome-ignore lint/suspicious/noArrayIndexKey: static skeleton list
+								// eslint-disable-next-line react/no-array-index-key
 								<ItemCardSkeleton key={`skeleton-${i}`} />
 							))}
 						</div>

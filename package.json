@@ -5,13 +5,15 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "tsc -b && vite build",
+		"build": "eslint . --max-warnings 0 && tsc -b && vite build",
 		"preview": "vite preview",
-		"lint": "biome check .",
-		"format": "biome format --write .",
-		"check": "biome check .",
+		"lint": "eslint . --max-warnings 0",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"check": "eslint . --max-warnings 0 && prettier --check .",
 		"test": "vitest",
-		"test:watch": "vitest watch"
+		"test:watch": "vitest watch",
+		"prepare": "husky"
 	},
 	"dependencies": {
 		"@base-ui/react": "^1.4.1",
@@ -39,7 +41,7 @@
 		"zustand": "^5.0.5"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.1.1",
+		"@eslint/js": "^10.0.1",
 		"@tailwindcss/vite": "^4.1.8",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/react": "^16.3.0",
@@ -48,16 +50,35 @@
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
 		"@vitejs/plugin-react": "^6.0.1",
+		"eslint": "^10.3.0",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-prettier": "^5.5.5",
+		"eslint-plugin-react": "^7.37.5",
+		"eslint-plugin-react-hooks": "^7.1.1",
+		"eslint-plugin-sonarjs": "^4.0.3",
 		"globals": "^17.5.0",
+		"husky": "^9.1.7",
 		"jsdom": "^26.1.0",
+		"lint-staged": "^17.0.2",
+		"prettier": "^3.8.3",
 		"tailwindcss": "^4.1.8",
 		"typescript": "~6.0.2",
+		"typescript-eslint": "^8.59.2",
 		"vite": "^8.0.10",
 		"vitest": "^3.2.4"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"esbuild"
+		]
+	},
+	"lint-staged": {
+		"*.{ts,tsx}": [
+			"eslint --fix --max-warnings 0",
+			"prettier --write"
+		],
+		"*.{json,md,css,yml,yaml}": [
+			"prettier --write"
 		]
 	}
 }

@@ -47,6 +47,7 @@ import {
 	type TimelineEntry,
 } from "@/shared/components";
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export default function ItemDetailPage() {
 	const { t } = useTranslation();
 	const { id } = useParams<{ id: string }>();

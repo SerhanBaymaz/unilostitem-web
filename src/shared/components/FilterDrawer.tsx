@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react";
 import { CheckCircle2, Circle, Clock, Flag, SlidersHorizontal, XCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,7 @@ interface FilterDrawerProps {
 
 const ITEM_STATUSES = ["Active", "Resolved", "PendingApproval", "Rejected", "Flagged"] as const;
 
-const STATUS_ICONS: Record<string, any> = {
+const STATUS_ICONS: Record<string, LucideIcon> = {
 	Active: Circle,
 	Resolved: CheckCircle2,
 	PendingApproval: Clock,
