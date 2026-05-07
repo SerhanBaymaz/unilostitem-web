@@ -43,7 +43,7 @@ export function CategoryBadge({
 
 	return (
 		<div
-			className={`inline-flex items-center gap-1.5 rounded-full bg-stone-50 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-stone-400 border border-stone-100 ${className}`}
+			className={`inline-flex items-center gap-1.5 rounded-full bg-stone-50 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-stone-400 border border-stone-100 dark:bg-stone-800 dark:border-stone-700 dark:text-stone-500 ${className}`}
 		>
 			{showIcon && <Icon className={iconClassName} />}
 			<span>{t(`categories.${category}`)}</span>

@@ -22,7 +22,7 @@ export function EmptyState({
 		<div
 			className={`flex flex-col items-center justify-center py-16 text-center ${className ?? ""}`}
 		>
-			<Icon className="mb-4 h-12 w-12 text-stone-300" strokeWidth={1.5} />
+			<Icon className="mb-4 h-12 w-12 text-stone-300 dark:text-stone-600" strokeWidth={1.5} />
 			<p className="text-base text-text-secondary">{message}</p>
 			{subMessage && <p className="mt-1 text-[13px] text-text-tertiary">{subMessage}</p>}
 			{actionLabel && onAction && (

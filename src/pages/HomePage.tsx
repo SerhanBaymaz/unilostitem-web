@@ -108,26 +108,28 @@ export default function HomePage() {
 			{/* ===== Items Panel ===== */}
 			<div
 				ref={sheetRef}
-				className="flex flex-1 flex-col border-t border-stone-200 bg-background md:h-full md:w-[45%] md:border-l md:border-t-0 md:overflow-y-auto"
+				className="flex flex-1 flex-col border-t border-stone-200 bg-background dark:border-stone-700 md:h-full md:w-[45%] md:border-l md:border-t-0 md:overflow-y-auto"
 			>
 				{/* Drag Handle (mobile only) */}
 				<button
 					type="button"
 					onClick={() => setSheetExpanded(!sheetExpanded)}
-					className="flex items-center justify-center gap-1 border-b border-stone-100 py-2 md:hidden"
+					className="flex items-center justify-center gap-1 border-b border-stone-100 py-2 dark:border-stone-800 md:hidden"
 				>
-					<div className="h-1 w-8 rounded-full bg-stone-300" />
+					<div className="h-1 w-8 rounded-full bg-stone-300 dark:bg-stone-600" />
 					{sheetExpanded ? (
-						<ChevronDown className="absolute h-4 w-4 text-stone-400" />
+						<ChevronDown className="absolute h-4 w-4 text-stone-400 dark:text-stone-500" />
 					) : (
-						<ChevronUp className="absolute h-4 w-4 text-stone-400" />
+						<ChevronUp className="absolute h-4 w-4 text-stone-400 dark:text-stone-500" />
 					)}
 				</button>
 
 				{/* Panel Header */}
-				<div className="flex flex-col border-b border-stone-100 px-4 py-3 gap-3">
+				<div className="flex flex-col border-b border-stone-100 dark:border-stone-800 px-4 py-3 gap-3">
 					<div className="flex items-center justify-between">
-						<h2 className="font-heading text-lg text-stone-900">{t("items.title")}</h2>
+						<h2 className="font-heading text-lg text-stone-900 dark:text-stone-50">
+							{t("items.title")}
+						</h2>
 						{hasFilters && (
 							<Button
 								variant="ghost"
@@ -144,7 +146,7 @@ export default function HomePage() {
 					{/* Relocated Search & Filter */}
 					<div className="flex gap-2">
 						<div className="relative flex-1">
-							<Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+							<Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400 dark:text-stone-500" />
 							<Input
 								ref={searchInputRef}
 								placeholder={t("common.search")}
@@ -156,7 +158,7 @@ export default function HomePage() {
 										pageNumber: 1,
 									}));
 								}}
-								className="h-9 bg-stone-50 pl-9 text-sm placeholder:text-stone-400 focus:bg-white"
+								className="h-9 bg-stone-50 pl-9 text-sm placeholder:text-stone-400 focus:bg-white dark:bg-stone-900 dark:placeholder:text-stone-500 dark:focus:bg-card"
 							/>
 							{searchTerm && (
 								<button
@@ -169,7 +171,7 @@ export default function HomePage() {
 										}));
 										searchInputRef.current?.focus();
 									}}
-									className="absolute right-2 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+									className="absolute right-2 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 dark:text-stone-500 dark:hover:text-stone-300"
 								>
 									<X className="h-4 w-4" />
 								</button>
@@ -187,7 +189,7 @@ export default function HomePage() {
 					</div>
 
 					{data?.pagination && (
-						<p className="text-[12px] text-stone-400">
+						<p className="text-[12px] text-stone-400 dark:text-stone-500">
 							{data.pagination.totalCount} {t("nav.items")}
 						</p>
 					)}

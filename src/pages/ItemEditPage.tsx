@@ -17,8 +17,8 @@ export default function ItemEditPage() {
 	if (error || !item) {
 		return (
 			<div className="flex min-h-[60svh] flex-col items-center justify-center gap-4 px-4 text-center">
-				<PackageSearch className="h-16 w-16 text-stone-300" />
-				<p className="text-stone-500">{t("common.noResults")}</p>
+				<PackageSearch className="h-16 w-16 text-stone-300 dark:text-stone-600" />
+				<p className="text-stone-500 dark:text-stone-400">{t("common.noResults")}</p>
 				<Button variant="outline" render={<Link to="/" />}>
 					<ArrowLeft className="mr-2 h-4 w-4" />
 					{t("common.back")}
@@ -30,10 +30,10 @@ export default function ItemEditPage() {
 	return (
 		<div className="mx-auto max-w-xl px-4 py-6 md:px-6 md:py-8">
 			<div className="mb-6">
-				<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">
+				<h1 className="font-heading text-2xl text-stone-900 dark:text-stone-50 md:text-[28px]">
 					{t("items.editItem")}
 				</h1>
-				<p className="mt-1.5 text-[14px] text-stone-500">{item.title}</p>
+				<p className="mt-1.5 text-[14px] text-stone-500 dark:text-stone-400">{item.title}</p>
 			</div>
 
 			<ItemForm item={item} onSubmit={updateMutation.mutate} isPending={updateMutation.isPending} />

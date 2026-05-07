@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useAuthStore } from "@/features/auth/store/authStore";
+import { ThemeToggle } from "@/shared/components/ThemeToggle";
 import { useLocaleStore } from "@/shared/store/localeStore";
 
 const publicNavLinks = [{ path: "/", labelKey: "nav.home" }] as const;
@@ -55,10 +56,10 @@ export function Header() {
 		: publicNavLinks;
 
 	return (
-		<header className="sticky top-0 z-50 border-b border-stone-200 bg-background/95 backdrop-blur-sm">
+		<header className="sticky top-0 z-50 border-b border-stone-200 bg-background/95 backdrop-blur-sm dark:border-stone-700">
 			<div className="mx-auto flex h-[60px] max-w-screen-xl items-center justify-between px-4 md:px-6">
 				{/* Logo */}
-				<Link to="/" className="font-heading text-xl text-stone-900">
+				<Link to="/" className="font-heading text-xl text-stone-900 dark:text-stone-50">
 					UniLostItem
 				</Link>
 
@@ -69,7 +70,9 @@ export function Header() {
 							key={link.path}
 							to={link.path}
 							className={`rounded-md px-3 py-1.5 text-[13px] font-medium uppercase tracking-[0.08em] transition-colors ${
-								isActive(link.path) ? "text-stone-900" : "text-stone-500 hover:text-stone-900"
+								isActive(link.path)
+									? "text-stone-900 dark:text-stone-50"
+									: "text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-50"
 							}`}
 						>
 							{t(link.labelKey)}
@@ -85,6 +88,9 @@ export function Header() {
 							{t("items.addItem")}
 						</Button>
 					)}
+
+					{/* Theme Toggle */}
+					<ThemeToggle />
 
 					{/* Locale Toggle */}
 					<DropdownMenu>
@@ -134,7 +140,7 @@ export function Header() {
 						<DropdownMenu>
 							<DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" />}>
 								<Avatar className="h-7 w-7">
-									<AvatarFallback className="bg-stone-100 text-xs font-semibold text-stone-600">
+									<AvatarFallback className="bg-stone-100 text-xs font-semibold text-stone-600 dark:bg-stone-700 dark:text-stone-300">
 										{user.firstName[0]}
 										{user.lastName[0]}
 									</AvatarFallback>
@@ -178,6 +184,7 @@ export function Header() {
 
 				{/* Mobile Controls */}
 				<div className="flex items-center gap-1 md:hidden">
+					<ThemeToggle />
 					<DropdownMenu>
 						<DropdownMenuTrigger
 							render={
@@ -224,7 +231,7 @@ export function Header() {
 						<DropdownMenu>
 							<DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" />}>
 								<Avatar className="h-7 w-7">
-									<AvatarFallback className="bg-stone-100 text-xs font-semibold text-stone-600">
+									<AvatarFallback className="bg-stone-100 text-xs font-semibold text-stone-600 dark:bg-stone-700 dark:text-stone-300">
 										{user?.firstName[0]}
 										{user?.lastName[0]}
 									</AvatarFallback>
@@ -267,7 +274,9 @@ export function Header() {
 						</SheetTrigger>
 						<SheetContent side="left" className="w-72 bg-background">
 							<SheetHeader>
-								<SheetTitle className="font-heading text-xl text-stone-900">UniLostItem</SheetTitle>
+								<SheetTitle className="font-heading text-xl text-stone-900 dark:text-stone-50">
+									UniLostItem
+								</SheetTitle>
 							</SheetHeader>
 							<nav className="mt-6 flex flex-col gap-1">
 								{navLinks.map((link) => (
@@ -276,8 +285,8 @@ export function Header() {
 										to={link.path}
 										className={`rounded-md px-3 py-2.5 text-sm font-medium uppercase tracking-[0.08em] transition-colors ${
 											isActive(link.path)
-												? "bg-stone-100 text-stone-900"
-												: "text-stone-500 hover:bg-stone-50 hover:text-stone-900"
+												? "bg-stone-100 text-stone-900 dark:bg-stone-800 dark:text-stone-50"
+												: "text-stone-500 hover:bg-stone-50 hover:text-stone-900 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-50"
 										}`}
 									>
 										{t(link.labelKey)}
@@ -285,16 +294,16 @@ export function Header() {
 								))}
 								{isAuthenticated && (
 									<>
-										<div className="my-2 h-px bg-stone-200" />
+										<div className="my-2 h-px bg-stone-200 dark:bg-stone-700" />
 										<Link
 											to="/items/new"
-											className="rounded-md px-3 py-2.5 text-sm font-medium uppercase tracking-[0.08em] text-stone-500 transition-colors hover:bg-stone-50 hover:text-stone-900"
+											className="rounded-md px-3 py-2.5 text-sm font-medium uppercase tracking-[0.08em] text-stone-500 transition-colors hover:bg-stone-50 hover:text-stone-900 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-50"
 										>
 											{t("items.addItem")}
 										</Link>
 										<Link
 											to="/profile"
-											className="rounded-md px-3 py-2.5 text-sm font-medium uppercase tracking-[0.08em] text-stone-500 transition-colors hover:bg-stone-50 hover:text-stone-900"
+											className="rounded-md px-3 py-2.5 text-sm font-medium uppercase tracking-[0.08em] text-stone-500 transition-colors hover:bg-stone-50 hover:text-stone-900 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-50"
 										>
 											{t("nav.profile")}
 										</Link>

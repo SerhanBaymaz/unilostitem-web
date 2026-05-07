@@ -11,5 +11,6 @@ export { ItemTypeBadge } from "./ItemTypeBadge";
 export { ItemCardSkeleton, ItemDetailSkeleton, ListSkeleton } from "./LoadingSkeleton";
 export { Pagination } from "./Pagination";
 export { ProtectedRoute } from "./ProtectedRoute";
+export { ThemeToggle } from "./ThemeToggle";
 export type { TimelineEntry } from "./Timeline";
 export { Timeline } from "./Timeline";

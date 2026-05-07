@@ -16,9 +16,9 @@ const dotColors: Record<ClaimStatus, string> = {
 	Pending: "bg-amber-500",
 	ApprovedByOwner: "bg-emerald-500",
 	ApprovedByAdmin: "bg-emerald-500",
-	RejectedByOwner: "bg-stone-300",
-	RejectedByAdmin: "bg-stone-300",
-	Cancelled: "bg-stone-300",
+	RejectedByOwner: "bg-stone-300 dark:bg-stone-600",
+	RejectedByAdmin: "bg-stone-300 dark:bg-stone-600",
+	Cancelled: "bg-stone-300 dark:bg-stone-600",
 };
 
 function formatTimelineDate(dateStr: string): string {
@@ -35,7 +35,7 @@ function formatTimelineDate(dateStr: string): string {
 export function Timeline({ entries, currentStatus }: TimelineProps) {
 	return (
 		<div className="relative pl-6">
-			<div className="absolute bottom-0 left-[9px] top-2 w-px bg-stone-200" />
+			<div className="absolute bottom-0 left-[9px] top-2 w-px bg-stone-200 dark:bg-stone-700" />
 			<div className="flex flex-col gap-4">
 				{entries.map((entry, index) => {
 					const isCurrent =
@@ -47,12 +47,14 @@ export function Timeline({ entries, currentStatus }: TimelineProps) {
 							<div
 								className={`absolute -left-6 top-1 h-[10px] w-[10px] rounded-full ${
 									dotColors[entry.status]
-								} ${isCurrent ? "ring-4 ring-amber-100" : ""}`}
+								} ${isCurrent ? "ring-4 ring-amber-100 dark:ring-amber-900/50" : ""}`}
 							/>
 							<div className="pb-1">
 								<time className="text-xs text-text-tertiary">{formatTimelineDate(entry.date)}</time>
-								<p className="text-sm font-semibold text-stone-900">{entry.actor}</p>
-								<p className="text-sm text-stone-600">{entry.description}</p>
+								<p className="text-sm font-semibold text-stone-900 dark:text-stone-50">
+									{entry.actor}
+								</p>
+								<p className="text-sm text-stone-600 dark:text-stone-400">{entry.description}</p>
 							</div>
 						</div>
 					);

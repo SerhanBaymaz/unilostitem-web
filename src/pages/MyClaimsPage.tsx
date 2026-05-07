@@ -19,10 +19,10 @@ export default function MyClaimsPage() {
 	return (
 		<div className="mx-auto max-w-4xl p-4 md:p-6 lg:p-8">
 			<div className="mb-8">
-				<h1 className="font-heading text-2xl text-stone-900 md:text-[32px]">
+				<h1 className="font-heading text-2xl text-stone-900 dark:text-stone-50 md:text-[32px]">
 					{t("profile.myClaims")}
 				</h1>
-				<p className="mt-1.5 text-sm text-stone-500">
+				<p className="mt-1.5 text-sm text-stone-500 dark:text-stone-400">
 					Oluşturduğunuz tüm talepleri ve durumlarını buradan takip edebilirsiniz.
 				</p>
 			</div>
@@ -41,19 +41,19 @@ export default function MyClaimsPage() {
 						<Link
 							key={claim.id}
 							to={`/claims/${claim.id}`}
-							className="group relative flex flex-col gap-4 rounded-2xl border border-stone-100 bg-card p-5 shadow-warm-1 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-warm-2 active:scale-[0.99]"
+							className="group relative flex flex-col gap-4 rounded-2xl border border-stone-100 bg-card p-5 shadow-warm-1 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-warm-2 active:scale-[0.99] dark:border-stone-800"
 						>
 							<div className="flex items-start justify-between gap-4">
 								<div className="flex items-center gap-3 min-w-0">
-									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/50">
 										<PackageSearch className="h-5 w-5" />
 									</div>
 									<div className="min-w-0">
-										<h3 className="truncate text-[16px] font-bold text-stone-900 group-hover:text-amber-600 transition-colors">
+										<h3 className="truncate text-[16px] font-bold text-stone-900 group-hover:text-amber-600 transition-colors dark:text-stone-50">
 											{claim.itemTitle}
 										</h3>
 										<div className="mt-1 flex items-center gap-2">
-											<div className="flex items-center gap-1.5 text-[12px] text-stone-400">
+											<div className="flex items-center gap-1.5 text-[12px] text-stone-400 dark:text-stone-500">
 												<Calendar className="h-3 w-3" />
 												<span>{formatDate(claim.createdAt)}</span>
 											</div>
@@ -64,8 +64,8 @@ export default function MyClaimsPage() {
 								<ClaimStatusBadge status={claim.status} />
 							</div>
 
-							<div className="flex flex-col gap-3 rounded-xl bg-stone-50/50 p-3 border border-stone-100/50">
-								<p className="line-clamp-2 text-[13.5px] leading-relaxed text-stone-600 italic">
+							<div className="flex flex-col gap-3 rounded-xl bg-stone-50/50 p-3 border border-stone-100/50 dark:bg-stone-900/50 dark:border-stone-800/50">
+								<p className="line-clamp-2 text-[13.5px] leading-relaxed text-stone-600 italic dark:text-stone-300">
 									&ldquo;{claim.description}&rdquo;
 								</p>
 							</div>
@@ -73,7 +73,7 @@ export default function MyClaimsPage() {
 							<div className="flex items-center justify-between mt-1">
 								<div className="flex items-center gap-4">
 									{claim.expiresAt && (
-										<div className="flex items-center gap-1.5 text-[11px] font-medium text-stone-400">
+										<div className="flex items-center gap-1.5 text-[11px] font-medium text-stone-400 dark:text-stone-500">
 											<Clock className="h-3 w-3" />
 											<span>Sonlanma: {new Date(claim.expiresAt).toLocaleDateString("tr-TR")}</span>
 										</div>
