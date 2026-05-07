@@ -56,10 +56,12 @@ export default function RegisterPage() {
 		<>
 			{/* Header */}
 			<div className="mb-6 text-center">
-				<h1 className="font-heading text-2xl text-stone-900 sm:text-[28px]">
+				<h1 className="font-heading text-2xl text-stone-900 sm:text-[28px] dark:text-stone-50">
 					{t("auth.registerTitle")}
 				</h1>
-				<p className="mt-1.5 text-[14px] text-stone-500">{t("auth.registerSubtitle")}</p>
+				<p className="mt-1.5 text-[14px] text-stone-500 dark:text-stone-400">
+					{t("auth.registerSubtitle")}
+				</p>
 			</div>
 
 			{/* Form */}
@@ -67,14 +69,14 @@ export default function RegisterPage() {
 				{/* Name Row */}
 				<div className="grid grid-cols-2 gap-3">
 					<div className="space-y-1.5">
-						<Label htmlFor="firstName" className="text-stone-700">
+						<Label htmlFor="firstName" className="text-stone-700 dark:text-stone-300">
 							{t("auth.firstName")}
 						</Label>
 						<Input
 							id="firstName"
 							autoComplete="given-name"
 							aria-invalid={!!errors.firstName}
-							className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+							className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20 dark:border-stone-700 dark:bg-stone-800/50 dark:placeholder:text-stone-500"
 							{...register("firstName")}
 						/>
 						{errors.firstName?.message && (
@@ -82,14 +84,14 @@ export default function RegisterPage() {
 						)}
 					</div>
 					<div className="space-y-1.5">
-						<Label htmlFor="lastName" className="text-stone-700">
+						<Label htmlFor="lastName" className="text-stone-700 dark:text-stone-300">
 							{t("auth.lastName")}
 						</Label>
 						<Input
 							id="lastName"
 							autoComplete="family-name"
 							aria-invalid={!!errors.lastName}
-							className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+							className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20 dark:border-stone-700 dark:bg-stone-800/50 dark:placeholder:text-stone-500"
 							{...register("lastName")}
 						/>
 						{errors.lastName?.message && (
@@ -98,11 +100,11 @@ export default function RegisterPage() {
 					</div>
 				</div>
 
-				<Separator className="!bg-stone-100" />
+				<Separator className="!bg-stone-100 dark:!bg-stone-800" />
 
 				{/* Email */}
 				<div className="space-y-1.5">
-					<Label htmlFor="reg-email" className="text-stone-700">
+					<Label htmlFor="reg-email" className="text-stone-700 dark:text-stone-300">
 						{t("auth.email")}
 					</Label>
 					<Input
@@ -111,7 +113,7 @@ export default function RegisterPage() {
 						autoComplete="email"
 						placeholder="ornek@universite.edu.tr"
 						aria-invalid={!!errors.email}
-						className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+						className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20 dark:border-stone-700 dark:bg-stone-800/50 dark:placeholder:text-stone-500"
 						{...register("email")}
 					/>
 					{errors.email?.message && (
@@ -122,7 +124,7 @@ export default function RegisterPage() {
 				{/* Password Row */}
 				<div className="grid grid-cols-2 gap-3">
 					<div className="space-y-1.5">
-						<Label htmlFor="reg-password" className="text-stone-700">
+						<Label htmlFor="reg-password" className="text-stone-700 dark:text-stone-300">
 							{t("auth.password")}
 						</Label>
 						<Input
@@ -130,7 +132,7 @@ export default function RegisterPage() {
 							type="password"
 							autoComplete="new-password"
 							aria-invalid={!!errors.password}
-							className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+							className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20 dark:border-stone-700 dark:bg-stone-800/50 dark:placeholder:text-stone-500"
 							{...register("password")}
 						/>
 						{errors.password?.message && (
@@ -138,7 +140,7 @@ export default function RegisterPage() {
 						)}
 					</div>
 					<div className="space-y-1.5">
-						<Label htmlFor="confirmPassword" className="text-stone-700">
+						<Label htmlFor="confirmPassword" className="text-stone-700 dark:text-stone-300">
 							{t("auth.confirmPassword")}
 						</Label>
 						<Input
@@ -146,7 +148,7 @@ export default function RegisterPage() {
 							type="password"
 							autoComplete="new-password"
 							aria-invalid={!!errors.confirmPassword}
-							className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+							className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20 dark:border-stone-700 dark:bg-stone-800/50 dark:placeholder:text-stone-500"
 							{...register("confirmPassword")}
 						/>
 						{errors.confirmPassword?.message && (
@@ -157,16 +159,18 @@ export default function RegisterPage() {
 
 				{/* Phone (Optional) */}
 				<div className="space-y-1.5">
-					<Label htmlFor="phoneNumber" className="text-stone-700">
+					<Label htmlFor="phoneNumber" className="text-stone-700 dark:text-stone-300">
 						{t("auth.phoneNumber")}{" "}
-						<span className="font-normal text-stone-400">({t("common.close").toLowerCase()})</span>
+						<span className="font-normal text-stone-400 dark:text-stone-500">
+							({t("common.close").toLowerCase()})
+						</span>
 					</Label>
 					<Input
 						id="phoneNumber"
 						type="tel"
 						autoComplete="tel"
 						placeholder="05XX XXX XX XX"
-						className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+						className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20 dark:border-stone-700 dark:bg-stone-800/50 dark:placeholder:text-stone-500"
 						{...register("phoneNumber")}
 					/>
 				</div>
@@ -183,7 +187,7 @@ export default function RegisterPage() {
 			</form>
 
 			{/* Footer */}
-			<p className="mt-6 text-center text-[14px] text-stone-500">
+			<p className="mt-6 text-center text-[14px] text-stone-500 dark:text-stone-400">
 				{t("auth.hasAccount")}{" "}
 				<Link
 					to="/login"

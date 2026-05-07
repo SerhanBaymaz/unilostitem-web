@@ -37,17 +37,19 @@ export default function LoginPage() {
 		<>
 			{/* Header */}
 			<div className="mb-6 text-center">
-				<h1 className="font-heading text-2xl text-stone-900 sm:text-[28px]">
+				<h1 className="font-heading text-2xl text-stone-900 sm:text-[28px] dark:text-stone-50">
 					{t("auth.loginTitle")}
 				</h1>
-				<p className="mt-1.5 text-[14px] text-stone-500">{t("auth.loginSubtitle")}</p>
+				<p className="mt-1.5 text-[14px] text-stone-500 dark:text-stone-400">
+					{t("auth.loginSubtitle")}
+				</p>
 			</div>
 
 			{/* Form */}
 			<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 				{/* Email */}
 				<div className="space-y-1.5">
-					<Label htmlFor="email" className="text-stone-700">
+					<Label htmlFor="email" className="text-stone-700 dark:text-stone-300">
 						{t("auth.email")}
 					</Label>
 					<Input
@@ -56,7 +58,7 @@ export default function LoginPage() {
 						autoComplete="email"
 						placeholder="ornek@universite.edu.tr"
 						aria-invalid={!!errors.email}
-						className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+						className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20 dark:border-stone-700 dark:bg-stone-800/50 dark:placeholder:text-stone-500"
 						{...register("email")}
 					/>
 					{errors.email?.message && (
@@ -66,7 +68,7 @@ export default function LoginPage() {
 
 				{/* Password */}
 				<div className="space-y-1.5">
-					<Label htmlFor="password" className="text-stone-700">
+					<Label htmlFor="password" className="text-stone-700 dark:text-stone-300">
 						{t("auth.password")}
 					</Label>
 					<Input
@@ -74,7 +76,7 @@ export default function LoginPage() {
 						type="password"
 						autoComplete="current-password"
 						aria-invalid={!!errors.password}
-						className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+						className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20 dark:border-stone-700 dark:bg-stone-800/50 dark:placeholder:text-stone-500"
 						{...register("password")}
 					/>
 					{errors.password?.message && (
@@ -94,7 +96,7 @@ export default function LoginPage() {
 			</form>
 
 			{/* Footer */}
-			<p className="mt-6 text-center text-[14px] text-stone-500">
+			<p className="mt-6 text-center text-[14px] text-stone-500 dark:text-stone-400">
 				{t("auth.noAccount")}{" "}
 				<Link
 					to="/register"

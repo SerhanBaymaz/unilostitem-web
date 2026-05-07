@@ -60,9 +60,9 @@ export function FilterDrawer({
 			>
 				<div className="flex flex-col h-full max-h-[85svh]">
 					{/* Header */}
-					<div className="flex items-center justify-between border-b border-stone-100 px-6 py-4">
+					<div className="flex items-center justify-between border-b border-stone-100 px-6 py-4 dark:border-stone-800">
 						<SheetHeader>
-							<SheetTitle className="text-left font-heading text-xl text-stone-900">
+							<SheetTitle className="text-left font-heading text-xl text-stone-900 dark:text-stone-50">
 								{t("common.filter")}
 							</SheetTitle>
 						</SheetHeader>
@@ -71,7 +71,7 @@ export function FilterDrawer({
 								variant="ghost"
 								size="sm"
 								onClick={onReset}
-								className="h-8 text-xs font-semibold text-amber-600 hover:bg-amber-50 hover:text-amber-700"
+								className="h-8 text-xs font-semibold text-amber-600 hover:bg-amber-50 hover:text-amber-700 dark:hover:bg-amber-950/50 dark:hover:text-amber-400"
 							>
 								{t("common.resetFilters")}
 							</Button>
@@ -116,15 +116,15 @@ export function FilterDrawer({
 											onClick={() => onCategoryChange?.(isSelected ? undefined : cat)}
 											className={`flex flex-col items-center justify-center gap-2 rounded-xl border p-3 transition-all ${
 												isSelected
-													? "border-primary bg-amber-50/50 ring-1 ring-primary"
-													: "border-stone-100 bg-stone-50/50 hover:border-stone-200 hover:bg-stone-50"
+													? "border-primary bg-amber-50/50 ring-1 ring-primary dark:bg-amber-950/50"
+													: "border-stone-100 bg-stone-50/50 hover:border-stone-200 hover:bg-stone-50 dark:border-stone-800 dark:bg-stone-800/50 dark:hover:border-stone-700 dark:hover:bg-stone-800"
 											}`}
 										>
 											<Icon
-												className={`h-5 w-5 ${isSelected ? "text-primary" : "text-stone-400"}`}
+												className={`h-5 w-5 ${isSelected ? "text-primary" : "text-stone-400 dark:text-stone-500"}`}
 											/>
 											<span
-												className={`text-[11px] font-medium leading-tight ${isSelected ? "text-stone-900" : "text-stone-500"}`}
+												className={`text-[11px] font-medium leading-tight ${isSelected ? "text-stone-900 dark:text-stone-50" : "text-stone-500 dark:text-stone-400"}`}
 											>
 												{t(`categories.${cat}`)}
 											</span>
@@ -145,8 +145,8 @@ export function FilterDrawer({
 									onClick={() => onStatusChange?.(undefined)}
 									className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 transition-all text-sm ${
 										!status
-											? "border-primary bg-amber-50/50 ring-1 ring-primary text-stone-900 font-semibold"
-											: "border-stone-100 bg-stone-50/50 hover:border-stone-200 hover:bg-stone-50 text-stone-500"
+											? "border-primary bg-amber-50/50 ring-1 ring-primary text-stone-900 font-semibold dark:bg-amber-950/50 dark:text-stone-50"
+											: "border-stone-100 bg-stone-50/50 hover:border-stone-200 hover:bg-stone-50 text-stone-500 dark:border-stone-800 dark:bg-stone-800/50 dark:hover:border-stone-700 dark:hover:bg-stone-800 dark:text-stone-400"
 									}`}
 								>
 									<span className="h-4 w-4 shrink-0 rounded-full border-2 border-current opacity-20" />
@@ -162,12 +162,12 @@ export function FilterDrawer({
 											onClick={() => onStatusChange?.(isSelected ? undefined : s)}
 											className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 transition-all text-sm ${
 												isSelected
-													? "border-primary bg-amber-50/50 ring-1 ring-primary text-stone-900 font-semibold"
-													: "border-stone-100 bg-stone-50/50 hover:border-stone-200 hover:bg-stone-50 text-stone-500"
+													? "border-primary bg-amber-50/50 ring-1 ring-primary text-stone-900 font-semibold dark:bg-amber-950/50 dark:text-stone-50"
+													: "border-stone-100 bg-stone-50/50 hover:border-stone-200 hover:bg-stone-50 text-stone-500 dark:border-stone-800 dark:bg-stone-800/50 dark:hover:border-stone-700 dark:hover:bg-stone-800 dark:text-stone-400"
 											}`}
 										>
 											<Icon
-												className={`h-4 w-4 shrink-0 ${isSelected ? "text-primary" : "text-stone-400"}`}
+												className={`h-4 w-4 shrink-0 ${isSelected ? "text-primary" : "text-stone-400 dark:text-stone-500"}`}
 											/>
 											<span className="truncate">{t(`items.${s.toLowerCase()}`)}</span>
 										</button>
@@ -178,7 +178,7 @@ export function FilterDrawer({
 					</div>
 
 					{/* Footer Button */}
-					<div className="border-t border-stone-100 p-4 bg-white md:hidden">
+					<div className="border-t border-stone-100 p-4 bg-white md:hidden dark:border-stone-800 dark:bg-card">
 						<SheetTrigger render={<Button className="w-full h-11 rounded-xl" />}>
 							{t("common.confirm") || "Uygula"}
 						</SheetTrigger>

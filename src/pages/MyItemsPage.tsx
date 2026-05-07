@@ -40,7 +40,7 @@ export default function MyItemsPage() {
 
 	return (
 		<div className="mx-auto max-w-3xl p-4 md:p-6">
-			<h1 className="mb-6 font-heading text-2xl text-stone-900 md:text-[28px]">
+			<h1 className="mb-6 font-heading text-2xl text-stone-900 md:text-[28px] dark:text-stone-50">
 				{t("profile.myItems")}
 			</h1>
 
@@ -77,14 +77,14 @@ function ItemWithClaims({ item }: { item: Item }) {
 	const hasClaims = (item.claimCount ?? 0) > 0;
 
 	return (
-		<div className="overflow-hidden rounded-xl border border-stone-100 bg-card shadow-warm-1 transition-all duration-200 hover:shadow-warm-2">
+		<div className="overflow-hidden rounded-xl border border-stone-100 bg-card shadow-warm-1 transition-all duration-200 hover:shadow-warm-2 dark:border-stone-800">
 			{/* Item Row - clickable */}
 			<Link
 				to={`/items/${item.id}`}
-				className="group flex items-center gap-4 p-4 transition-colors hover:bg-stone-50/50"
+				className="group flex items-center gap-4 p-4 transition-colors hover:bg-stone-50/50 dark:hover:bg-stone-800/50"
 			>
 				{/* Image */}
-				<div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-50 border border-stone-100/50">
+				<div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-50 border border-stone-100/50 dark:bg-stone-800/50 dark:border-stone-800">
 					{item.imageUrl ? (
 						<img
 							src={item.imageUrl}
@@ -94,7 +94,7 @@ function ItemWithClaims({ item }: { item: Item }) {
 						/>
 					) : (
 						<div className="flex h-full w-full items-center justify-center">
-							<PackageSearch className="h-8 w-8 text-stone-200" />
+							<PackageSearch className="h-8 w-8 text-stone-200 dark:text-stone-700" />
 						</div>
 					)}
 				</div>
@@ -102,13 +102,13 @@ function ItemWithClaims({ item }: { item: Item }) {
 				{/* Content */}
 				<div className="min-w-0 flex-1">
 					<div className="flex items-center gap-2 flex-wrap">
-						<h3 className="truncate text-[15px] font-bold tracking-tight text-stone-900 group-hover:text-amber-600 transition-colors">
+						<h3 className="truncate text-[15px] font-bold tracking-tight text-stone-900 group-hover:text-amber-600 transition-colors dark:text-stone-50">
 							{item.title}
 						</h3>
 						<ItemStatusBadge status={item.status} />
 						<ItemTypeBadge type={item.itemType} />
 					</div>
-					<div className="mt-1 flex items-center gap-3 text-[12px] text-stone-400">
+					<div className="mt-1 flex items-center gap-3 text-[12px] text-stone-400 dark:text-stone-500">
 						<User className="h-3 w-3" />
 						<span>
 							{item.claimCount || 0} {t("claims.title")}
@@ -117,7 +117,9 @@ function ItemWithClaims({ item }: { item: Item }) {
 				</div>
 
 				{/* Chevron for accordion - only if has claims */}
-				{hasClaims && <PackageSearch className="h-4 w-4 shrink-0 text-stone-300" />}
+				{hasClaims && (
+					<PackageSearch className="h-4 w-4 shrink-0 text-stone-300 dark:text-stone-600" />
+				)}
 			</Link>
 
 			{/* Claims Accordion */}
@@ -126,7 +128,7 @@ function ItemWithClaims({ item }: { item: Item }) {
 					<button
 						type="button"
 						onClick={() => setIsOpen(!isOpen)}
-						className="flex w-full items-center gap-2 border-t border-stone-100 bg-stone-50/50 px-4 py-2.5 text-[12px] font-semibold uppercase tracking-wider text-stone-500 transition-colors hover:bg-stone-50 hover:text-stone-700"
+						className="flex w-full items-center gap-2 border-t border-stone-100 bg-stone-50/50 px-4 py-2.5 text-[12px] font-semibold uppercase tracking-wider text-stone-500 transition-colors hover:bg-stone-50 hover:text-stone-700 dark:border-stone-800 dark:bg-stone-900/50 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-300"
 					>
 						<MessageSquare className="h-3.5 w-3.5" />
 						{t("claims.receivedClaims")} ({item.claimCount})
@@ -136,13 +138,13 @@ function ItemWithClaims({ item }: { item: Item }) {
 					</button>
 
 					{isOpen && (
-						<div className="border-t border-stone-100 bg-white">
+						<div className="border-t border-stone-100 bg-white dark:border-stone-800 dark:bg-card">
 							{claimsLoading ? (
 								<div className="p-4">
 									<ListSkeleton count={1} />
 								</div>
 							) : (
-								<div className="divide-y divide-stone-100">
+								<div className="divide-y divide-stone-100 dark:divide-stone-800">
 									{claims.map((claim) => (
 										<ClaimItemCard key={claim.id} claim={claim} />
 									))}
@@ -184,12 +186,14 @@ function ClaimItemCard({ claim }: { claim: Claim }) {
 			<div className="px-4 py-3">
 				<div className="flex items-start justify-between gap-3">
 					<div className="flex items-center gap-2 min-w-0">
-						<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-stone-100">
-							<User className="h-3.5 w-3.5 text-stone-500" />
+						<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-stone-100 dark:bg-stone-800">
+							<User className="h-3.5 w-3.5 text-stone-500 dark:text-stone-400" />
 						</div>
 						<div className="min-w-0">
-							<span className="text-sm font-semibold text-stone-900">{claim.claimantName}</span>
-							<span className="ml-2 text-[11px] text-stone-400">
+							<span className="text-sm font-semibold text-stone-900 dark:text-stone-50">
+								{claim.claimantName}
+							</span>
+							<span className="ml-2 text-[11px] text-stone-400 dark:text-stone-500">
 								{new Date(claim.createdAt).toLocaleDateString("tr-TR", {
 									day: "numeric",
 									month: "short",
@@ -200,7 +204,9 @@ function ClaimItemCard({ claim }: { claim: Claim }) {
 					<ClaimStatusBadge status={claim.status} />
 				</div>
 
-				<p className="mt-2 ml-9 text-[13px] leading-relaxed text-stone-600">{claim.description}</p>
+				<p className="mt-2 ml-9 text-[13px] leading-relaxed text-stone-600 dark:text-stone-300">
+					{claim.description}
+				</p>
 
 				{claim.status === "Pending" && (
 					<div className="mt-3 ml-9 flex gap-2">
@@ -240,7 +246,7 @@ function ClaimItemCard({ claim }: { claim: Claim }) {
 					</DialogHeader>
 					<form onSubmit={handleRespond} className="space-y-4">
 						<div className="space-y-1.5">
-							<Label htmlFor="respond-comment" className="text-stone-700">
+							<Label htmlFor="respond-comment" className="text-stone-700 dark:text-stone-300">
 								{t("claims.responseDescription")}
 							</Label>
 							<Textarea

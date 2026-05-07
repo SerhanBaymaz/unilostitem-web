@@ -13,16 +13,6 @@ React 19 + Vite 8 + TypeScript 6 (strict) | Tailwind CSS 4 + shadcn/ui | React Q
 - `pnpm check` — ESLint + Prettier check
 - `pnpm test` — run tests
 
-## Design Rules
-
-See DESIGN.md for full token reference.
-
-- Fonts: Instrument Serif (headings) + Plus Jakarta Sans (body)
-- Accent: Amber #D97706, Lost: Rose #E11D48, Found: Emerald #059669
-- Surfaces: Warm paper white #FAF9F7
-- No Inter, no indigo, no pill badges, no generic SaaS look
-- Mobile-first (375px base)
-
 ## Project Structure
 
 Feature-based: `src/features/{auth,items,claims,admin,profile}/`, shared code under `src/shared/`. UI primitives from shadcn/ui under `src/components/ui/`. Path alias: `@/` → `src/`.

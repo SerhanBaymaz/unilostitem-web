@@ -181,8 +181,8 @@ export default function ItemDetailPage() {
 	if (error || !item) {
 		return (
 			<div className="flex min-h-[60svh] flex-col items-center justify-center gap-4 px-4 text-center">
-				<PackageSearch className="h-16 w-16 text-stone-300" />
-				<p className="text-stone-500">{t("common.noResults")}</p>
+				<PackageSearch className="h-16 w-16 text-stone-300 dark:text-stone-600" />
+				<p className="text-stone-500 dark:text-stone-400">{t("common.noResults")}</p>
 				<Button variant="outline" onClick={() => navigate(-1)}>
 					<ArrowLeft className="mr-2 h-4 w-4" />
 					{t("common.back")}
@@ -199,7 +199,7 @@ export default function ItemDetailPage() {
 					variant="ghost"
 					size="sm"
 					onClick={() => navigate(-1)}
-					className="-ml-2 text-stone-500 hover:text-stone-900"
+					className="-ml-2 text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-50"
 				>
 					<ArrowLeft className="mr-1.5 h-4 w-4" />
 					{t("common.back")}
@@ -216,7 +216,7 @@ export default function ItemDetailPage() {
 				{/* Left Column: Image & Map */}
 				<div className="space-y-6 lg:col-span-7">
 					{/* Image Card */}
-					<div className="group relative aspect-video w-full overflow-hidden rounded-2xl bg-stone-100 border border-stone-200 shadow-warm-1 transition-all duration-500 hover:shadow-warm-2">
+					<div className="group relative aspect-video w-full overflow-hidden rounded-2xl bg-stone-100 border border-stone-200 shadow-warm-1 transition-all duration-500 hover:shadow-warm-2 dark:bg-stone-800 dark:border-stone-700">
 						{item.imageUrl ? (
 							<img
 								src={item.imageUrl}
@@ -225,7 +225,7 @@ export default function ItemDetailPage() {
 							/>
 						) : (
 							<div className="flex h-full w-full items-center justify-center">
-								<PackageSearch className="h-24 w-24 text-stone-200" />
+								<PackageSearch className="h-24 w-24 text-stone-200 dark:text-stone-600" />
 							</div>
 						)}
 						<div className="absolute bottom-4 left-4">
@@ -236,9 +236,9 @@ export default function ItemDetailPage() {
 					</div>
 
 					{/* Map Card */}
-					<div className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-warm-1">
-						<div className="border-b border-stone-100 px-6 py-4">
-							<h2 className="font-heading text-lg text-stone-900 flex items-center gap-2">
+					<div className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-warm-1 dark:border-stone-700 dark:bg-card">
+						<div className="border-b border-stone-100 px-6 py-4 dark:border-stone-800">
+							<h2 className="font-heading text-lg text-stone-900 flex items-center gap-2 dark:text-stone-50">
 								<MapPin className="h-5 w-5 text-amber-500" />
 								{t("items.locationInfo")}
 							</h2>
@@ -252,8 +252,8 @@ export default function ItemDetailPage() {
 									className="h-full w-full"
 								/>
 							) : (
-								<div className="flex h-full w-full flex-col items-center justify-center bg-stone-50 text-stone-400">
-									<MapPin className="mb-2 h-8 w-8 text-stone-200" />
+								<div className="flex h-full w-full flex-col items-center justify-center bg-stone-50 text-stone-400 dark:bg-stone-900 dark:text-stone-500">
+									<MapPin className="mb-2 h-8 w-8 text-stone-200 dark:text-stone-600" />
 									{t("items.noLocation")}
 								</div>
 							)}
@@ -263,8 +263,8 @@ export default function ItemDetailPage() {
 
 				{/* Right Column: Info & Actions */}
 				<div className="flex flex-col gap-6 lg:col-span-5">
-					<div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-warm-1 sm:p-8">
-						<h1 className="mb-4 font-heading text-3xl font-bold leading-tight tracking-tight text-stone-900 md:text-4xl">
+					<div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-warm-1 sm:p-8 dark:border-stone-700 dark:bg-card">
+						<h1 className="mb-4 font-heading text-3xl font-bold leading-tight tracking-tight text-stone-900 md:text-4xl dark:text-stone-50">
 							{item.title}
 						</h1>
 
@@ -275,62 +275,66 @@ export default function ItemDetailPage() {
 									<Label className="text-xs font-bold uppercase tracking-widest text-stone-400">
 										{t("items.description")}
 									</Label>
-									<p className="text-[15px] leading-relaxed text-stone-600">{item.description}</p>
+									<p className="text-[15px] leading-relaxed text-stone-600 dark:text-stone-400">
+										{item.description}
+									</p>
 								</div>
 							)}
 
 							{/* Vertical Detail List */}
 							<div className="flex flex-col gap-3">
-								<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50">
-									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm">
-										<User className="h-5 w-5 text-stone-400" />
+								<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50 dark:bg-stone-800/50 dark:border-stone-700/50">
+									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm dark:bg-stone-700">
+										<User className="h-5 w-5 text-stone-400 dark:text-stone-500" />
 									</div>
 									<div className="min-w-0 flex-1">
 										<p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
 											{t("items.reportedBy")}
 										</p>
-										<p className="text-[15px] font-semibold text-stone-700">{item.ownerName}</p>
+										<p className="text-[15px] font-semibold text-stone-700 dark:text-stone-300">
+											{item.ownerName}
+										</p>
 									</div>
 								</div>
 
-								<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50">
-									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm">
-										<Calendar className="h-5 w-5 text-stone-400" />
+								<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50 dark:bg-stone-800/50 dark:border-stone-700/50">
+									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm dark:bg-stone-700">
+										<Calendar className="h-5 w-5 text-stone-400 dark:text-stone-500" />
 									</div>
 									<div className="min-w-0 flex-1">
 										<p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
 											{t("items.incidentDate")}
 										</p>
-										<p className="text-[15px] font-semibold text-stone-700">
+										<p className="text-[15px] font-semibold text-stone-700 dark:text-stone-300">
 											{formatDate(item.incidentDate)}
 										</p>
 									</div>
 								</div>
 
-								<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50">
-									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm">
-										<MessageSquare className="h-5 w-5 text-stone-400" />
+								<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50 dark:bg-stone-800/50 dark:border-stone-700/50">
+									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm dark:bg-stone-700">
+										<MessageSquare className="h-5 w-5 text-stone-400 dark:text-stone-500" />
 									</div>
 									<div className="min-w-0 flex-1">
 										<p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
 											{t("claims.title")}
 										</p>
-										<p className="text-[15px] font-semibold text-stone-700">
+										<p className="text-[15px] font-semibold text-stone-700 dark:text-stone-300">
 											{item.claimCount || 0} Talep
 										</p>
 									</div>
 								</div>
 
 								{item.locationLabel && (
-									<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50">
-										<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm">
-											<MapPin className="h-5 w-5 text-stone-400" />
+									<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50 dark:bg-stone-800/50 dark:border-stone-700/50">
+										<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm dark:bg-stone-700">
+											<MapPin className="h-5 w-5 text-stone-400 dark:text-stone-500" />
 										</div>
 										<div className="min-w-0 flex-1">
 											<p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
 												{t("items.location")}
 											</p>
-											<p className="text-[15px] font-semibold text-stone-700 leading-snug">
+											<p className="text-[15px] font-semibold text-stone-700 leading-snug dark:text-stone-300">
 												{item.locationLabel}
 											</p>
 										</div>
@@ -338,15 +342,17 @@ export default function ItemDetailPage() {
 								)}
 
 								{item.contactInfo && (
-									<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50">
-										<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm">
-											<Clock className="h-5 w-5 text-stone-400" />
+									<div className="flex items-center gap-4 rounded-xl bg-stone-50 p-4 border border-stone-100/50 dark:bg-stone-800/50 dark:border-stone-700/50">
+										<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm dark:bg-stone-700">
+											<Clock className="h-5 w-5 text-stone-400 dark:text-stone-500" />
 										</div>
 										<div className="min-w-0 flex-1">
 											<p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
 												İletişim
 											</p>
-											<p className="text-[15px] font-semibold text-stone-700">{item.contactInfo}</p>
+											<p className="text-[15px] font-semibold text-stone-700 dark:text-stone-300">
+												{item.contactInfo}
+											</p>
 										</div>
 									</div>
 								)}
@@ -360,7 +366,7 @@ export default function ItemDetailPage() {
 									{isOwner && (
 										<Button
 											variant="outline"
-											className="h-12 flex-1 rounded-xl font-semibold border-stone-200"
+											className="h-12 flex-1 rounded-xl font-semibold border-stone-200 dark:border-stone-700"
 											render={<Link to={`/items/${item.id}/edit`} />}
 										>
 											<Pencil className="mr-2 h-4 w-4" />
@@ -400,9 +406,9 @@ export default function ItemDetailPage() {
 					</div>
 
 					{/* Timeline & Claims Card */}
-					<div className="rounded-2xl border border-stone-200 bg-white shadow-warm-1 overflow-hidden">
-						<div className="border-b border-stone-100 bg-stone-50/50 px-6 py-4 flex items-center justify-between">
-							<h2 className="font-heading text-lg text-stone-900 flex items-center gap-2">
+					<div className="rounded-2xl border border-stone-200 bg-white shadow-warm-1 overflow-hidden dark:border-stone-700 dark:bg-card">
+						<div className="border-b border-stone-100 bg-stone-50/50 px-6 py-4 flex items-center justify-between dark:border-stone-800 dark:bg-stone-800/50">
+							<h2 className="font-heading text-lg text-stone-900 flex items-center gap-2 dark:text-stone-50">
 								<Clock className="h-5 w-5 text-stone-400" />
 								{t("claims.timeline")}
 							</h2>
@@ -412,23 +418,25 @@ export default function ItemDetailPage() {
 						</div>
 
 						{(isAdmin || isOwner) && claimsData?.claims && claimsData.claims.length > 0 && (
-							<div className="border-t border-stone-100 p-6 space-y-4">
-								<h3 className="font-heading text-md text-stone-900 font-bold uppercase tracking-tight">
+							<div className="border-t border-stone-100 p-6 space-y-4 dark:border-stone-800">
+								<h3 className="font-heading text-md text-stone-900 font-bold uppercase tracking-tight dark:text-stone-50">
 									{isAdmin ? t("admin.claims") : "Gelen Talepler"}
 								</h3>
 								<div className="space-y-4">
 									{claimsData.claims.map((claim) => (
 										<div
 											key={claim.id}
-											className="flex flex-col gap-3 rounded-xl border border-stone-100 bg-stone-50/50 p-4 transition-colors hover:bg-stone-50"
+											className="flex flex-col gap-3 rounded-xl border border-stone-100 bg-stone-50/50 p-4 transition-colors hover:bg-stone-50 dark:border-stone-800 dark:bg-stone-800/50 dark:hover:bg-stone-800"
 										>
 											<div className="flex items-start justify-between">
 												<div className="flex items-center gap-2">
-													<div className="h-8 w-8 rounded-full bg-white border border-stone-200 flex items-center justify-center shadow-sm">
-														<User className="h-4 w-4 text-stone-400" />
+													<div className="h-8 w-8 rounded-full bg-white border border-stone-200 flex items-center justify-center shadow-sm dark:bg-stone-700 dark:border-stone-600">
+														<User className="h-4 w-4 text-stone-400 dark:text-stone-500" />
 													</div>
 													<div>
-														<p className="text-sm font-bold text-stone-900">{claim.claimantName}</p>
+														<p className="text-sm font-bold text-stone-900 dark:text-stone-50">
+															{claim.claimantName}
+														</p>
 														<p className="text-[11px] text-stone-400">
 															{formatDate(claim.createdAt)}
 														</p>
@@ -436,13 +444,15 @@ export default function ItemDetailPage() {
 												</div>
 												<ClaimStatusBadge status={claim.status} />
 											</div>
-											<p className="text-sm leading-relaxed text-stone-600">{claim.description}</p>
+											<p className="text-sm leading-relaxed text-stone-600 dark:text-stone-400">
+												{claim.description}
+											</p>
 											{claim.status === "Pending" && (
 												<div className="flex gap-2 pt-1">
 													<Button
 														variant="outline"
 														size="sm"
-														className="h-8 flex-1 rounded-lg text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
+														className="h-8 flex-1 rounded-lg text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/50 dark:hover:text-emerald-400"
 														onClick={() => {
 															setSelectedClaimId(claim.id);
 															setIsApprovedAction(true);
@@ -456,7 +466,7 @@ export default function ItemDetailPage() {
 													<Button
 														variant="outline"
 														size="sm"
-														className="h-8 flex-1 rounded-lg text-red-600 hover:bg-red-50 hover:text-red-700"
+														className="h-8 flex-1 rounded-lg text-red-600 hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-950/50 dark:hover:text-red-400"
 														onClick={() => {
 															setSelectedClaimId(claim.id);
 															setIsApprovedAction(false);
@@ -478,7 +488,7 @@ export default function ItemDetailPage() {
 				</div>
 			</div>
 
-			{/* Dialogs remain functional but styled consistently */}
+			{/* Dialogs */}
 			<Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
 				<DialogContent className="rounded-2xl">
 					<DialogHeader>
@@ -511,7 +521,6 @@ export default function ItemDetailPage() {
 				</DialogContent>
 			</Dialog>
 
-			{/* Review/Respond dialogs also benefit from consistency */}
 			<Dialog open={showReviewDialog} onOpenChange={setShowReviewDialog}>
 				<DialogContent className="rounded-2xl">
 					<DialogHeader>
@@ -520,7 +529,10 @@ export default function ItemDetailPage() {
 					</DialogHeader>
 					<form onSubmit={handleAdminReview} className="space-y-4">
 						<div className="space-y-1.5">
-							<Label htmlFor="admin-note" className="text-stone-700 font-semibold">
+							<Label
+								htmlFor="admin-note"
+								className="text-stone-700 font-semibold dark:text-stone-300"
+							>
 								{t("claims.adminNote")}
 							</Label>
 							<Textarea
@@ -529,7 +541,7 @@ export default function ItemDetailPage() {
 								onChange={(e) => setComment(e.target.value)}
 								placeholder={t("claims.adminNotePlaceholder")}
 								rows={3}
-								className="rounded-xl border-stone-200 bg-stone-50"
+								className="rounded-xl border-stone-200 bg-stone-50 dark:border-stone-700 dark:bg-stone-800/50"
 							/>
 						</div>
 						<DialogFooter className="gap-2">
@@ -557,7 +569,10 @@ export default function ItemDetailPage() {
 					</DialogHeader>
 					<form onSubmit={handleOwnerRespond} className="space-y-4">
 						<div className="space-y-1.5">
-							<Label htmlFor="owner-comment" className="text-stone-700 font-semibold">
+							<Label
+								htmlFor="owner-comment"
+								className="text-stone-700 font-semibold dark:text-stone-300"
+							>
 								{t("claims.responseDescription")}
 							</Label>
 							<Textarea
@@ -566,7 +581,7 @@ export default function ItemDetailPage() {
 								onChange={(e) => setComment(e.target.value)}
 								placeholder={t("claims.responsePlaceholder")}
 								rows={3}
-								className="rounded-xl border-stone-200 bg-stone-50"
+								className="rounded-xl border-stone-200 bg-stone-50 dark:border-stone-700 dark:bg-stone-800/50"
 							/>
 						</div>
 						<DialogFooter className="gap-2">

@@ -100,8 +100,8 @@ export default function ClaimDetailPage() {
 	if (error || !claim) {
 		return (
 			<div className="flex min-h-[60svh] flex-col items-center justify-center gap-4 px-4 text-center">
-				<AlertCircle className="h-16 w-16 text-stone-300" />
-				<p className="text-stone-500">{t("claims.claimNotFound")}</p>
+				<AlertCircle className="h-16 w-16 text-stone-300 dark:text-stone-600" />
+				<p className="text-stone-500 dark:text-stone-400">{t("claims.claimNotFound")}</p>
 				<Button variant="outline" onClick={() => navigate(-1)}>
 					<ArrowLeft className="mr-2 h-4 w-4" />
 					{t("common.back")}
@@ -118,13 +118,13 @@ export default function ClaimDetailPage() {
 					variant="ghost"
 					size="sm"
 					onClick={() => navigate(-1)}
-					className="-ml-2 w-fit text-stone-500 hover:text-stone-900"
+					className="-ml-2 w-fit text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100"
 				>
 					<ArrowLeft className="mr-1.5 h-4 w-4" />
 					{t("common.back")}
 				</Button>
 				<div className="flex items-center gap-3">
-					<span className="text-[12px] font-bold uppercase tracking-widest text-stone-400">
+					<span className="text-[12px] font-bold uppercase tracking-widest text-stone-400 dark:text-stone-500">
 						TALEP DURUMU
 					</span>
 					<ClaimStatusBadge status={claim.status} />
@@ -136,14 +136,16 @@ export default function ClaimDetailPage() {
 				{/* Left Column: Claim Details */}
 				<div className="space-y-6 lg:col-span-7">
 					{/* Main Claim Card */}
-					<div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-warm-1 sm:p-8">
-						<div className="mb-6 flex items-center gap-4 border-b border-stone-100 pb-6">
-							<div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
+					<div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-warm-1 dark:border-stone-700 dark:bg-card sm:p-8">
+						<div className="mb-6 flex items-center gap-4 border-b border-stone-100 pb-6 dark:border-stone-800">
+							<div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 dark:bg-amber-950/50">
 								<MessageSquare className="h-6 w-6" />
 							</div>
 							<div>
-								<h1 className="font-heading text-2xl font-bold text-stone-900">Talep Detayı</h1>
-								<p className="text-sm text-stone-400">
+								<h1 className="font-heading text-2xl font-bold text-stone-900 dark:text-stone-50">
+									Talep Detayı
+								</h1>
+								<p className="text-sm text-stone-400 dark:text-stone-500">
 									#{claim.id.slice(0, 8).toUpperCase()} • {formatDate(claim.createdAt)}
 								</p>
 							</div>
@@ -152,11 +154,11 @@ export default function ClaimDetailPage() {
 						<div className="space-y-8">
 							{/* Claimant's Message */}
 							<div className="space-y-3">
-								<Label className="text-xs font-bold uppercase tracking-widest text-stone-400">
+								<Label className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-stone-500">
 									MESAJINIZ
 								</Label>
-								<div className="rounded-2xl bg-stone-50 p-5 border border-stone-100/50">
-									<p className="text-[15px] leading-relaxed text-stone-700 italic">
+								<div className="rounded-2xl bg-stone-50 p-5 border border-stone-100/50 dark:bg-stone-800/50 dark:border-stone-800">
+									<p className="text-[15px] leading-relaxed text-stone-700 italic dark:text-stone-300">
 										&ldquo;{claim.description}&rdquo;
 									</p>
 								</div>
@@ -164,21 +166,21 @@ export default function ClaimDetailPage() {
 
 							{/* Related Item Link */}
 							<div className="space-y-3">
-								<Label className="text-xs font-bold uppercase tracking-widest text-stone-400">
+								<Label className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-stone-500">
 									İLGİLİ İLAN
 								</Label>
 								<Link
 									to={`/items/${claim.lostItemId}`}
-									className="group flex items-center gap-4 rounded-2xl border border-stone-100 p-4 transition-all hover:bg-stone-50"
+									className="group flex items-center gap-4 rounded-2xl border border-stone-100 p-4 transition-all hover:bg-stone-50 dark:border-stone-800 dark:hover:bg-stone-800"
 								>
-									<div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-stone-100 text-stone-400 group-hover:bg-amber-100 group-hover:text-amber-600 transition-colors">
+									<div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-stone-100 text-stone-400 group-hover:bg-amber-100 group-hover:text-amber-600 transition-colors dark:bg-stone-800 dark:text-stone-500">
 										<PackageSearch className="h-6 w-6" />
 									</div>
 									<div className="min-w-0 flex-1">
-										<p className="truncate text-[15px] font-bold text-stone-900 group-hover:text-amber-600">
+										<p className="truncate text-[15px] font-bold text-stone-900 group-hover:text-amber-600 dark:text-stone-50">
 											{claim.itemTitle}
 										</p>
-										<p className="text-xs text-stone-400">
+										<p className="text-xs text-stone-400 dark:text-stone-500">
 											İlan detaylarını görüntülemek için tıklayın
 										</p>
 									</div>
@@ -188,16 +190,16 @@ export default function ClaimDetailPage() {
 
 							{/* Response Section (if exists) */}
 							{(claim.responseDescription || claim.adminNote) && (
-								<div className="space-y-4 pt-4 border-t border-stone-100">
+								<div className="space-y-4 pt-4 border-t border-stone-100 dark:border-stone-800">
 									{claim.responseDescription && (
 										<div className="space-y-2">
 											<div className="flex items-center gap-2">
-												<User className="h-3.5 w-3.5 text-stone-400" />
-												<Label className="text-[11px] font-bold uppercase tracking-widest text-stone-400">
+												<User className="h-3.5 w-3.5 text-stone-400 dark:text-stone-500" />
+												<Label className="text-[11px] font-bold uppercase tracking-widest text-stone-400 dark:text-stone-500">
 													İLAN SAHİBİ YANITI
 												</Label>
 											</div>
-											<p className="text-[14px] text-stone-600 leading-relaxed pl-5 border-l-2 border-amber-200">
+											<p className="text-[14px] text-stone-600 leading-relaxed pl-5 border-l-2 border-amber-200 dark:text-stone-300">
 												{claim.responseDescription}
 											</p>
 										</div>
@@ -205,12 +207,12 @@ export default function ClaimDetailPage() {
 									{claim.adminNote && (
 										<div className="space-y-2">
 											<div className="flex items-center gap-2">
-												<ShieldCheck className="h-3.5 w-3.5 text-stone-400" />
-												<Label className="text-[11px] font-bold uppercase tracking-widest text-stone-400">
+												<ShieldCheck className="h-3.5 w-3.5 text-stone-400 dark:text-stone-500" />
+												<Label className="text-[11px] font-bold uppercase tracking-widest text-stone-400 dark:text-stone-500">
 													YÖNETİCİ NOTU
 												</Label>
 											</div>
-											<p className="text-[14px] text-stone-600 leading-relaxed pl-5 border-l-2 border-blue-200">
+											<p className="text-[14px] text-stone-600 leading-relaxed pl-5 border-l-2 border-blue-200 dark:text-stone-300">
 												{claim.adminNote}
 											</p>
 										</div>
@@ -226,7 +228,7 @@ export default function ClaimDetailPage() {
 							{canExtend && (
 								<Button
 									variant="outline"
-									className="h-12 flex-1 rounded-xl font-semibold border-stone-200 hover:bg-stone-50"
+									className="h-12 flex-1 rounded-xl font-semibold border-stone-200 hover:bg-stone-50 dark:border-stone-700 dark:hover:bg-stone-800"
 									onClick={() => extendMutation.mutate()}
 									disabled={extendMutation.isPending}
 								>
@@ -258,10 +260,10 @@ export default function ClaimDetailPage() {
 				{/* Right Column: Meta Info & Timeline */}
 				<div className="space-y-6 lg:col-span-5">
 					{/* Status Info Card */}
-					<div className="rounded-2xl border border-stone-200 bg-white shadow-warm-1 overflow-hidden">
-						<div className="border-b border-stone-100 px-6 py-4">
-							<h2 className="font-heading text-lg text-stone-900 flex items-center gap-2">
-								<History className="h-5 w-5 text-stone-400" />
+					<div className="rounded-2xl border border-stone-200 bg-white shadow-warm-1 overflow-hidden dark:border-stone-700 dark:bg-card">
+						<div className="border-b border-stone-100 px-6 py-4 dark:border-stone-800">
+							<h2 className="font-heading text-lg text-stone-900 flex items-center gap-2 dark:text-stone-50">
+								<History className="h-5 w-5 text-stone-400 dark:text-stone-500" />
 								{t("claims.timeline")}
 							</h2>
 						</div>
@@ -269,10 +271,10 @@ export default function ClaimDetailPage() {
 							<Timeline entries={timelineEntries} />
 						</div>
 						{claim.expiresAt && (
-							<div className="bg-stone-50/50 p-6 border-t border-stone-100 space-y-4">
+							<div className="bg-stone-50/50 p-6 border-t border-stone-100 space-y-4 dark:bg-stone-900/50 dark:border-stone-800">
 								<div className="flex justify-between items-center text-sm">
-									<span className="text-stone-400">Son Geçerlilik</span>
-									<span className="font-semibold text-stone-700">
+									<span className="text-stone-400 dark:text-stone-500">Son Geçerlilik</span>
+									<span className="font-semibold text-stone-700 dark:text-stone-300">
 										{new Date(claim.expiresAt).toLocaleDateString("tr-TR", {
 											day: "numeric",
 											month: "long",
@@ -281,8 +283,8 @@ export default function ClaimDetailPage() {
 									</span>
 								</div>
 								<div className="flex justify-between items-center text-sm">
-									<span className="text-stone-400">Uzatma Hakkı</span>
-									<span className="font-semibold text-stone-700">
+									<span className="text-stone-400 dark:text-stone-500">Uzatma Hakkı</span>
+									<span className="font-semibold text-stone-700 dark:text-stone-300">
 										{claim.extensionCount ?? 0} / 2
 									</span>
 								</div>
@@ -291,7 +293,7 @@ export default function ClaimDetailPage() {
 					</div>
 
 					{/* Help Card */}
-					<div className="rounded-2xl bg-amber-50/50 border border-amber-100 p-6">
+					<div className="rounded-2xl bg-amber-50/50 border border-amber-100 p-6 dark:bg-amber-950/50 dark:border-amber-900/50">
 						<div className="flex gap-3">
 							<AlertCircle className="h-5 w-5 text-amber-600 shrink-0" />
 							<div className="space-y-1">

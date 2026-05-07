@@ -39,16 +39,22 @@ export default function AdminClaims() {
 	return (
 		<div className="mx-auto max-w-5xl space-y-6">
 			<div>
-				<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">{t("admin.claims")}</h1>
-				<p className="mt-1 text-sm text-stone-400">{t("admin.claimsSubtitle")}</p>
+				<h1 className="font-heading text-2xl text-stone-900 md:text-[28px] dark:text-stone-50">
+					{t("admin.claims")}
+				</h1>
+				<p className="mt-1 text-sm text-stone-400 dark:text-stone-500">
+					{t("admin.claimsSubtitle")}
+				</p>
 			</div>
 
 			{isLoading ? (
 				<ListSkeleton count={6} />
 			) : claims.length === 0 ? (
 				<div className="flex flex-col items-center justify-center py-16 text-center">
-					<Clock className="mb-4 h-12 w-12 text-stone-300" strokeWidth={1.5} />
-					<p className="text-base text-stone-500">{t("admin.noPendingClaims")}</p>
+					<Clock className="mb-4 h-12 w-12 text-stone-300 dark:text-stone-600" strokeWidth={1.5} />
+					<p className="text-base text-stone-500 dark:text-stone-400">
+						{t("admin.noPendingClaims")}
+					</p>
 				</div>
 			) : (
 				<div className="space-y-3">
@@ -91,19 +97,19 @@ function ClaimRow({
 
 	return (
 		<>
-			<div className="flex flex-col gap-3 rounded-lg border border-stone-100 bg-card p-4 shadow-warm-1 sm:flex-row sm:items-center sm:gap-4">
+			<div className="flex flex-col gap-3 rounded-lg border border-stone-100 bg-card p-4 shadow-warm-1 sm:flex-row sm:items-center sm:gap-4 dark:border-stone-800">
 				<div className="flex-1 min-w-0">
 					<div className="flex flex-wrap items-center gap-2">
 						<Link
 							to={`/items/${claim.lostItemId}`}
-							className="truncate text-sm font-semibold text-stone-900 hover:text-amber-600"
+							className="truncate text-sm font-semibold text-stone-900 hover:text-amber-600 dark:text-stone-50"
 						>
 							{claim.itemTitle}
 						</Link>
 						{claim.itemStatus && <ItemStatusBadge status={claim.itemStatus} />}
 						<ClaimStatusBadge status={claim.status} />
 					</div>
-					<div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-stone-400">
+					<div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-stone-400 dark:text-stone-500">
 						<span>{claim.claimantName}</span>
 						<span>{formatDate(claim.createdAt)}</span>
 						{claim.description && (
@@ -144,7 +150,7 @@ function ClaimRow({
 					</DialogHeader>
 					<form onSubmit={handleSubmit}>
 						<div className="space-y-1.5">
-							<Label htmlFor="admin-note" className="text-stone-700">
+							<Label htmlFor="admin-note" className="text-stone-700 dark:text-stone-300">
 								{t("claims.adminNote")}
 							</Label>
 							<Textarea

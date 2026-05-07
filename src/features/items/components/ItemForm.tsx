@@ -92,13 +92,16 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 	};
 
 	const inputClass =
-		"h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20";
+		"h-10 rounded-md border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800/50 text-[15px] placeholder:text-stone-400 dark:placeholder:text-stone-500 focus-visible:border-amber-500 focus-visible:ring-amber-500/20";
+
+	const textareaClass =
+		"rounded-md border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800/50 text-[15px] placeholder:text-stone-400 dark:placeholder:text-stone-500 focus-visible:border-amber-500 focus-visible:ring-amber-500/20";
 
 	return (
 		<form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-5">
 			{/* Title */}
 			<div className="space-y-1.5">
-				<Label htmlFor="title" className="text-stone-700">
+				<Label htmlFor="title" className="text-stone-700 dark:text-stone-300">
 					{t("items.itemTitle")} <span className="text-red-500">*</span>
 				</Label>
 				<Input
@@ -116,7 +119,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 			{/* Type + Category Row */}
 			<div className="grid grid-cols-2 gap-4">
 				<div className="space-y-1.5">
-					<Label className="text-stone-700">
+					<Label className="text-stone-700 dark:text-stone-300">
 						{t("items.type")} <span className="text-red-500">*</span>
 					</Label>
 					<Controller
@@ -140,7 +143,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 				</div>
 
 				<div className="space-y-1.5">
-					<Label className="text-stone-700">
+					<Label className="text-stone-700 dark:text-stone-300">
 						{t("items.category")} <span className="text-red-500">*</span>
 					</Label>
 					<Controller
@@ -169,7 +172,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 
 			{/* Map Selection */}
 			<div className="space-y-1.5">
-				<Label className="text-stone-700">
+				<Label className="text-stone-700 dark:text-stone-300">
 					{t("items.pickOnMap")} <span className="text-red-500">*</span>
 				</Label>
 				<AppMap
@@ -197,14 +200,14 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 				{errors.latitude?.message && (
 					<p className="text-[13px] text-red-600">{t(errors.latitude.message)}</p>
 				)}
-				<p className="text-[11px] text-stone-400">
+				<p className="text-[11px] text-stone-400 dark:text-stone-500">
 					{t("items.locationHelp") || "Haritaya tıklayarak konumu belirleyin."}
 				</p>
 			</div>
 
 			{/* Location Label */}
 			<div className="space-y-1.5">
-				<Label htmlFor="locationLabel" className="text-stone-700">
+				<Label htmlFor="locationLabel" className="text-stone-700 dark:text-stone-300">
 					{t("items.location")} <span className="text-red-500">*</span>
 				</Label>
 				<Input
@@ -221,7 +224,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 
 			{/* Description */}
 			<div className="space-y-1.5">
-				<Label htmlFor="description" className="text-stone-700">
+				<Label htmlFor="description" className="text-stone-700 dark:text-stone-300">
 					{t("items.description")} <span className="text-red-500">*</span>
 				</Label>
 				<Textarea
@@ -229,7 +232,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 					placeholder="Eşyanın fiziksel özelliklerini, marka/model bilgisini, kaybolduğu/bulunduğu koşulları açıklayın..."
 					rows={4}
 					aria-invalid={!!errors.description}
-					className="rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+					className={textareaClass}
 					{...register("description")}
 				/>
 				{errors.description?.message && (
@@ -239,7 +242,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 
 			{/* Image URL */}
 			<div className="space-y-1.5">
-				<Label htmlFor="imageUrl" className="text-stone-700">
+				<Label htmlFor="imageUrl" className="text-stone-700 dark:text-stone-300">
 					{t("items.image")}
 				</Label>
 				<Input
@@ -253,7 +256,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
 
 			{/* Contact Info */}
 			<div className="space-y-1.5">
-				<Label htmlFor="contactInfo" className="text-stone-700">
+				<Label htmlFor="contactInfo" className="text-stone-700 dark:text-stone-300">
 					{t("items.contactInfo")}
 				</Label>
 				<Input

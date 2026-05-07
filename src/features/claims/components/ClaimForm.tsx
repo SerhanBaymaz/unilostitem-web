@@ -32,7 +32,7 @@ export function ClaimForm({ onSubmit, isPending }: ClaimFormProps) {
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 			<div className="space-y-1.5">
-				<Label htmlFor="claim-description" className="text-stone-700">
+				<Label htmlFor="claim-description" className="text-stone-700 dark:text-stone-300">
 					{t("claims.claimDescription")}
 				</Label>
 				<Textarea
@@ -40,7 +40,7 @@ export function ClaimForm({ onSubmit, isPending }: ClaimFormProps) {
 					placeholder={t("claims.descriptionPlaceholder")}
 					rows={5}
 					aria-invalid={!!errors.description}
-					className="rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
+					className="rounded-md border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800/50 text-[15px] placeholder:text-stone-400 dark:placeholder:text-stone-500 focus-visible:border-amber-500 focus-visible:ring-amber-500/20"
 					{...register("description")}
 				/>
 				{errors.description?.message && (

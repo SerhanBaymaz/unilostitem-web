@@ -151,6 +151,86 @@
 	--text-tertiary: #a8a29e;
 }
 
+.dark {
+	/* Background & Foreground */
+	--background: #1c1917;
+	--foreground: #fafaf9;
+
+	/* Card & Popover — slightly lifted from background */
+	--card: #292524;
+	--card-foreground: #fafaf9;
+	--popover: #292524;
+	--popover-foreground: #fafaf9;
+
+	/* Primary — Amber stays identical */
+	--primary: #d97706;
+	--primary-foreground: #ffffff;
+
+	/* Secondary — dark warm surface */
+	--secondary: #44403c;
+	--secondary-foreground: #e7e5e4;
+
+	/* Muted — subtle elevated surface */
+	--muted: #292524;
+	--muted-foreground: #a8a29e;
+
+	/* Accent — warm amber glow, muted for dark */
+	--accent: #451a03;
+	--accent-foreground: #fbbf24;
+
+	/* Destructive — brighter for dark bg */
+	--destructive: #ef4444;
+	--destructive-foreground: #ffffff;
+
+	/* Border & Input */
+	--border: #44403c;
+	--input: #44403c;
+	--ring: #d97706;
+
+	/* Charts — brighter in dark for readability */
+	--chart-1: #fbbf24;
+	--chart-2: #34d399;
+	--chart-3: #fb7185;
+	--chart-4: #a8a29e;
+	--chart-5: #d6d3d1;
+
+	/* Sidebar */
+	--sidebar: #1c1917;
+	--sidebar-foreground: #fafaf9;
+	--sidebar-primary: #d97706;
+	--sidebar-primary-foreground: #ffffff;
+	--sidebar-accent: #451a03;
+	--sidebar-accent-foreground: #fbbf24;
+	--sidebar-border: #44403c;
+	--sidebar-ring: #d97706;
+
+	/* Custom — Lost (Rose): lighter variants for dark */
+	--lost: #fb7185;
+	--lost-light: #4c0519;
+	--lost-dark: #f43f5e;
+
+	/* Custom — Found (Emerald): lighter variants for dark */
+	--found: #34d399;
+	--found-light: #022c22;
+	--found-dark: #10b981;
+
+	/* Custom — Amber muted */
+	--amber-muted: #451a03;
+
+	/* Custom — Surfaces */
+	--surface-warm: #292524;
+
+	/* Custom — Text hierarchy */
+	--text-secondary: #a8a29e;
+	--text-tertiary: #78716c;
+
+	/* Shadows — stronger in dark for visibility */
+	--shadow-warm-1: 0 1px 3px rgba(0, 0, 0, 0.2);
+	--shadow-warm-2: 0 8px 24px rgba(0, 0, 0, 0.25);
+	--shadow-warm-3: 0 16px 48px rgba(0, 0, 0, 0.35);
+	--shadow-warm-4: 0 24px 64px rgba(0, 0, 0, 0.4);
+}
+
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
@@ -194,4 +274,13 @@
 
 .leaflet-control-zoom a:hover {
 	background-color: #e7e5e4;
+}
+
+.dark .leaflet-control-zoom a {
+	background-color: #292524;
+	color: #a8a29e;
+}
+
+.dark .leaflet-control-zoom a:hover {
+	background-color: #44403c;
 }

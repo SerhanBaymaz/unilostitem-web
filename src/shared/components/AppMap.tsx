@@ -1,5 +1,6 @@
 import L from "leaflet";
 import { useEffect } from "react";
+import { useTheme } from "next-themes";
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import type { ItemType } from "@/shared/types";
 import "leaflet/dist/leaflet.css";
@@ -40,9 +41,6 @@ function createCustomIcon(type: ItemType): L.DivIcon {
 const lostIcon = createCustomIcon("Lost");
 const foundIcon = createCustomIcon("Found");
 
-/**
- * Handles map movement when center changes
- */
 function FlyToCenter({ center }: { center: [number, number] }) {
 	const map = useMap();
 	useEffect(() => {
@@ -51,9 +49,6 @@ function FlyToCenter({ center }: { center: [number, number] }) {
 	return null;
 }
 
-/**
- * Handles map click events
- */
 function MapEvents({
 	onMapClick,
 	selectable,
@@ -71,9 +66,6 @@ function MapEvents({
 	return null;
 }
 
-/**
- * Ensures the map tiles are correctly rendered by calling invalidateSize.
- */
 function InvalidateMapSize() {
 	const map = useMap();
 	useEffect(() => {
@@ -88,6 +80,11 @@ function InvalidateMapSize() {
 const DEFAULT_CENTER: [number, number] = [41.0082, 28.9784]; // Istanbul
 const DEFAULT_ZOOM = 13;
 
+const TILE_URLS = {
+	light: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+	dark: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+} as const;
+
 export function AppMap({
 	center = DEFAULT_CENTER,
 	zoom = DEFAULT_ZOOM,
@@ -96,8 +93,13 @@ export function AppMap({
 	onMapClick,
 	selectable,
 }: AppMapProps) {
+	const { resolvedTheme } = useTheme();
+	const tileUrl = resolvedTheme === "dark" ? TILE_URLS.dark : TILE_URLS.light;
+
 	return (
-		<div className={`relative overflow-hidden rounded-lg border border-stone-200 ${className}`}>
+		<div
+			className={`relative overflow-hidden rounded-lg border border-stone-200 dark:border-stone-700 ${className}`}
+		>
 			<MapContainer
 				center={center}
 				zoom={zoom}
@@ -106,7 +108,7 @@ export function AppMap({
 			>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+					url={tileUrl}
 				/>
 				<InvalidateMapSize />
 				<FlyToCenter center={center} />
@@ -123,13 +125,15 @@ export function AppMap({
 								<span
 									className={`mb-1 inline-block rounded-sm px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
 										marker.itemType === "Lost"
-											? "bg-rose-50 text-rose-700"
-											: "bg-emerald-50 text-emerald-700"
+											? "bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400"
+											: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400"
 									}`}
 								>
 									{marker.itemType}
 								</span>
-								<p className="mt-1 text-sm font-medium text-stone-900">{marker.title}</p>
+								<p className="mt-1 text-sm font-medium text-stone-900 dark:text-stone-50">
+									{marker.title}
+								</p>
 							</div>
 						</Popup>
 					</Marker>

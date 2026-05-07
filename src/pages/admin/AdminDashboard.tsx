@@ -21,12 +21,14 @@ function StatCard({
 	color: string;
 }) {
 	return (
-		<div className="rounded-lg border border-stone-100 bg-card p-5 shadow-warm-1">
+		<div className="rounded-lg border border-stone-100 bg-card p-5 shadow-warm-1 dark:border-stone-800">
 			<div className="flex items-start justify-between">
 				<div>
-					<p className="text-[13px] font-medium text-stone-400">{label}</p>
-					<p className="mt-1 text-2xl font-semibold text-stone-900">{value}</p>
-					{subValue && <p className="mt-1 text-[12px] text-stone-400">{subValue}</p>}
+					<p className="text-[13px] font-medium text-stone-400 dark:text-stone-500">{label}</p>
+					<p className="mt-1 text-2xl font-semibold text-stone-900 dark:text-stone-50">{value}</p>
+					{subValue && (
+						<p className="mt-1 text-[12px] text-stone-400 dark:text-stone-500">{subValue}</p>
+					)}
 				</div>
 				<div className={`flex h-10 w-10 items-center justify-center rounded-lg ${color}`}>
 					<Icon className="h-5 w-5" />
@@ -76,10 +78,12 @@ export default function AdminDashboard() {
 	return (
 		<div className="mx-auto max-w-5xl space-y-6">
 			<div>
-				<h1 className="font-heading text-2xl text-stone-900 md:text-[28px]">
+				<h1 className="font-heading text-2xl text-stone-900 md:text-[28px] dark:text-stone-50">
 					{t("admin.dashboard")}
 				</h1>
-				<p className="mt-1 text-sm text-stone-400">{t("admin.dashboardSubtitle")}</p>
+				<p className="mt-1 text-sm text-stone-400 dark:text-stone-500">
+					{t("admin.dashboardSubtitle")}
+				</p>
 			</div>
 
 			{/* Stat Cards */}
@@ -88,14 +92,14 @@ export default function AdminDashboard() {
 					icon={Package}
 					label={t("admin.totalItems")}
 					value={totalItems}
-					color="bg-amber-50 text-amber-600"
+					color="bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400"
 				/>
 				<StatCard
 					icon={Clock}
 					label={t("admin.pendingClaims")}
 					value={pendingClaims}
 					subValue={t("admin.awaitingReview")}
-					color="bg-amber-50 text-amber-600"
+					color="bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400"
 				/>
 				<StatCard
 					icon={CheckCircle2}
@@ -114,14 +118,14 @@ export default function AdminDashboard() {
 			{/* Recent Activity */}
 			<div className="grid gap-6 lg:grid-cols-2">
 				{/* Recent Items */}
-				<div className="rounded-lg border border-stone-100 bg-card p-4 shadow-warm-1">
+				<div className="rounded-lg border border-stone-100 bg-card p-4 shadow-warm-1 dark:border-stone-800">
 					<div className="mb-3 flex items-center justify-between">
-						<h2 className="font-heading text-base font-medium text-stone-900">
+						<h2 className="font-heading text-base font-medium text-stone-900 dark:text-stone-50">
 							{t("admin.recentItems")}
 						</h2>
 						<Link
 							to="/admin/items"
-							className="text-[13px] font-medium text-amber-600 hover:text-amber-700"
+							className="text-[13px] font-medium text-amber-600 hover:text-amber-700 dark:text-amber-400"
 						>
 							{t("admin.viewAll")}
 						</Link>
@@ -133,9 +137,9 @@ export default function AdminDashboard() {
 								<Link
 									key={item.id}
 									to={`/items/${item.id}`}
-									className="group flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-stone-50"
+									className="group flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-stone-50 dark:hover:bg-stone-800"
 								>
-									<div className="h-9 w-9 shrink-0 overflow-hidden rounded-md bg-stone-100">
+									<div className="h-9 w-9 shrink-0 overflow-hidden rounded-md bg-stone-100 dark:bg-stone-800">
 										{item.imageUrl ? (
 											<img
 												src={item.imageUrl}
@@ -144,33 +148,37 @@ export default function AdminDashboard() {
 											/>
 										) : (
 											<div className="flex h-full w-full items-center justify-center">
-												<Package className="h-4 w-4 text-stone-300" />
+												<Package className="h-4 w-4 text-stone-300 dark:text-stone-600" />
 											</div>
 										)}
 									</div>
 									<div className="flex-1 min-w-0">
-										<p className="truncate text-sm font-medium text-stone-700 group-hover:text-amber-600">
+										<p className="truncate text-sm font-medium text-stone-700 group-hover:text-amber-600 dark:text-stone-300">
 											{item.title}
 										</p>
-										<p className="text-[12px] text-stone-400">{formatDate(item.createdAt)}</p>
+										<p className="text-[12px] text-stone-400 dark:text-stone-500">
+											{formatDate(item.createdAt)}
+										</p>
 									</div>
 								</Link>
 							))}
 						</div>
 					) : (
-						<p className="py-4 text-center text-sm text-stone-400">{t("admin.noData")}</p>
+						<p className="py-4 text-center text-sm text-stone-400 dark:text-stone-500">
+							{t("admin.noData")}
+						</p>
 					)}
 				</div>
 
 				{/* Pending Claims */}
-				<div className="rounded-lg border border-stone-100 bg-card p-4 shadow-warm-1">
+				<div className="rounded-lg border border-stone-100 bg-card p-4 shadow-warm-1 dark:border-stone-800">
 					<div className="mb-3 flex items-center justify-between">
-						<h2 className="font-heading text-base font-medium text-stone-900">
+						<h2 className="font-heading text-base font-medium text-stone-900 dark:text-stone-50">
 							{t("admin.pendingClaims")}
 						</h2>
 						<Link
 							to="/admin/claims"
-							className="text-[13px] font-medium text-amber-600 hover:text-amber-700"
+							className="text-[13px] font-medium text-amber-600 hover:text-amber-700 dark:text-amber-400"
 						>
 							{t("admin.viewAll")}
 						</Link>
@@ -182,17 +190,19 @@ export default function AdminDashboard() {
 								<Link
 									key={claim.id}
 									to={`/claims/${claim.id}`}
-									className="group flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-stone-50"
+									className="group flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-stone-50 dark:hover:bg-stone-800"
 								>
-									<div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-stone-100">
+									<div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-stone-100 dark:bg-stone-800">
 										<Clock className="h-4 w-4 text-amber-500" />
 									</div>
 									<div className="flex-1 min-w-0">
-										<p className="truncate text-sm font-medium text-stone-700 group-hover:text-amber-600">
+										<p className="truncate text-sm font-medium text-stone-700 group-hover:text-amber-600 dark:text-stone-300">
 											{claim.itemTitle}
 										</p>
 										<div className="flex items-center gap-2">
-											<p className="text-[12px] text-stone-400">{claim.claimantName}</p>
+											<p className="text-[12px] text-stone-400 dark:text-stone-500">
+												{claim.claimantName}
+											</p>
 											<ClaimStatusBadge status={claim.status} />
 										</div>
 									</div>
@@ -200,7 +210,9 @@ export default function AdminDashboard() {
 							))}
 						</div>
 					) : (
-						<p className="py-4 text-center text-sm text-stone-400">{t("admin.noPendingClaims")}</p>
+						<p className="py-4 text-center text-sm text-stone-400 dark:text-stone-500">
+							{t("admin.noPendingClaims")}
+						</p>
 					)}
 				</div>
 			</div>

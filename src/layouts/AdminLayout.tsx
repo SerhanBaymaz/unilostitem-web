@@ -29,8 +29,8 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
 						onClick={onNavigate}
 						className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
 							isActive
-								? "bg-amber-50 text-amber-700"
-								: "text-stone-500 hover:bg-stone-50 hover:text-stone-700"
+								? "bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400"
+								: "text-stone-500 hover:bg-stone-50 hover:text-stone-700 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-200"
 						}`}
 					>
 						<Icon className="h-4 w-4" />
@@ -49,10 +49,10 @@ export default function AdminLayout() {
 	return (
 		<div className="flex min-h-svh bg-background">
 			{/* Desktop Sidebar */}
-			<aside className="sticky top-0 hidden h-svh w-56 shrink-0 flex-col border-r border-stone-200 bg-stone-50/50 lg:flex">
+			<aside className="sticky top-0 hidden h-svh w-56 shrink-0 flex-col border-r border-stone-200 bg-stone-50/50 lg:flex dark:border-stone-700 dark:bg-stone-900/50">
 				<div className="flex h-14 items-center gap-2 px-4">
-					<ShieldCheck className="h-5 w-5 text-amber-600" />
-					<span className="font-heading text-sm font-semibold text-stone-900">
+					<ShieldCheck className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+					<span className="font-heading text-sm font-semibold text-stone-900 dark:text-stone-50">
 						{t("admin.title")}
 					</span>
 				</div>
@@ -63,20 +63,20 @@ export default function AdminLayout() {
 			{/* Main Content */}
 			<div className="flex flex-1 flex-col">
 				{/* Mobile Header */}
-				<header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-stone-200 bg-background px-4 lg:hidden">
+				<header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-stone-200 bg-background px-4 lg:hidden dark:border-stone-700">
 					<Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
 						<SheetTrigger render={<Button variant="ghost" size="icon-sm" />} />
 						<SheetContent side="left" className="w-56">
 							<SheetHeader>
 								<SheetTitle className="flex items-center gap-2">
-									<ShieldCheck className="h-5 w-5 text-amber-600" />
+									<ShieldCheck className="h-5 w-5 text-amber-600 dark:text-amber-400" />
 									{t("admin.title")}
 								</SheetTitle>
 							</SheetHeader>
 							<SidebarNav onNavigate={() => setMobileOpen(false)} />
 						</SheetContent>
 					</Sheet>
-					<span className="font-heading text-sm font-semibold text-stone-900">
+					<span className="font-heading text-sm font-semibold text-stone-900 dark:text-stone-50">
 						{t("admin.title")}
 					</span>
 				</header>
