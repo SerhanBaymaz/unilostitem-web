@@ -21,7 +21,6 @@ const publicNavLinks = [{ path: "/", labelKey: "nav.home" }] as const;
 const authNavLinks = [
 	{ path: "/my-items", labelKey: "profile.myItems" },
 	{ path: "/my-claims", labelKey: "profile.myClaims" },
-	{ path: "/received-claims", labelKey: "nav.receivedClaims" },
 ] as const;
 
 const adminNavLinks = [{ path: "/admin", labelKey: "nav.admin" }] as const;
