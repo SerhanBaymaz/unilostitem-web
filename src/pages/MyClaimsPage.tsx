@@ -2,7 +2,7 @@ import { ArrowRight, Calendar, Clock, PackageSearch } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { useMyClaims } from "@/features/claims/hooks";
-import { ClaimStatusBadge, EmptyState, ListSkeleton } from "@/shared/components";
+import { ClaimStatusBadge, EmptyState, ItemStatusBadge, ListSkeleton } from "@/shared/components";
 
 function formatDate(dateStr: string): string {
 	return new Date(dateStr).toLocaleDateString("tr-TR", {
@@ -31,7 +31,7 @@ export default function MyClaimsPage() {
 				<ListSkeleton count={4} />
 			) : !data?.claims || data.claims.length === 0 ? (
 				<EmptyState
-					icon={MessageSearch}
+					icon={PackageSearch}
 					message={t("profile.noClaims")}
 					subMessage={t("profile.noClaimsSub")}
 				/>
@@ -52,9 +52,12 @@ export default function MyClaimsPage() {
 										<h3 className="truncate text-[16px] font-bold text-stone-900 group-hover:text-amber-600 transition-colors">
 											{claim.itemTitle}
 										</h3>
-										<div className="mt-0.5 flex items-center gap-2 text-[12px] text-stone-400">
-											<Calendar className="h-3 w-3" />
-											<span>{formatDate(claim.createdAt)}</span>
+										<div className="mt-1 flex items-center gap-2">
+											<div className="flex items-center gap-1.5 text-[12px] text-stone-400">
+												<Calendar className="h-3 w-3" />
+												<span>{formatDate(claim.createdAt)}</span>
+											</div>
+											{claim.itemStatus && <ItemStatusBadge status={claim.itemStatus} />}
 										</div>
 									</div>
 								</div>
@@ -69,10 +72,12 @@ export default function MyClaimsPage() {
 
 							<div className="flex items-center justify-between mt-1">
 								<div className="flex items-center gap-4">
-									<div className="flex items-center gap-1.5 text-[11px] font-medium text-stone-400">
-										<Clock className="h-3 w-3" />
-										<span>Sonlanma: {new Date(claim.expiresAt).toLocaleDateString("tr-TR")}</span>
-									</div>
+									{claim.expiresAt && (
+										<div className="flex items-center gap-1.5 text-[11px] font-medium text-stone-400">
+											<Clock className="h-3 w-3" />
+											<span>Sonlanma: {new Date(claim.expiresAt).toLocaleDateString("tr-TR")}</span>
+										</div>
+									)}
 								</div>
 								<div className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-amber-600 opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-1">
 									{t("profile.viewDetail")}

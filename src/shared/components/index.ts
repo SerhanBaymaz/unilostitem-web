@@ -6,6 +6,7 @@ export { ClaimStatusBadge } from "./ClaimStatusBadge";
 export { EmptyState } from "./EmptyState";
 export { FilterDrawer } from "./FilterDrawer";
 export { Header } from "./Header";
+export { ItemStatusBadge } from "./ItemStatusBadge";
 export { ItemTypeBadge } from "./ItemTypeBadge";
 export { ItemCardSkeleton, ItemDetailSkeleton, ListSkeleton } from "./LoadingSkeleton";
 export { Pagination } from "./Pagination";

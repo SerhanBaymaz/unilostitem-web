@@ -20,6 +20,7 @@ import type { Claim } from "@/features/claims/types";
 import {
 	ClaimStatusBadge,
 	ItemDetailSkeleton,
+	ItemStatusBadge,
 	Timeline,
 	type TimelineEntry,
 } from "@/shared/components";
@@ -127,6 +128,7 @@ export default function ClaimDetailPage() {
 						TALEP DURUMU
 					</span>
 					<ClaimStatusBadge status={claim.status} />
+					{claim.itemStatus && <ItemStatusBadge status={claim.itemStatus} />}
 				</div>
 			</div>
 
@@ -180,6 +182,7 @@ export default function ClaimDetailPage() {
 											İlan detaylarını görüntülemek için tıklayın
 										</p>
 									</div>
+									{claim.itemStatus && <ItemStatusBadge status={claim.itemStatus} />}
 								</Link>
 							</div>
 
@@ -265,22 +268,24 @@ export default function ClaimDetailPage() {
 						<div className="p-6">
 							<Timeline entries={timelineEntries} />
 						</div>
-						<div className="bg-stone-50/50 p-6 border-t border-stone-100 space-y-4">
-							<div className="flex justify-between items-center text-sm">
-								<span className="text-stone-400">Son Geçerlilik</span>
-								<span className="font-semibold text-stone-700">
-									{new Date(claim.expiresAt).toLocaleDateString("tr-TR", {
-										day: "numeric",
-										month: "long",
-										year: "numeric",
-									})}
-								</span>
+						{claim.expiresAt && (
+							<div className="bg-stone-50/50 p-6 border-t border-stone-100 space-y-4">
+								<div className="flex justify-between items-center text-sm">
+									<span className="text-stone-400">Son Geçerlilik</span>
+									<span className="font-semibold text-stone-700">
+										{new Date(claim.expiresAt).toLocaleDateString("tr-TR", {
+											day: "numeric",
+											month: "long",
+											year: "numeric",
+										})}
+									</span>
+								</div>
+								<div className="flex justify-between items-center text-sm">
+									<span className="text-stone-400">Uzatma Hakkı</span>
+									<span className="font-semibold text-stone-700">{claim.extensionCount} / 2</span>
+								</div>
 							</div>
-							<div className="flex justify-between items-center text-sm">
-								<span className="text-stone-400">Uzatma Hakkı</span>
-								<span className="font-semibold text-stone-700">{claim.extensionCount} / 2</span>
-							</div>
-						</div>
+						)}
 					</div>
 
 					{/* Help Card */}

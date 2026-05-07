@@ -1,7 +1,7 @@
 import { Calendar, MapPin, MessageSquare, PackageSearch, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
-import { CategoryBadge, ItemTypeBadge } from "@/shared/components";
+import { CategoryBadge, ItemStatusBadge, ItemTypeBadge } from "@/shared/components";
 import type { Item } from "../types";
 
 interface ItemCardProps {
@@ -42,12 +42,15 @@ export function ItemCard({ item }: ItemCardProps) {
 
 			{/* Content Wrapper */}
 			<div className="flex min-w-0 flex-1 flex-col py-0.5">
-				{/* Top Row: Title & Type */}
+				{/* Top Row: Title & Badges */}
 				<div className="mb-1 flex items-start justify-between gap-3">
 					<h3 className="truncate text-[16px] font-bold tracking-tight text-stone-900 group-hover:text-amber-600 transition-colors">
 						{item.title}
 					</h3>
-					<ItemTypeBadge type={item.itemType} />
+					<div className="flex shrink-0 items-center gap-1.5">
+						<ItemStatusBadge status={item.status} />
+						<ItemTypeBadge type={item.itemType} />
+					</div>
 				</div>
 
 				{/* Description: Subtle & Clamped */}

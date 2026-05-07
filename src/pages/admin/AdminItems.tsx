@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useDeleteItem, useItems } from "@/features/items/hooks";
 import type { Item, ItemListParams } from "@/features/items/types";
-import { ItemTypeBadge, ListSkeleton, Pagination } from "@/shared/components";
+import { ItemStatusBadge, ItemTypeBadge, ListSkeleton, Pagination } from "@/shared/components";
 
 const PAGE_SIZE = 20;
 
@@ -115,6 +115,9 @@ export default function AdminItems() {
 									<th className="hidden px-4 py-3 font-medium text-stone-500 md:table-cell">
 										{t("items.type")}
 									</th>
+									<th className="hidden px-4 py-3 font-medium text-stone-500 md:table-cell">
+										{t("items.status")}
+									</th>
 									<th className="hidden px-4 py-3 font-medium text-stone-500 sm:table-cell">
 										{t("items.category")}
 									</th>
@@ -190,6 +193,9 @@ function AdminItemRow({ item }: { item: Item }) {
 				</td>
 				<td className="hidden px-4 py-3 md:table-cell">
 					<ItemTypeBadge type={item.itemType} />
+				</td>
+				<td className="hidden px-4 py-3 md:table-cell">
+					<ItemStatusBadge status={item.status} />
 				</td>
 				<td className="hidden px-4 py-3 text-stone-500 sm:table-cell">{item.category}</td>
 				<td className="hidden px-4 py-3 text-stone-500 lg:table-cell">

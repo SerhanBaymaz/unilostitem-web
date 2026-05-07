@@ -15,9 +15,16 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useClaimsByItem, useRespondToClaim } from "@/features/claims/hooks";
+import type { Claim } from "@/features/claims/types";
 import { useMyItems } from "@/features/items/hooks";
 import type { Item } from "@/features/items/types";
-import { CategoryBadge, ClaimStatusBadge, EmptyState, ListSkeleton } from "@/shared/components";
+import {
+	CategoryBadge,
+	ClaimStatusBadge,
+	EmptyState,
+	ItemStatusBadge,
+	ListSkeleton,
+} from "@/shared/components";
 
 function formatDate(dateStr: string): string {
 	return new Date(dateStr).toLocaleDateString("tr-TR", {
@@ -29,9 +36,8 @@ function formatDate(dateStr: string): string {
 
 export default function ReceivedClaimsPage() {
 	const { t } = useTranslation();
-	const { data, isLoading } = useMyItems({ pageSize: 100 }); // Get more items to filter
+	const { data, isLoading } = useMyItems({ pageSize: 100 });
 
-	// Filter only items that have claims
 	const itemsWithClaims = data?.items?.filter((item) => (item.claimCount ?? 0) > 0) ?? [];
 
 	return (
@@ -91,6 +97,7 @@ function ItemClaimsGroup({ item }: { item: Item }) {
 					</h2>
 					<div className="mt-1 flex items-center gap-3 text-sm text-stone-500">
 						<CategoryBadge category={item.category} />
+						<ItemStatusBadge status={item.status} />
 						<span className="h-1 w-1 rounded-full bg-stone-300" />
 						<span>{formatDate(item.createdAt)}</span>
 					</div>
@@ -115,7 +122,7 @@ function ItemClaimsGroup({ item }: { item: Item }) {
 	);
 }
 
-function ClaimItemCard({ claim }: { claim: any }) {
+function ClaimItemCard({ claim }: { claim: Claim }) {
 	const { t } = useTranslation();
 	const [showRespondDialog, setShowRespondDialog] = useState(false);
 	const [isApproved, setIsApproved] = useState(false);

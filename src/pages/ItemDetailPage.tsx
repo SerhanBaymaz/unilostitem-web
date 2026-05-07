@@ -41,6 +41,7 @@ import {
 	CategoryBadge,
 	ClaimStatusBadge,
 	ItemDetailSkeleton,
+	ItemStatusBadge,
 	ItemTypeBadge,
 	Timeline,
 	type TimelineEntry,
@@ -203,6 +204,7 @@ export default function ItemDetailPage() {
 					{t("common.back")}
 				</Button>
 				<div className="flex items-center gap-2">
+					<ItemStatusBadge status={item.status} />
 					<CategoryBadge category={item.category} className="px-4 py-1.5 text-[11px]" />
 					<ItemTypeBadge type={item.itemType} />
 				</div>

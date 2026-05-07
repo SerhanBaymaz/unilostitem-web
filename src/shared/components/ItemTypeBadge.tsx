@@ -2,8 +2,8 @@ import { useTranslation } from "react-i18next";
 import type { ItemType } from "@/shared/types";
 
 const typeStyles: Record<ItemType, string> = {
-	Lost: "bg-rose-50 text-rose-700",
-	Found: "bg-emerald-50 text-emerald-700",
+	Lost: "bg-violet-200 text-violet-900",
+	Found: "bg-cyan-200 text-cyan-900",
 };
 
 export function ItemTypeBadge({ type }: { type: ItemType }) {

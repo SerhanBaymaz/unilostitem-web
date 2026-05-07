@@ -15,7 +15,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAdminReviewClaim, usePendingClaims } from "@/features/claims/hooks";
-import { ClaimStatusBadge, ListSkeleton } from "@/shared/components";
+import { ClaimStatusBadge, ItemStatusBadge, ListSkeleton } from "@/shared/components";
 
 function formatDate(dateStr: string): string {
 	return new Date(dateStr).toLocaleDateString("tr-TR", {
@@ -100,6 +100,7 @@ function ClaimRow({
 						>
 							{claim.itemTitle}
 						</Link>
+						{claim.itemStatus && <ItemStatusBadge status={claim.itemStatus} />}
 						<ClaimStatusBadge status={claim.status} />
 					</div>
 					<div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-stone-400">
