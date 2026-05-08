@@ -6,6 +6,8 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=SerhanBaymaz_unilostitem-web&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=SerhanBaymaz_unilostitem-web)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=SerhanBaymaz_unilostitem-web&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=SerhanBaymaz_unilostitem-web)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=SerhanBaymaz_unilostitem-web&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=SerhanBaymaz_unilostitem-web)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=SerhanBaymaz_unilostitem-web&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=SerhanBaymaz_unilostitem-web)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=SerhanBaymaz_unilostitem-web&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=SerhanBaymaz_unilostitem-web)
 
 A university campus lost-and-found platform built with React. Students can post and search for lost or found items on an interactive map, submit claims, and manage their listings.
 
@@ -74,7 +76,7 @@ VITE_DEFAULT_LOCALE=tr
 
 ## Project Structure
 
-```
+```text
 src/
 ├── components/ui/       # shadcn/ui primitives
 ├── features/
