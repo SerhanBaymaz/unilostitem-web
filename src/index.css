@@ -284,3 +284,47 @@
 .dark .leaflet-control-zoom a:hover {
 	background-color: #44403c;
 }
+
+/* react-phone-number-input styling overrides */
+.PhoneInput {
+	gap: 0;
+}
+
+.PhoneInputCountry {
+	display: flex;
+	align-items: center;
+}
+
+.PhoneInputCountrySelect {
+	background: #faf9f7;
+	border: 1px solid #e7e5e4;
+	border-right: none;
+	border-radius: 0.375rem 0 0 0.375rem;
+	height: 2.5rem;
+	padding: 0 0.375rem 0 0.5rem;
+	font-size: 15px;
+	color: #44403c;
+	cursor: pointer;
+}
+
+.PhoneInputCountrySelect:focus {
+	outline: none;
+	border-color: #d97706;
+	box-shadow: 0 0 0 2px rgb(217 119 6 / 0.2);
+	z-index: 1;
+	position: relative;
+}
+
+.dark .PhoneInputCountrySelect {
+	background: #29252480;
+	border-color: #44403c;
+	color: #a8a29e;
+}
+
+.dark .PhoneInputCountryIcon {
+	border-color: #44403c;
+}
+
+.dark .PhoneInputCountrySelectArrow {
+	color: #78716c;
+}

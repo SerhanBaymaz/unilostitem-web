@@ -4,14 +4,14 @@ University campus lost-and-found platform frontend.
 
 ## Tech Stack
 
-React 19 + Vite 8 + TypeScript 6 (strict) | Tailwind CSS 4 + shadcn/ui | React Query v5 + Zustand v5 | React Hook Form v7 + Zod v3 | React Router v7 (library mode) | Axios v1 | react-leaflet | react-i18next (tr/en) | ESLint + Prettier | Vitest + RTL | pnpm
+React 19 + Vite 8 + TypeScript 6 (strict) | Tailwind CSS 4 + shadcn/ui | React Query v5 + Zustand v5 | React Hook Form v7 + Zod v3 | React Router v7 (library mode) | Axios v1 | react-leaflet | react-phone-number-input + libphonenumber-js | react-i18next (tr/en) | ESLint + Prettier | Vitest + RTL | pnpm
 
 ## Commands
 
 - `pnpm dev` — dev server (localhost:5173)
 - `pnpm build` — production build
 - `pnpm check` — ESLint + Prettier check
-- `pnpm test` — run tests
+- `pnpm test` — run tests (required: SonarQube enforces ≥80% coverage on new code)
 
 ## Project Structure
 
@@ -81,4 +81,12 @@ Base URL: `VITE_API_BASE_URL` (default: `https://localhost:5001`). All endpoints
 
 ## Workflow
 
-code → test → mark todos as done → update CLAUDE.md and README.md → suggest commit message → wait.
+code → **write tests** → mark todos as done → update CLAUDE.md and README.md → suggest commit message → wait.
+
+### Testing Rules
+
+- **Every new/modified component must include tests.** SonarQube CI requires ≥80% coverage on new code.
+- Test files: colocated as `ComponentName.test.tsx` in the same directory.
+- Stack: Vitest + React Testing Library + `@testing-library/user-event`.
+- Mock external deps (`react-i18next`, `react-router`, API hooks) with `vi.mock()`.
+- `useTranslation` mock: `t: (key) => key` — use i18n keys directly in assertions.

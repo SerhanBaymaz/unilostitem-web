@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useProfile, useUpdateProfile } from "@/features/auth/hooks";
-import { EmptyState } from "@/shared/components";
+import { EmptyState, PhoneInput } from "@/shared/components";
 
 function formatDate(dateStr: string): string {
 	if (!dateStr) return "—";
@@ -147,14 +147,16 @@ export default function ProfilePage() {
 
 							<div className="space-y-1.5">
 								<Label htmlFor="phone" className="text-stone-700 dark:text-stone-300">
-									{t("profile.phone")}
+									{t("profile.phone")}{" "}
+									<span className="font-normal text-stone-400 dark:text-stone-500">
+										({t("auth.optional")})
+									</span>
 								</Label>
-								<Input
+								<PhoneInput
 									id="phone"
 									value={phone}
-									onChange={(e) => setPhone(e.target.value)}
-									placeholder={t("profile.phone")}
-									className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20 dark:border-stone-700 dark:bg-stone-800/50 dark:placeholder:text-stone-500"
+									onChange={setPhone}
+									placeholder="5XX XXX XX XX"
 								/>
 							</div>
 
