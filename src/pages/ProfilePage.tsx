@@ -147,7 +147,10 @@ export default function ProfilePage() {
 
 							<div className="space-y-1.5">
 								<Label htmlFor="phone" className="text-stone-700 dark:text-stone-300">
-									{t("profile.phone")}
+									{t("profile.phone")}{" "}
+									<span className="font-normal text-stone-400 dark:text-stone-500">
+										({t("auth.optional")})
+									</span>
 								</Label>
 								<PhoneInput
 									id="phone"

@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { isValidPhoneNumber } from "react-phone-number-input";
 import { Link } from "react-router";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -11,19 +12,24 @@ import { Separator } from "@/components/ui/separator";
 import { useRegister } from "@/features/auth/hooks";
 import { PhoneInput } from "@/shared/components";
 
-const PHONE_REGEX = /^\+\d+$/;
-
 const registerSchema = z
 	.object({
 		firstName: z.string().min(1, "auth.required"),
 		lastName: z.string().min(1, "auth.required"),
 		email: z.string().min(1, "auth.required").email("auth.invalidEmail"),
-		password: z.string().min(6, "auth.passwordMin"),
+		password: z
+			.string()
+			.min(1, "auth.required")
+			.min(6, "auth.passwordMin")
+			.regex(/[A-Z]/, "auth.passwordUppercase")
+			.regex(/[a-z]/, "auth.passwordLowercase")
+			.regex(/\d/, "auth.passwordDigit")
+			.regex(/[^a-zA-Z0-9]/, "auth.passwordSpecial"),
 		confirmPassword: z.string().min(1, "auth.required"),
 		phoneNumber: z
 			.string()
-			.optional()
-			.refine((val) => !val || PHONE_REGEX.test(val), "auth.invalidPhone"),
+			.min(1, "auth.required")
+			.refine((val) => isValidPhoneNumber(val), "auth.invalidPhone"),
 	})
 	.refine((data) => data.password === data.confirmPassword, {
 		message: "auth.passwordMatch",
@@ -31,6 +37,14 @@ const registerSchema = z
 	});
 
 type RegisterFormData = z.infer<typeof registerSchema>;
+
+const PASSWORD_CHECKS = [
+	{ key: "auth.passwordMin", test: (v: string) => v.length >= 6 },
+	{ key: "auth.passwordUppercase", test: (v: string) => /[A-Z]/.test(v) },
+	{ key: "auth.passwordLowercase", test: (v: string) => /[a-z]/.test(v) },
+	{ key: "auth.passwordDigit", test: (v: string) => /\d/.test(v) },
+	{ key: "auth.passwordSpecial", test: (v: string) => /[^a-zA-Z0-9]/.test(v) },
+] as const;
 
 export default function RegisterPage() {
 	const { t } = useTranslation();
@@ -40,6 +54,7 @@ export default function RegisterPage() {
 		register,
 		handleSubmit,
 		control,
+		watch,
 		formState: { errors },
 	} = useForm<RegisterFormData>({
 		resolver: zodResolver(registerSchema),
@@ -52,6 +67,8 @@ export default function RegisterPage() {
 			phoneNumber: "",
 		},
 	});
+
+	const passwordValue = watch("password") ?? "";
 
 	const onSubmit = (data: RegisterFormData) => {
 		// eslint-disable-next-line sonarjs/no-unused-vars
@@ -164,13 +181,32 @@ export default function RegisterPage() {
 					</div>
 				</div>
 
-				{/* Phone (Optional) */}
+				{/* Password Requirements */}
+				{passwordValue.length > 0 && (
+					<ul className="space-y-1">
+						{PASSWORD_CHECKS.map((check) => {
+							const met = check.test(passwordValue);
+							return (
+								<li
+									key={check.key}
+									className={`flex items-center gap-1.5 text-[12px] ${
+										met
+											? "text-emerald-600 dark:text-emerald-400"
+											: "text-stone-400 dark:text-stone-500"
+									}`}
+								>
+									<Check className={`h-3 w-3 ${met ? "opacity-100" : "opacity-30"}`} />
+									{t(check.key)}
+								</li>
+							);
+						})}
+					</ul>
+				)}
+
+				{/* Phone */}
 				<div className="space-y-1.5">
 					<Label htmlFor="phoneNumber" className="text-stone-700 dark:text-stone-300">
-						{t("auth.phoneNumber")}{" "}
-						<span className="font-normal text-stone-400 dark:text-stone-500">
-							({t("common.close").toLowerCase()})
-						</span>
+						{t("auth.phoneNumber")}
 					</Label>
 					<Controller
 						name="phoneNumber"
