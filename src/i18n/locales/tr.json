@@ -54,7 +54,8 @@
 		"required": "Bu alan zorunludur",
 		"invalidEmail": "Geçersiz e-posta adresi",
 		"passwordMin": "Şifre en az 6 karakter olmalıdır",
-		"passwordMatch": "Şifreler eşleşmiyor"
+		"passwordMatch": "Şifreler eşleşmiyor",
+		"invalidPhone": "Geçersiz telefon numarası formatı"
 	},
 	"items": {
 		"title": "Kayıp ve Buluntu İlanları",

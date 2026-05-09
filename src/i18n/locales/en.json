@@ -54,7 +54,8 @@
 		"required": "This field is required",
 		"invalidEmail": "Invalid email address",
 		"passwordMin": "Password must be at least 6 characters",
-		"passwordMatch": "Passwords do not match"
+		"passwordMatch": "Passwords do not match",
+		"invalidPhone": "Invalid phone number format"
 	},
 	"items": {
 		"title": "Lost and Found Items",

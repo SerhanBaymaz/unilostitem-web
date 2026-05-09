@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { z } from "zod";
@@ -9,6 +9,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useRegister } from "@/features/auth/hooks";
+import { PhoneInput } from "@/shared/components";
+
+const PHONE_REGEX = /^\+\d+$/;
 
 const registerSchema = z
 	.object({
@@ -17,7 +20,10 @@ const registerSchema = z
 		email: z.string().min(1, "auth.required").email("auth.invalidEmail"),
 		password: z.string().min(6, "auth.passwordMin"),
 		confirmPassword: z.string().min(1, "auth.required"),
-		phoneNumber: z.string().optional(),
+		phoneNumber: z
+			.string()
+			.optional()
+			.refine((val) => !val || PHONE_REGEX.test(val), "auth.invalidPhone"),
 	})
 	.refine((data) => data.password === data.confirmPassword, {
 		message: "auth.passwordMatch",
@@ -33,6 +39,7 @@ export default function RegisterPage() {
 	const {
 		register,
 		handleSubmit,
+		control,
 		formState: { errors },
 	} = useForm<RegisterFormData>({
 		resolver: zodResolver(registerSchema),
@@ -165,14 +172,21 @@ export default function RegisterPage() {
 							({t("common.close").toLowerCase()})
 						</span>
 					</Label>
-					<Input
-						id="phoneNumber"
-						type="tel"
-						autoComplete="tel"
-						placeholder="05XX XXX XX XX"
-						className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20 dark:border-stone-700 dark:bg-stone-800/50 dark:placeholder:text-stone-500"
-						{...register("phoneNumber")}
+					<Controller
+						name="phoneNumber"
+						control={control}
+						render={({ field }) => (
+							<PhoneInput
+								id="phoneNumber"
+								value={field.value ?? ""}
+								onChange={field.onChange}
+								placeholder="5XX XXX XX XX"
+							/>
+						)}
 					/>
+					{errors.phoneNumber?.message && (
+						<p className="text-[13px] text-red-600">{t(errors.phoneNumber.message)}</p>
+					)}
 				</div>
 
 				{/* Submit */}
