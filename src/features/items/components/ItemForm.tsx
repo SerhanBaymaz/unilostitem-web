@@ -2,6 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
+import { useState, useRef } from 'react';
+import { UploadCloud, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -24,7 +26,6 @@ const itemSchema = z.object({
   category: z.string().min(1, 'auth.required'),
   itemType: z.string().min(1, 'auth.required'),
   locationLabel: z.string().min(1, 'auth.required'),
-  imageUrl: z.string().optional(),
   contactInfo: z.string().min(1, 'items.contactInfoRequired').max(300, 'items.contactInfoMax'),
   latitude: z.number({ required_error: 'auth.required' }),
   longitude: z.number({ required_error: 'auth.required' }),
@@ -32,14 +33,21 @@ const itemSchema = z.object({
 
 type ItemFormData = z.infer<typeof itemSchema>;
 
+export type SubmitPayload = ItemCreateRequest & { removeImage?: boolean };
+
 interface ItemFormProps {
   item?: Item;
-  onSubmit: (data: ItemCreateRequest) => void;
+  onSubmit: (data: SubmitPayload) => void;
   isPending: boolean;
 }
 
-export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
+export function ItemForm({ item, onSubmit, isPending }: Readonly<ItemFormProps>) {
   const { t } = useTranslation();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(item?.imageUrl || null);
+  const [removeImage, setRemoveImage] = useState(false);
 
   const {
     register,
@@ -56,7 +64,6 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
           description: item.description,
           category: item.category,
           itemType: item.itemType,
-          imageUrl: item.imageUrl ?? '',
           contactInfo: item.contactInfo,
           locationLabel: item.locationLabel ?? '',
           latitude: item.latitude,
@@ -67,7 +74,6 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
           description: '',
           category: '',
           itemType: '',
-          imageUrl: '',
           contactInfo: '',
           locationLabel: '',
           latitude: undefined,
@@ -78,15 +84,39 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
   const lat = watch('latitude');
   const lng = watch('longitude');
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+      setRemoveImage(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setRemoveImage(true);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleFormSubmit = (data: ItemFormData) => {
-    const payload: ItemCreateRequest = {
+    const payload: SubmitPayload = {
       ...data,
-      // Automatically set incidentDate to now if creating, or keep original if editing
       incidentDate: item?.incidentDate || new Date().toISOString(),
-      imageUrl: data.imageUrl || undefined,
       itemType: data.itemType as ItemType,
       category: data.category as ItemCreateRequest['category'],
     };
+
+    if (selectedFile) {
+      payload.image = selectedFile;
+    }
+    if (removeImage) {
+      payload.removeImage = true;
+    }
+
     onSubmit(payload);
   };
 
@@ -208,7 +238,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
           <p className="text-[13px] text-red-600">{t(errors.latitude.message)}</p>
         )}
         <p className="text-[11px] text-stone-400 dark:text-stone-500">
-          {t('items.locationHelp') || 'Haritaya tıklayarak konumu belirleyin.'}
+          {t('items.locationHelp', 'Haritaya tıklayarak konumu belirleyin.')}
         </p>
       </div>
 
@@ -247,17 +277,54 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
         )}
       </div>
 
-      {/* Image URL */}
+      {/* Image Upload */}
       <div className="space-y-1.5">
-        <Label htmlFor="imageUrl" className="text-stone-700 dark:text-stone-300">
-          {t('items.image')}
-        </Label>
-        <Input
-          id="imageUrl"
-          type="url"
-          placeholder={t('items.imagePlaceholder')}
-          className={inputClass}
-          {...register('imageUrl')}
+        <Label className="text-stone-700 dark:text-stone-300">{t('items.image')}</Label>
+
+        {previewUrl ? (
+          <div className="relative w-full overflow-hidden rounded-xl border border-stone-200 shadow-sm dark:border-stone-800">
+            <img
+              src={previewUrl}
+              alt="Preview"
+              className="aspect-video h-auto w-full object-cover"
+            />
+            <Button
+              type="button"
+              variant="destructive"
+              size="icon"
+              className="absolute right-2 top-2 h-8 w-8 rounded-full opacity-90 shadow-sm hover:opacity-100"
+              onClick={handleRemoveImage}
+            >
+              <X className="h-4 w-4" />
+              <span className="sr-only">{t('common.remove')}</span>
+            </Button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-stone-200 bg-stone-50 py-8 transition-colors hover:border-amber-500/50 hover:bg-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:border-stone-800 dark:bg-stone-900/50 dark:hover:border-amber-500/50 dark:hover:bg-stone-800/80"
+          >
+            <div className="rounded-full bg-stone-100 p-3 dark:bg-stone-800">
+              <UploadCloud className="h-6 w-6 text-stone-500 dark:text-stone-400" />
+            </div>
+            <div className="text-center">
+              <p className="text-sm font-medium text-stone-700 dark:text-stone-300">
+                {t('items.clickToUpload')}
+              </p>
+              <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
+                {t('items.imageHelp')}
+              </p>
+            </div>
+          </button>
+        )}
+        <input
+          id="imageFile"
+          type="file"
+          accept="image/jpeg, image/png, image/webp"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleFileChange}
         />
       </div>
 

@@ -111,7 +111,9 @@
     "descriptionRequired": "Description must be at least 10 characters",
     "createTitle": "Create New Item",
     "createSubtitle": "Share a lost or found item",
-    "locationHelp": "Click on the map to set the location."
+    "locationHelp": "Click on the map to set the location.",
+    "clickToUpload": "Click to upload",
+    "imageHelp": "Only JPG, JPEG, PNG, or WEBP"
   },
   "claims": {
     "title": "Claims",

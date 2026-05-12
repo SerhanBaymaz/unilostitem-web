@@ -104,7 +104,22 @@ export const itemsApi = {
   },
 
   createItem: async (data: ItemCreateRequest): Promise<string> => {
-    const res = await apiClient.post<StandardApiResponse<string>>(BASE, data);
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        if (key === 'image') {
+          formData.append('image', value as File);
+        } else {
+          formData.append(key, value.toString());
+        }
+      }
+    });
+
+    const res = await apiClient.post<StandardApiResponse<string>>(BASE, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     if (!res.data.success || !res.data.data) {
       throw new Error(res.data.message ?? 'Failed to create item');
     }
@@ -112,7 +127,24 @@ export const itemsApi = {
   },
 
   updateItem: async (id: string, data: ItemUpdateRequest): Promise<void> => {
-    const res = await apiClient.put<StandardApiResponse<unknown>>(`${BASE}/${id}`, data);
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        if (key === 'image') {
+          formData.append('image', value as File);
+        } else if (key === 'removeImage') {
+          formData.append('removeImage', (value as boolean).toString());
+        } else {
+          formData.append(key, value.toString());
+        }
+      }
+    });
+
+    const res = await apiClient.put<StandardApiResponse<unknown>>(`${BASE}/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     if (!res.data.success) {
       throw new Error(res.data.message ?? 'Failed to update item');
     }
