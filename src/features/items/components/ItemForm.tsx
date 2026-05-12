@@ -25,7 +25,7 @@ const itemSchema = z.object({
   itemType: z.string().min(1, 'auth.required'),
   locationLabel: z.string().min(1, 'auth.required'),
   imageUrl: z.string().optional(),
-  contactInfo: z.string().optional(),
+  contactInfo: z.string().min(1, 'items.contactInfoRequired').max(300, 'items.contactInfoMax'),
   latitude: z.number({ required_error: 'auth.required' }),
   longitude: z.number({ required_error: 'auth.required' }),
 });
@@ -57,7 +57,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
           category: item.category,
           itemType: item.itemType,
           imageUrl: item.imageUrl ?? '',
-          contactInfo: item.contactInfo ?? '',
+          contactInfo: item.contactInfo,
           locationLabel: item.locationLabel ?? '',
           latitude: item.latitude,
           longitude: item.longitude,
@@ -84,7 +84,6 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
       // Automatically set incidentDate to now if creating, or keep original if editing
       incidentDate: item?.incidentDate || new Date().toISOString(),
       imageUrl: data.imageUrl || undefined,
-      contactInfo: data.contactInfo || undefined,
       itemType: data.itemType as ItemType,
       category: data.category as ItemCreateRequest['category'],
     };
@@ -265,14 +264,18 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
       {/* Contact Info */}
       <div className="space-y-1.5">
         <Label htmlFor="contactInfo" className="text-stone-700 dark:text-stone-300">
-          {t('items.contactInfo')}
+          {t('items.contactInfo')} <span className="text-red-500">*</span>
         </Label>
         <Input
           id="contactInfo"
           placeholder={t('items.contactPlaceholder')}
+          aria-invalid={!!errors.contactInfo}
           className={inputClass}
           {...register('contactInfo')}
         />
+        {errors.contactInfo?.message && (
+          <p className="text-[13px] text-red-600">{t(errors.contactInfo.message)}</p>
+        )}
       </div>
 
       {/* Submit */}

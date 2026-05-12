@@ -8,7 +8,7 @@ export interface Item {
   itemType: ItemType;
   incidentDate: string;
   imageUrl?: string;
-  contactInfo?: string;
+  contactInfo: string;
   locationLabel?: string;
   latitude?: number;
   longitude?: number;
@@ -27,7 +27,7 @@ export interface ItemCreateRequest {
   itemType: ItemType;
   incidentDate: string;
   imageUrl?: string;
-  contactInfo?: string;
+  contactInfo: string;
   locationLabel?: string;
   latitude?: number;
   longitude?: number;

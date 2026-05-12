@@ -105,6 +105,8 @@
     "locationPlaceholder": "Örn: A Blok 2. Kat Kütüphane",
     "titlePlaceholder": "Örn: Siyah Laptop Çantası",
     "descriptionPlaceholder": "Eşyanın fiziksel özelliklerini, marka/model bilgisini, kaybolduğu/bulunduğu koşulları açıklayın...",
+    "contactInfoRequired": "İletişim bilgisi boş olamaz",
+    "contactInfoMax": "İletişim bilgisi en fazla 300 karakter olabilir",
     "titleRequired": "Başlık en az 3 karakter olmalıdır",
     "descriptionRequired": "Açıklama en az 10 karakter olmalıdır",
     "createTitle": "Yeni İlan Oluştur",

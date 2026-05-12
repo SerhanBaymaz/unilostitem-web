@@ -105,6 +105,8 @@
     "locationPlaceholder": "e.g. Building A, 2nd Floor Library",
     "titlePlaceholder": "e.g. Black Laptop Bag",
     "descriptionPlaceholder": "Describe the physical characteristics, brand/model info, and the circumstances of how it was lost/found...",
+    "contactInfoRequired": "Contact info cannot be empty",
+    "contactInfoMax": "Contact info must be at most 300 characters",
     "titleRequired": "Title must be at least 3 characters",
     "descriptionRequired": "Description must be at least 10 characters",
     "createTitle": "Create New Item",
