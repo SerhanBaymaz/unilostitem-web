@@ -1,10 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { authApi } from "../api/authApi";
+import { useQuery } from '@tanstack/react-query';
+import { authApi } from '../api/authApi';
 
 export function useProfile() {
-	return useQuery({
-		queryKey: ["auth", "profile"],
-		queryFn: authApi.getProfile,
-		staleTime: 5 * 60 * 1000,
-	});
+  return useQuery({
+    queryKey: ['auth', 'profile'],
+    queryFn: authApi.getProfile,
+    staleTime: 5 * 60 * 1000,
+  });
 }

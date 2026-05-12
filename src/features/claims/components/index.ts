@@ -1,1 +1,1 @@
-export { ClaimForm } from "./ClaimForm";
+export { ClaimForm } from './ClaimForm';

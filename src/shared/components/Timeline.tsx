@@ -1,65 +1,65 @@
-import type { ClaimStatus } from "@/shared/types";
+import type { ClaimStatus } from '@/shared/types';
 
 export interface TimelineEntry {
-	date: string;
-	actor: string;
-	description: string;
-	status: ClaimStatus;
+  date: string;
+  actor: string;
+  description: string;
+  status: ClaimStatus;
 }
 
 interface TimelineProps {
-	entries: TimelineEntry[];
-	currentStatus?: ClaimStatus;
+  entries: TimelineEntry[];
+  currentStatus?: ClaimStatus;
 }
 
 const dotColors: Record<ClaimStatus, string> = {
-	Pending: "bg-amber-500",
-	ApprovedByOwner: "bg-emerald-500",
-	ApprovedByAdmin: "bg-emerald-500",
-	RejectedByOwner: "bg-stone-300 dark:bg-stone-600",
-	RejectedByAdmin: "bg-stone-300 dark:bg-stone-600",
-	Cancelled: "bg-stone-300 dark:bg-stone-600",
+  Pending: 'bg-amber-500',
+  ApprovedByOwner: 'bg-emerald-500',
+  ApprovedByAdmin: 'bg-emerald-500',
+  RejectedByOwner: 'bg-stone-300 dark:bg-stone-600',
+  RejectedByAdmin: 'bg-stone-300 dark:bg-stone-600',
+  Cancelled: 'bg-stone-300 dark:bg-stone-600',
 };
 
 function formatTimelineDate(dateStr: string): string {
-	const date = new Date(dateStr);
-	return date.toLocaleDateString("tr-TR", {
-		day: "numeric",
-		month: "long",
-		year: "numeric",
-		hour: "2-digit",
-		minute: "2-digit",
-	});
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('tr-TR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 }
 
 export function Timeline({ entries, currentStatus }: TimelineProps) {
-	return (
-		<div className="relative pl-6">
-			<div className="absolute bottom-0 left-[9px] top-2 w-px bg-stone-200 dark:bg-stone-700" />
-			<div className="flex flex-col gap-4">
-				{entries.map((entry, index) => {
-					const isCurrent =
-						currentStatus && entry.status === currentStatus && index === entries.length - 1;
+  return (
+    <div className="relative pl-6">
+      <div className="absolute bottom-0 left-[9px] top-2 w-px bg-stone-200 dark:bg-stone-700" />
+      <div className="flex flex-col gap-4">
+        {entries.map((entry, index) => {
+          const isCurrent =
+            currentStatus && entry.status === currentStatus && index === entries.length - 1;
 
-					return (
-						// eslint-disable-next-line react/no-array-index-key
-						<div key={`${entry.date}-${index}`} className="relative">
-							<div
-								className={`absolute -left-6 top-1 h-[10px] w-[10px] rounded-full ${
-									dotColors[entry.status]
-								} ${isCurrent ? "ring-4 ring-amber-100 dark:ring-amber-900/50" : ""}`}
-							/>
-							<div className="pb-1">
-								<time className="text-xs text-text-tertiary">{formatTimelineDate(entry.date)}</time>
-								<p className="text-sm font-semibold text-stone-900 dark:text-stone-50">
-									{entry.actor}
-								</p>
-								<p className="text-sm text-stone-600 dark:text-stone-400">{entry.description}</p>
-							</div>
-						</div>
-					);
-				})}
-			</div>
-		</div>
-	);
+          return (
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={`${entry.date}-${index}`} className="relative">
+              <div
+                className={`absolute -left-6 top-1 h-[10px] w-[10px] rounded-full ${
+                  dotColors[entry.status]
+                } ${isCurrent ? 'ring-4 ring-amber-100 dark:ring-amber-900/50' : ''}`}
+              />
+              <div className="pb-1">
+                <time className="text-xs text-text-tertiary">{formatTimelineDate(entry.date)}</time>
+                <p className="text-sm font-semibold text-stone-900 dark:text-stone-50">
+                  {entry.actor}
+                </p>
+                <p className="text-sm text-stone-600 dark:text-stone-400">{entry.description}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
