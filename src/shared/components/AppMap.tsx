@@ -1,144 +1,144 @@
-import L from "leaflet";
-import { useEffect } from "react";
-import { useTheme } from "next-themes";
-import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from "react-leaflet";
-import type { ItemType } from "@/shared/types";
-import "leaflet/dist/leaflet.css";
+import L from 'leaflet';
+import { useEffect } from 'react';
+import { useTheme } from 'next-themes';
+import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet';
+import type { ItemType } from '@/shared/types';
+import 'leaflet/dist/leaflet.css';
 
 export interface MapMarkerData {
-	id: string;
-	latitude: number;
-	longitude: number;
-	title: string;
-	itemType: ItemType;
-	onClick?: () => void;
+  id: string;
+  latitude: number;
+  longitude: number;
+  title: string;
+  itemType: ItemType;
+  onClick?: () => void;
 }
 
 interface AppMapProps {
-	center?: [number, number];
-	zoom?: number;
-	markers?: MapMarkerData[];
-	className?: string;
-	onMapClick?: (lat: number, lng: number) => void;
-	selectable?: boolean;
+  center?: [number, number];
+  zoom?: number;
+  markers?: MapMarkerData[];
+  className?: string;
+  onMapClick?: (lat: number, lng: number) => void;
+  selectable?: boolean;
 }
 
 function createCustomIcon(type: ItemType): L.DivIcon {
-	const color = type === "Lost" ? "#E11D48" : "#059669";
+  const color = type === 'Lost' ? '#E11D48' : '#059669';
 
-	return L.divIcon({
-		className: "custom-marker",
-		html: `<svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  return L.divIcon({
+    className: 'custom-marker',
+    html: `<svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M14 0C6.268 0 0 6.268 0 14c0 10.5 14 22 14 22s14-11.5 14-22C28 6.268 21.732 0 14 0z" fill="${color}"/>
       <circle cx="14" cy="14" r="5" fill="white"/>
     </svg>`,
-		iconSize: [28, 36],
-		iconAnchor: [14, 36],
-		popupAnchor: [0, -36],
-	});
+    iconSize: [28, 36],
+    iconAnchor: [14, 36],
+    popupAnchor: [0, -36],
+  });
 }
 
-const lostIcon = createCustomIcon("Lost");
-const foundIcon = createCustomIcon("Found");
+const lostIcon = createCustomIcon('Lost');
+const foundIcon = createCustomIcon('Found');
 
 function FlyToCenter({ center }: { center: [number, number] }) {
-	const map = useMap();
-	useEffect(() => {
-		map.flyTo(center, map.getZoom(), { duration: 0.8 });
-	}, [center, map]);
-	return null;
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo(center, map.getZoom(), { duration: 0.8 });
+  }, [center, map]);
+  return null;
 }
 
 function MapEvents({
-	onMapClick,
-	selectable,
+  onMapClick,
+  selectable,
 }: {
-	onMapClick?: (lat: number, lng: number) => void;
-	selectable?: boolean;
+  onMapClick?: (lat: number, lng: number) => void;
+  selectable?: boolean;
 }) {
-	useMapEvents({
-		click(e) {
-			if (selectable && onMapClick) {
-				onMapClick(e.latlng.lat, e.latlng.lng);
-			}
-		},
-	});
-	return null;
+  useMapEvents({
+    click(e) {
+      if (selectable && onMapClick) {
+        onMapClick(e.latlng.lat, e.latlng.lng);
+      }
+    },
+  });
+  return null;
 }
 
 function InvalidateMapSize() {
-	const map = useMap();
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			map.invalidateSize();
-		}, 150);
-		return () => clearTimeout(timer);
-	}, [map]);
-	return null;
+  const map = useMap();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [map]);
+  return null;
 }
 
 const DEFAULT_CENTER: [number, number] = [41.0082, 28.9784]; // Istanbul
 const DEFAULT_ZOOM = 13;
 
 const TILE_URLS = {
-	light: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-	dark: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+  light: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
 } as const;
 
 export function AppMap({
-	center = DEFAULT_CENTER,
-	zoom = DEFAULT_ZOOM,
-	markers = [],
-	className = "h-64 w-full",
-	onMapClick,
-	selectable,
+  center = DEFAULT_CENTER,
+  zoom = DEFAULT_ZOOM,
+  markers = [],
+  className = 'h-64 w-full',
+  onMapClick,
+  selectable,
 }: AppMapProps) {
-	const { resolvedTheme } = useTheme();
-	const tileUrl = resolvedTheme === "dark" ? TILE_URLS.dark : TILE_URLS.light;
+  const { resolvedTheme } = useTheme();
+  const tileUrl = resolvedTheme === 'dark' ? TILE_URLS.dark : TILE_URLS.light;
 
-	return (
-		<div
-			className={`relative overflow-hidden rounded-lg border border-stone-200 dark:border-stone-700 ${className}`}
-		>
-			<MapContainer
-				center={center}
-				zoom={zoom}
-				style={{ height: "100%", width: "100%" }}
-				zoomControl={false}
-			>
-				<TileLayer
-					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-					url={tileUrl}
-				/>
-				<InvalidateMapSize />
-				<FlyToCenter center={center} />
-				<MapEvents onMapClick={onMapClick} selectable={selectable} />
-				{markers.map((marker) => (
-					<Marker
-						key={marker.id}
-						position={[marker.latitude, marker.longitude]}
-						icon={marker.itemType === "Lost" ? lostIcon : foundIcon}
-						eventHandlers={marker.onClick ? { click: marker.onClick } : undefined}
-					>
-						<Popup>
-							<div className="min-w-[160px] max-w-[220px] p-1">
-								<span
-									className={`mb-1 inline-block rounded-sm px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-										marker.itemType === "Lost"
-											? "bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400"
-											: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400"
-									}`}
-								>
-									{marker.itemType}
-								</span>
-								<p className="mt-1 text-sm font-medium text-stone-900 dark:text-stone-50">
-									{marker.title}
-								</p>
-							</div>
-						</Popup>
-					</Marker>
-				))}
-			</MapContainer>
-		</div>
-	);
+  return (
+    <div
+      className={`relative overflow-hidden rounded-lg border border-stone-200 dark:border-stone-700 ${className}`}
+    >
+      <MapContainer
+        center={center}
+        zoom={zoom}
+        style={{ height: '100%', width: '100%' }}
+        zoomControl={false}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          url={tileUrl}
+        />
+        <InvalidateMapSize />
+        <FlyToCenter center={center} />
+        <MapEvents onMapClick={onMapClick} selectable={selectable} />
+        {markers.map((marker) => (
+          <Marker
+            key={marker.id}
+            position={[marker.latitude, marker.longitude]}
+            icon={marker.itemType === 'Lost' ? lostIcon : foundIcon}
+            eventHandlers={marker.onClick ? { click: marker.onClick } : undefined}
+          >
+            <Popup>
+              <div className="min-w-[160px] max-w-[220px] p-1">
+                <span
+                  className={`mb-1 inline-block rounded-sm px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+                    marker.itemType === 'Lost'
+                      ? 'bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400'
+                      : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400'
+                  }`}
+                >
+                  {marker.itemType}
+                </span>
+                <p className="mt-1 text-sm font-medium text-stone-900 dark:text-stone-50">
+                  {marker.title}
+                </p>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+    </div>
+  );
 }
