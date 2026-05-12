@@ -65,11 +65,12 @@ Base URL: `VITE_API_BASE_URL` (default: `https://localhost:5001`). All endpoints
 
 ### Formatting Rules (Prettier — automatic)
 
-- Tab indentation (no spaces)
-- Double quotes (not `'`)
+- Space indentation (2 spaces, no tabs)
+- Single quotes (not `"`)
 - Semicolon required
-- Trailing comma required
+- Trailing comma required (ES5)
 - Line length max 100 characters
+- End of line: auto (CRLF on Windows, LF on Unix)
 
 ### Pay Attention to These While Coding
 

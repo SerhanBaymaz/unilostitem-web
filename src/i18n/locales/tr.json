@@ -110,7 +110,8 @@
     "titleRequired": "Başlık en az 3 karakter olmalıdır",
     "descriptionRequired": "Açıklama en az 10 karakter olmalıdır",
     "createTitle": "Yeni İlan Oluştur",
-    "createSubtitle": "Kayıp veya buluntu ilanını paylaş"
+    "createSubtitle": "Kayıp veya buluntu ilanını paylaş",
+    "locationHelp": "Haritaya tıklayarak konumu belirleyin."
   },
   "claims": {
     "title": "Talepler",

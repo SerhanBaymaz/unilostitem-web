@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { User } from '@/features/auth/types';
 import { clearStoredTokens, setStoredTokens } from '@/shared/lib/axios';
+import { queryClient } from '@/shared/lib/queryClient';
 
 interface AuthState {
   user: User | null;
@@ -30,6 +31,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       logout: () => {
+        queryClient.clear();
         clearStoredTokens();
         set({ user: null, isAuthenticated: false });
       },
