@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { StandardApiResponse } from '@/shared/types';
+import { queryClient } from './queryClient';
 
 const TOKEN_KEY = 'auth_tokens';
 const REFRESH_ENDPOINT = '/api/v1/auth/refresh-token';
@@ -62,6 +63,7 @@ apiClient.interceptors.response.use(
     }
 
     if (originalRequest.url === REFRESH_ENDPOINT) {
+      queryClient.clear();
       clearStoredTokens();
       window.location.href = '/login';
       return Promise.reject(error);
@@ -82,6 +84,7 @@ apiClient.interceptors.response.use(
     try {
       const tokens = getStoredTokens();
       if (!tokens?.refreshToken) {
+        queryClient.clear();
         clearStoredTokens();
         window.location.href = '/login';
         return Promise.reject(error);
@@ -100,6 +103,7 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       }
     } catch {
+      queryClient.clear();
       clearStoredTokens();
       window.location.href = '/login';
     } finally {

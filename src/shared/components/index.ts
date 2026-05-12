@@ -12,6 +12,7 @@ export { ItemCardSkeleton, ItemDetailSkeleton, ListSkeleton } from './LoadingSke
 export { Pagination } from './Pagination';
 export { ProtectedRoute } from './ProtectedRoute';
 export { ThemeToggle } from './ThemeToggle';
+export { PasswordInput } from './PasswordInput';
 export { PhoneInput } from './PhoneInput';
 export type { TimelineEntry } from './Timeline';
 export { Timeline } from './Timeline';

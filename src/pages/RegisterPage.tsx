@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useRegister } from '@/features/auth/hooks';
-import { PhoneInput } from '@/shared/components';
+import { PasswordInput, PhoneInput } from '@/shared/components';
 
 const registerSchema = z
   .object({
@@ -151,9 +151,8 @@ export default function RegisterPage() {
             <Label htmlFor="reg-password" className="text-stone-700 dark:text-stone-300">
               {t('auth.password')}
             </Label>
-            <Input
+            <PasswordInput
               id="reg-password"
-              type="password"
               autoComplete="new-password"
               aria-invalid={!!errors.password}
               className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20 dark:border-stone-700 dark:bg-stone-800/50 dark:placeholder:text-stone-500"
@@ -167,9 +166,8 @@ export default function RegisterPage() {
             <Label htmlFor="confirmPassword" className="text-stone-700 dark:text-stone-300">
               {t('auth.confirmPassword')}
             </Label>
-            <Input
+            <PasswordInput
               id="confirmPassword"
-              type="password"
               autoComplete="new-password"
               aria-invalid={!!errors.confirmPassword}
               className="h-10 rounded-md border-stone-200 bg-stone-50 text-[15px] placeholder:text-stone-400 focus-visible:border-amber-500 focus-visible:ring-amber-500/20 dark:border-stone-700 dark:bg-stone-800/50 dark:placeholder:text-stone-500"
