@@ -1,5 +1,4 @@
-import { Calendar, MapPin, MessageSquare, PackageSearch, User } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { Calendar, MapPin, Mail, PackageSearch, User } from 'lucide-react';
 import { Link } from 'react-router';
 import { CategoryBadge, ItemStatusBadge, ItemTypeBadge } from '@/shared/components';
 import type { Item } from '../types';
@@ -17,8 +16,6 @@ function formatDate(dateStr: string): string {
 }
 
 export function ItemCard({ item }: ItemCardProps) {
-  const { t } = useTranslation();
-
   return (
     <Link
       to={`/items/${item.id}`}
@@ -81,12 +78,14 @@ export function ItemCard({ item }: ItemCardProps) {
             </span>
           </div>
 
-          <div className="flex items-center gap-2 text-[12px] text-stone-400 dark:text-stone-500">
-            <MessageSquare className="h-3.5 w-3.5 shrink-0 text-stone-300 dark:text-stone-600" />
-            <span className="font-semibold text-amber-600/80">
-              {item.claimCount || 0} {t('claims.title')}
-            </span>
-          </div>
+          {item.contactInfo && (
+            <div className="flex items-center gap-2 text-[12px] text-stone-400 dark:text-stone-500">
+              <Mail className="h-3.5 w-3.5 shrink-0 text-stone-300 dark:text-stone-600" />
+              <span className="truncate font-medium text-stone-600 dark:text-stone-400">
+                {item.contactInfo}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Category Badge */}

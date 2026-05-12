@@ -13,6 +13,7 @@ interface ApiItem {
   status: string;
   incidentDate: string;
   imageUrl?: string;
+  contactInfo: string;
   locationLabel?: string;
   latitude?: number;
   longitude?: number;
@@ -48,6 +49,7 @@ function mapItem(raw: ApiItem): Item {
     status: raw.status as Item['status'],
     incidentDate: raw.incidentDate,
     imageUrl: raw.imageUrl,
+    contactInfo: raw.contactInfo,
     locationLabel: raw.locationLabel,
     latitude: raw.latitude,
     longitude: raw.longitude,
