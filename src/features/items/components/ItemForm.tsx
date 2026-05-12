@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { useState, useRef } from 'react';
+import { UploadCloud, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -277,37 +278,53 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
       </div>
 
       {/* Image Upload */}
-      <div className="space-y-3">
+      <div className="space-y-1.5">
         <Label className="text-stone-700 dark:text-stone-300">{t('items.image')}</Label>
 
-        <div className="flex flex-col gap-3">
-          {previewUrl && (
-            <div className="relative w-full max-w-sm overflow-hidden rounded-md border border-stone-200 dark:border-stone-700">
-              <img src={previewUrl} alt="Preview" className="h-auto w-full object-cover" />
-              <Button
-                type="button"
-                variant="destructive"
-                size="sm"
-                className="absolute right-2 top-2 h-7 px-2 text-xs"
-                onClick={handleRemoveImage}
-              >
-                {t('common.remove', 'Sil')}
-              </Button>
+        {previewUrl ? (
+          <div className="relative w-full overflow-hidden rounded-xl border border-stone-200 shadow-sm dark:border-stone-800">
+            <img
+              src={previewUrl}
+              alt="Preview"
+              className="aspect-video h-auto w-full object-cover"
+            />
+            <Button
+              type="button"
+              variant="destructive"
+              size="icon"
+              className="absolute right-2 top-2 h-8 w-8 rounded-full opacity-90 shadow-sm hover:opacity-100"
+              onClick={handleRemoveImage}
+            >
+              <X className="h-4 w-4" />
+              <span className="sr-only">{t('common.remove')}</span>
+            </Button>
+          </div>
+        ) : (
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            className="flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-stone-200 bg-stone-50 py-8 transition-colors hover:border-amber-500/50 hover:bg-stone-100 dark:border-stone-800 dark:bg-stone-900/50 dark:hover:border-amber-500/50 dark:hover:bg-stone-800/80"
+          >
+            <div className="rounded-full bg-stone-100 p-3 dark:bg-stone-800">
+              <UploadCloud className="h-6 w-6 text-stone-500 dark:text-stone-400" />
             </div>
-          )}
-
-          <Input
-            id="imageFile"
-            type="file"
-            accept="image/jpeg, image/png, image/webp"
-            className={inputClass}
-            ref={fileInputRef}
-            onChange={handleFileChange}
-          />
-          <p className="text-[11px] text-stone-400 dark:text-stone-500">
-            {t('items.imageHelp', 'Yalnızca JPG, JPEG, PNG veya WEBP')}
-          </p>
-        </div>
+            <div className="text-center">
+              <p className="text-sm font-medium text-stone-700 dark:text-stone-300">
+                {t('items.clickToUpload')}
+              </p>
+              <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
+                {t('items.imageHelp')}
+              </p>
+            </div>
+          </div>
+        )}
+        <input
+          id="imageFile"
+          type="file"
+          accept="image/jpeg, image/png, image/webp"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+        />
       </div>
 
       {/* Contact Info */}

@@ -111,7 +111,9 @@
     "descriptionRequired": "Açıklama en az 10 karakter olmalıdır",
     "createTitle": "Yeni İlan Oluştur",
     "createSubtitle": "Kayıp veya buluntu ilanını paylaş",
-    "locationHelp": "Haritaya tıklayarak konumu belirleyin."
+    "locationHelp": "Haritaya tıklayarak konumu belirleyin.",
+    "clickToUpload": "Görsel Yükle",
+    "imageHelp": "Yalnızca JPG, JPEG, PNG veya WEBP"
   },
   "claims": {
     "title": "Talepler",
