@@ -106,7 +106,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
         </Label>
         <Input
           id="title"
-          placeholder="Örn: Siyah Laptop Çantası"
+          placeholder={t('items.titlePlaceholder')}
           aria-invalid={!!errors.title}
           className={inputClass}
           {...register('title')}
@@ -128,7 +128,11 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
             render={({ field }) => (
               <Select value={field.value} onValueChange={field.onChange}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t('items.type')} />
+                  {field.value ? (
+                    <SelectValue>{t(`items.${field.value.toLowerCase()}`)}</SelectValue>
+                  ) : (
+                    <SelectValue placeholder={t('items.type')} />
+                  )}
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Lost">{t('items.lost')}</SelectItem>
@@ -152,7 +156,11 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
             render={({ field }) => (
               <Select value={field.value} onValueChange={field.onChange}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t('items.category')} />
+                  {field.value ? (
+                    <SelectValue>{t(`categories.${field.value}`)}</SelectValue>
+                  ) : (
+                    <SelectValue placeholder={t('items.category')} />
+                  )}
                 </SelectTrigger>
                 <SelectContent>
                   {ITEM_CATEGORIES.map((cat) => (
@@ -229,7 +237,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
         </Label>
         <Textarea
           id="description"
-          placeholder="Eşyanın fiziksel özelliklerini, marka/model bilgisini, kaybolduğu/bulunduğu koşulları açıklayın..."
+          placeholder={t('items.descriptionPlaceholder')}
           rows={4}
           aria-invalid={!!errors.description}
           className={textareaClass}
