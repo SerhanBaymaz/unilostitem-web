@@ -26,14 +26,16 @@ export interface ItemCreateRequest {
   category: Category;
   itemType: ItemType;
   incidentDate: string;
-  imageUrl?: string;
+  image?: File | null;
   contactInfo: string;
   locationLabel?: string;
   latitude?: number;
   longitude?: number;
 }
 
-export type ItemUpdateRequest = Partial<ItemCreateRequest>;
+export type ItemUpdateRequest = Partial<ItemCreateRequest> & {
+  removeImage?: boolean;
+};
 
 export interface ItemListParams {
   pageNumber?: number;
