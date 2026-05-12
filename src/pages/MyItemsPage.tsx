@@ -69,7 +69,7 @@ export default function MyItemsPage() {
   );
 }
 
-function ItemWithClaims({ item }: { item: Item }) {
+function ItemWithClaims({ item }: Readonly<{ item: Item }>) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const { data: claimsData, isLoading: claimsLoading } = useClaimsByItem(item.id);
@@ -84,12 +84,12 @@ function ItemWithClaims({ item }: { item: Item }) {
         className="group flex items-center gap-4 p-4 transition-colors hover:bg-stone-50/50 dark:hover:bg-stone-800/50"
       >
         {/* Image */}
-        <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-50 border border-stone-100/50 dark:bg-stone-800/50 dark:border-stone-800">
+        <div className="aspect-square h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-100 border border-stone-100/50 dark:bg-stone-800/50 dark:border-stone-800">
           {item.imageUrl ? (
             <img
               src={item.imageUrl}
               alt={item.title}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
             />
           ) : (
@@ -158,7 +158,7 @@ function ItemWithClaims({ item }: { item: Item }) {
   );
 }
 
-function ClaimItemCard({ claim }: { claim: Claim }) {
+function ClaimItemCard({ claim }: Readonly<{ claim: Claim }>) {
   const { t } = useTranslation();
   const [showRespondDialog, setShowRespondDialog] = useState(false);
   const [isApproved, setIsApproved] = useState(false);

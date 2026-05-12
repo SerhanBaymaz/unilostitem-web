@@ -15,19 +15,19 @@ function formatDate(dateStr: string): string {
   });
 }
 
-export function ItemCard({ item }: ItemCardProps) {
+export function ItemCard({ item }: Readonly<ItemCardProps>) {
   return (
     <Link
       to={`/items/${item.id}`}
       className="group flex gap-4 rounded-xl border border-stone-100 dark:border-stone-800 bg-card p-4 shadow-warm-1 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-warm-2 active:scale-[0.99]"
     >
       {/* Image Wrapper */}
-      <div className="h-28 w-28 shrink-0 overflow-hidden rounded-lg bg-stone-50 dark:bg-stone-800/50 border border-stone-100/50">
+      <div className="aspect-square h-28 w-28 shrink-0 overflow-hidden rounded-lg bg-stone-100 dark:bg-stone-800/50 border border-stone-100/50">
         {item.imageUrl ? (
           <img
             src={item.imageUrl}
             alt={item.title}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
           />
         ) : (

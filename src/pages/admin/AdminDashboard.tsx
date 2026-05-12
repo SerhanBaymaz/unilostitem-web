@@ -13,13 +13,13 @@ function StatCard({
   value,
   subValue,
   color,
-}: {
+}: Readonly<{
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   value: string | number;
   subValue?: string;
   color: string;
-}) {
+}>) {
   return (
     <div className="rounded-lg border border-stone-100 bg-card p-5 shadow-warm-1 dark:border-stone-800">
       <div className="flex items-start justify-between">
@@ -139,12 +139,12 @@ export default function AdminDashboard() {
                   to={`/items/${item.id}`}
                   className="group flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-stone-50 dark:hover:bg-stone-800"
                 >
-                  <div className="h-9 w-9 shrink-0 overflow-hidden rounded-md bg-stone-100 dark:bg-stone-800">
+                  <div className="aspect-square h-9 w-9 shrink-0 overflow-hidden rounded-md bg-stone-100 dark:bg-stone-800">
                     {item.imageUrl ? (
                       <img
                         src={item.imageUrl}
                         alt={item.title}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-contain"
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center">

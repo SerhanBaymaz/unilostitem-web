@@ -70,7 +70,7 @@ export default function ReceivedClaimsPage() {
   );
 }
 
-function ItemClaimsGroup({ item }: { item: Item }) {
+function ItemClaimsGroup({ item }: Readonly<{ item: Item }>) {
   const { t } = useTranslation();
   const { data, isLoading } = useClaimsByItem(item.id);
   const claims = data?.claims ?? [];
@@ -82,9 +82,9 @@ function ItemClaimsGroup({ item }: { item: Item }) {
         to={`/items/${item.id}`}
         className="group flex items-center gap-4 rounded-xl border border-stone-200 bg-stone-50/50 p-4 transition-colors hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900/50 dark:hover:bg-stone-800"
       >
-        <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-200 dark:bg-stone-700">
+        <div className="aspect-square h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-100 dark:bg-stone-800">
           {item.imageUrl ? (
-            <img src={item.imageUrl} alt={item.title} className="h-full w-full object-cover" />
+            <img src={item.imageUrl} alt={item.title} className="h-full w-full object-contain" />
           ) : (
             <div className="flex h-full w-full items-center justify-center">
               <PackageSearch className="h-8 w-8 text-stone-400 dark:text-stone-500" />
@@ -122,7 +122,7 @@ function ItemClaimsGroup({ item }: { item: Item }) {
   );
 }
 
-function ClaimItemCard({ claim }: { claim: Claim }) {
+function ClaimItemCard({ claim }: Readonly<{ claim: Claim }>) {
   const { t } = useTranslation();
   const [showRespondDialog, setShowRespondDialog] = useState(false);
   const [isApproved, setIsApproved] = useState(false);

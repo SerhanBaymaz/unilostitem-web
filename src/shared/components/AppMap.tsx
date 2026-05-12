@@ -37,8 +37,8 @@ function createCustomIcon(type: ItemType, imageUrl?: string): L.DivIcon {
           <svg width="48" height="56" viewBox="0 0 48 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
             <path d="M24 4C12.954 4 4 12.954 4 24c0 16 20 32 20 32s20-16 20-32C44 12.954 35.046 4 24 4z" fill="${color}" stroke="white" stroke-width="2"/>
           </svg>
-          <div style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 28px; height: 28px; border-radius: 50%; overflow: hidden; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);">
-            <img src="${imageUrl}" alt="" style="width: 100%; height: 100%; object-fit: cover;" />
+          <div style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 28px; height: 28px; border-radius: 50%; overflow: hidden; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3); background: #f5f5f4;">
+            <img src="${imageUrl}" alt="" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
           </div>
         </div>
       `,
@@ -115,7 +115,7 @@ export function AppMap({
   className = 'h-64 w-full',
   onMapClick,
   selectable,
-}: AppMapProps) {
+}: Readonly<AppMapProps>) {
   const { resolvedTheme } = useTheme();
   const tileUrl = resolvedTheme === 'dark' ? TILE_URLS.dark : TILE_URLS.light;
 
@@ -143,13 +143,15 @@ export function AppMap({
             icon={getIcon(marker.itemType, marker.imageUrl)}
           >
             <Popup>
-              <div className="min-w-[200px] max-w-[280px]">
+              <div className="min-w-50 max-w-70">
                 {marker.imageUrl && (
-                  <img
-                    src={marker.imageUrl}
-                    alt={marker.title}
-                    className="h-32 w-full rounded-t-lg object-cover"
-                  />
+                  <div className="relative aspect-4/3 w-full overflow-hidden rounded-t-lg bg-stone-100 dark:bg-stone-800">
+                    <img
+                      src={marker.imageUrl}
+                      alt={marker.title}
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
                 )}
                 <div className="p-3">
                   <div className="mb-2 flex items-center gap-2">
