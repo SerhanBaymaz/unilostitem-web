@@ -91,6 +91,9 @@ export default function HomePage() {
           longitude: item.longitude,
           title: item.title,
           itemType: item.itemType,
+          imageUrl: item.imageUrl,
+          category: item.category,
+          locationLabel: item.locationLabel,
           onClick: () => navigate(`/items/${item.id}`),
         })),
     [data?.items, navigate]

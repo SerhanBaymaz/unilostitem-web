@@ -1,4 +1,4 @@
-import { Calendar, Mail, Phone, Shield, UserCircle } from 'lucide-react';
+import { Mail, Phone, Shield, UserCircle } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -7,15 +7,6 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useProfile, useUpdateProfile } from '@/features/auth/hooks';
 import { EmptyState, PhoneInput } from '@/shared/components';
-
-function formatDate(dateStr: string): string {
-  if (!dateStr) return '—';
-  return new Date(dateStr).toLocaleDateString('tr-TR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-}
 
 export default function ProfilePage() {
   const { t } = useTranslation();
@@ -96,10 +87,6 @@ export default function ProfilePage() {
                     {profile.phoneNumber}
                   </div>
                 )}
-                <div className="flex items-center gap-2 text-stone-400 dark:text-stone-500">
-                  <Calendar className="h-4 w-4" />
-                  {t('profile.memberSince')}: {formatDate(profile.createdAt)}
-                </div>
               </div>
 
               {!isEditing && (

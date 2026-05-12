@@ -105,6 +105,9 @@ export default function ItemDetailPage() {
           longitude: item.longitude,
           title: item.title,
           itemType: item.itemType,
+          imageUrl: item.imageUrl,
+          category: item.category,
+          locationLabel: item.locationLabel,
         }
       : null;
 

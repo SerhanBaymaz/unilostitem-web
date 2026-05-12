@@ -11,6 +11,9 @@ export interface MapMarkerData {
   longitude: number;
   title: string;
   itemType: ItemType;
+  imageUrl?: string;
+  category?: string;
+  locationLabel?: string;
   onClick?: () => void;
 }
 
@@ -23,8 +26,27 @@ interface AppMapProps {
   selectable?: boolean;
 }
 
-function createCustomIcon(type: ItemType): L.DivIcon {
+function createCustomIcon(type: ItemType, imageUrl?: string): L.DivIcon {
   const color = type === 'Lost' ? '#E11D48' : '#059669';
+
+  if (imageUrl) {
+    return L.divIcon({
+      className: 'custom-marker-with-image',
+      html: `
+        <div class="marker-wrapper" style="position: relative; width: 48px; height: 56px;">
+          <svg width="48" height="56" viewBox="0 0 48 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+            <path d="M24 4C12.954 4 4 12.954 4 24c0 16 20 32 20 32s20-16 20-32C44 12.954 35.046 4 24 4z" fill="${color}" stroke="white" stroke-width="2"/>
+          </svg>
+          <div style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 28px; height: 28px; border-radius: 50%; overflow: hidden; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);">
+            <img src="${imageUrl}" alt="" style="width: 100%; height: 100%; object-fit: cover;" />
+          </div>
+        </div>
+      `,
+      iconSize: [48, 56],
+      iconAnchor: [24, 56],
+      popupAnchor: [0, -56],
+    });
+  }
 
   return L.divIcon({
     className: 'custom-marker',
@@ -38,8 +60,9 @@ function createCustomIcon(type: ItemType): L.DivIcon {
   });
 }
 
-const lostIcon = createCustomIcon('Lost');
-const foundIcon = createCustomIcon('Found');
+function getIcon(type: ItemType, imageUrl?: string): L.DivIcon {
+  return createCustomIcon(type, imageUrl);
+}
 
 function FlyToCenter({ center }: { center: [number, number] }) {
   const map = useMap();
@@ -117,23 +140,71 @@ export function AppMap({
           <Marker
             key={marker.id}
             position={[marker.latitude, marker.longitude]}
-            icon={marker.itemType === 'Lost' ? lostIcon : foundIcon}
-            eventHandlers={marker.onClick ? { click: marker.onClick } : undefined}
+            icon={getIcon(marker.itemType, marker.imageUrl)}
           >
             <Popup>
-              <div className="min-w-[160px] max-w-[220px] p-1">
-                <span
-                  className={`mb-1 inline-block rounded-sm px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-                    marker.itemType === 'Lost'
-                      ? 'bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400'
-                      : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400'
-                  }`}
-                >
-                  {marker.itemType}
-                </span>
-                <p className="mt-1 text-sm font-medium text-stone-900 dark:text-stone-50">
-                  {marker.title}
-                </p>
+              <div className="min-w-[200px] max-w-[280px]">
+                {marker.imageUrl && (
+                  <img
+                    src={marker.imageUrl}
+                    alt={marker.title}
+                    className="h-32 w-full rounded-t-lg object-cover"
+                  />
+                )}
+                <div className="p-3">
+                  <div className="mb-2 flex items-center gap-2">
+                    <span
+                      className={`inline-block rounded-sm px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+                        marker.itemType === 'Lost'
+                          ? 'bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400'
+                          : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400'
+                      }`}
+                    >
+                      {marker.itemType}
+                    </span>
+                    {marker.category && (
+                      <span className="text-[10px] font-medium uppercase text-stone-500 dark:text-stone-400">
+                        {marker.category}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="mb-1 line-clamp-2 text-sm font-semibold text-stone-900 dark:text-stone-50">
+                    {marker.title}
+                  </h3>
+                  {marker.locationLabel && (
+                    <div className="mb-3 flex items-center gap-1 text-xs text-stone-500 dark:text-stone-400">
+                      <svg
+                        className="h-3 w-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      <span className="line-clamp-1">{marker.locationLabel}</span>
+                    </div>
+                  )}
+                  {marker.onClick && (
+                    <button
+                      type="button"
+                      onClick={marker.onClick}
+                      className="w-full rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                    >
+                      View Details
+                    </button>
+                  )}
+                </div>
               </div>
             </Popup>
           </Marker>
