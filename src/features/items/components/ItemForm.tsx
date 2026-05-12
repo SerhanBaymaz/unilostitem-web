@@ -41,7 +41,7 @@ interface ItemFormProps {
   isPending: boolean;
 }
 
-export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
+export function ItemForm({ item, onSubmit, isPending }: Readonly<ItemFormProps>) {
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -300,9 +300,10 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
             </Button>
           </div>
         ) : (
-          <div
+          <button
+            type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-stone-200 bg-stone-50 py-8 transition-colors hover:border-amber-500/50 hover:bg-stone-100 dark:border-stone-800 dark:bg-stone-900/50 dark:hover:border-amber-500/50 dark:hover:bg-stone-800/80"
+            className="flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-stone-200 bg-stone-50 py-8 transition-colors hover:border-amber-500/50 hover:bg-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:border-stone-800 dark:bg-stone-900/50 dark:hover:border-amber-500/50 dark:hover:bg-stone-800/80"
           >
             <div className="rounded-full bg-stone-100 p-3 dark:bg-stone-800">
               <UploadCloud className="h-6 w-6 text-stone-500 dark:text-stone-400" />
@@ -315,7 +316,7 @@ export function ItemForm({ item, onSubmit, isPending }: ItemFormProps) {
                 {t('items.imageHelp')}
               </p>
             </div>
-          </div>
+          </button>
         )}
         <input
           id="imageFile"
