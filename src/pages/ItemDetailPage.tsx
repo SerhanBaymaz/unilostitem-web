@@ -105,6 +105,9 @@ export default function ItemDetailPage() {
           longitude: item.longitude,
           title: item.title,
           itemType: item.itemType,
+          imageUrl: item.imageUrl,
+          category: item.category,
+          locationLabel: item.locationLabel,
         }
       : null;
 
@@ -216,12 +219,12 @@ export default function ItemDetailPage() {
         {/* Left Column: Image & Map */}
         <div className="space-y-6 lg:col-span-7">
           {/* Image Card */}
-          <div className="group relative aspect-video w-full overflow-hidden rounded-2xl bg-stone-100 border border-stone-200 shadow-warm-1 transition-all duration-500 hover:shadow-warm-2 dark:bg-stone-800 dark:border-stone-700">
+          <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-stone-100 border border-stone-200 shadow-warm-1 transition-all duration-500 hover:shadow-warm-2 dark:bg-stone-800 dark:border-stone-700">
             {item.imageUrl ? (
               <img
                 src={item.imageUrl}
                 alt={item.title}
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-[1.02]"
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center">

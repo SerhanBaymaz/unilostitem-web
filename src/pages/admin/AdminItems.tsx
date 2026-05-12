@@ -165,7 +165,7 @@ export default function AdminItems() {
   );
 }
 
-function AdminItemRow({ item }: { item: Item }) {
+function AdminItemRow({ item }: Readonly<{ item: Item }>) {
   const { t } = useTranslation();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const deleteMutation = useDeleteItem();
@@ -180,12 +180,12 @@ function AdminItemRow({ item }: { item: Item }) {
       <tr className="border-b border-stone-100 transition-colors hover:bg-stone-50/50 dark:border-stone-800 dark:hover:bg-stone-800/50">
         <td className="px-4 py-3">
           <Link to={`/items/${item.id}`} className="flex items-center gap-3 group">
-            <div className="h-9 w-9 shrink-0 overflow-hidden rounded-md bg-stone-100 dark:bg-stone-800">
+            <div className="aspect-square h-9 w-9 shrink-0 overflow-hidden rounded-md bg-stone-100 dark:bg-stone-800">
               {item.imageUrl ? (
                 <img
                   src={item.imageUrl}
                   alt={item.title}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain"
                   loading="lazy"
                 />
               ) : (

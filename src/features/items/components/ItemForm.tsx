@@ -282,12 +282,8 @@ export function ItemForm({ item, onSubmit, isPending }: Readonly<ItemFormProps>)
         <Label className="text-stone-700 dark:text-stone-300">{t('items.image')}</Label>
 
         {previewUrl ? (
-          <div className="relative w-full overflow-hidden rounded-xl border border-stone-200 shadow-sm dark:border-stone-800">
-            <img
-              src={previewUrl}
-              alt="Preview"
-              className="aspect-video h-auto w-full object-cover"
-            />
+          <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border border-stone-200 bg-stone-100 shadow-sm dark:border-stone-800 dark:bg-stone-800">
+            <img src={previewUrl} alt="Preview" className="h-full w-full object-contain" />
             <Button
               type="button"
               variant="destructive"
